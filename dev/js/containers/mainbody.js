@@ -3,12 +3,41 @@ import { Navbar,NavItem,NavDropdown,MenuItem,Nav,Glyphicon  } from 'react-bootst
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
+import { browserHistory,Link } from "react-router";
+
 class MainBody extends Component {
 
+  constructor(props)
+  {
+    super(props);
+    console.log(this.props);
+    this.state={
+      location:this.props.location.pathname
+    };
+
+  }
+
+
     render() {
+      const { listen } = browserHistory;
+      listen(location => {
+        console.log(location);
+        this.setState({
+          location:location.hash.substring(1)
+        });
+      });
+      const {location}=this.state;
+      const a=location.split("/");
+      if(a[0]=="")
+      a.splice(0,1);
+      console.log(a);
+
+      const breadcrumb =a.map((b)=><Link to={'/'+b}>  {b} &gt; </Link> );
         return (
 		<div>
-      <DocumentList/>
+      <div>{breadcrumb}</div>
+      <div id="demo"></div>
+      <DocumentList list={a}/>
     </div>
 
 

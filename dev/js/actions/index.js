@@ -1,7 +1,7 @@
-export const selectUser = (user) => {
-    console.log("You clicked on user: ", user.first);
+export const addFolder = (data) => {
+    console.log("Adding Folder name: ", data);
     return {
-        type: 'USER_SELECTED',
-        payload: user
+        type: 'ADD_FOLDER',
+        payload: data
     }
 };

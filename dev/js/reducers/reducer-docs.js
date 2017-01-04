@@ -1,6 +1,7 @@
 
-export default function () {
-    return [
+export default function (state = null, action) {
+  console.log(action);
+    var docs= [
       {
           id: 1,
           title: "Folder 1",
@@ -74,5 +75,19 @@ export default function () {
           img:"./assets/png.png"
       }
 
-    ]
+    ];
+    switch (action.type) {
+        case 'ADD_FOLDER':
+        console.log(state);
+            return [...state,{
+                id: Date.now(),
+                title: action.payload.name,
+                modified:"07.37,1 Jan'17",
+                img:action.payload.img
+            }];
+            break;
+    }
+  //  return state;
+
+    return docs;
 }
