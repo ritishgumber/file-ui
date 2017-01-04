@@ -23,6 +23,7 @@ class NavBar extends Component {
       acceptedFiles.forEach((file)=>{
         this.createFile(file.name);
       });
+      this.close();
     }
 
 
@@ -36,11 +37,13 @@ class NavBar extends Component {
    }
    addFolder(e){
      console.log(document.getElementById('folderName').value);
-    this.props.addFolder({name:document.getElementById('folderName').value,img:"./assets/folder.png"});
+    this.props.addFolder({name:document.getElementById('folderName').value,img:"./assets/folder.png",type:'folder'});
+    this.close();
    }
    createFile(name)
    {
-     this.props.addFolder({name:name,img:"./assets/file.png"});
+     this.props.addFolder({name:name,img:"./assets/file.png",type:'file'});
+
 
    }
 

@@ -6,72 +6,84 @@ export default function (state = null, action) {
           id: 1,
           title: "Folder 1",
           modified:"12:39 AM ,Today",
+          type:'folder',
           img:"./assets/folder.png"
       },
       {
           id: 2,
           title: "Deboarding Document.docx",
           modified:"12.29,Today",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 3,
           title: "System Setup.pdf",
           modified:"12:34 AM ,31 Dec'16",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 4,
           title: "interface.png",
           modified:"07.37,1 Jan'17",
+          type:'file',
           img:"./assets/png.png"
       },
       {
           id: 5,
           title: "Folder 1",
           modified:"12:39 AM ,Today",
+          type:'folder',
           img:"./assets/folder.png"
       },
       {
           id: 6,
           title: "Deboarding Document.docx",
           modified:"12.29,Today",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 7,
           title: "System Setup.pdf",
           modified:"12:34 AM ,31 Dec'16",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 8,
           title: "interface.png",
           modified:"07.37,1 Jan'17",
+          type:'file',
           img:"./assets/png.png"
       },
       {
           id: 9,
           title: "Folder 1",
           modified:"12:39 AM ,Today",
+          type:'folder',
           img:"./assets/folder.png"
       },
       {
           id: 10,
           title: "Deboarding Document.docx",
           modified:"12.29,Today",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 11,
           title: "System Setup.pdf",
           modified:"12:34 AM ,31 Dec'16",
+          type:'file',
           img:"./assets/doc.png"
       },
       {
           id: 12,
           title: "interface.png",
           modified:"07.37,1 Jan'17",
+          type:'file',
           img:"./assets/png.png"
       }
 
@@ -83,6 +95,7 @@ export default function (state = null, action) {
                 id: Date.now(),
                 title: action.payload.name,
                 modified:"07.37,1 Jan'17",
+                type:action.payload.type,
                 img:action.payload.img
             }];
             break;

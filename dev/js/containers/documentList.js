@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Navbar,NavItem,NavDropdown,MenuItem,Nav,Glyphicon  } from 'react-bootstrap';
+import { Navbar,NavItem,NavDropdown,MenuItem,Nav,Glyphicon,Modal ,Button } from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from "react-router";
@@ -11,10 +11,14 @@ constructor(props)
   super(props);
   console.log(this.props.list);
  this.state={docs:this.props.docs,
-   isAsc:true,nameIcon:"sort"};
+   isAsc:true,nameIcon:"sort",list:this.props.list,showModal:false,document:{}};
 }
 
-
+componentWillReceiveProps(newProp)
+{console.log(newProp.list);
+  if(newProp.list!==this.state.list)
+  this.setState({list:newProp.list});
+}
 sortByKey(array,key,isAsc){
   array.sort(function(a, b) {
   var x = a[key]; var y = b[key];
@@ -32,10 +36,19 @@ sortByKey(array,key,isAsc){
     else
     this.setState({modifiedIcon:(isAsc?'sort-by-order':'sort-by-order-alt'),nameIcon:"",docs:this.sortByKey(this.props.docs,key,isAsc)})
   }
+  openFile(document)
+  {
+    console.log(document);
+    this.setState({showModal:true,document:document})
+  }
+  close() {
+ this.setState({
+   showModal: false });
+ }
     render() {
       var a;
       a=this.props.docs;
-        return (
+        return (<div>
 		      <table >
         <tbody><tr  >
           <th onClick={this.sortDocuments.bind(this,'title')}> Name <Glyphicon glyph={this.state.nameIcon}/>
@@ -47,9 +60,15 @@ sortByKey(array,key,isAsc){
         		(doc)=>  {
               return(
               <tr key={doc.id} ref="listRow" className="listStyle"  >
-              <td className="dataStyle">
+              <td className="dataStyle" >
                 <img src={doc.img} width="30"/>
-                <Link to={'home/'+doc.title}>  {doc.title}</Link></td>
+                {
+                  doc.type=='file' ?
+                   (<span onClick={this.openFile.bind(this,doc)}>{doc.title}</span>) :
+                   (<Link to={'home/'+doc.title} >  {doc.title}</Link>)
+                 }
+              </td>
+
               <td ><a href="#">{doc.modified}</a></td>
               <td >
                 <Glyphicon glyph="remove"/>
@@ -59,6 +78,13 @@ sortByKey(array,key,isAsc){
                 </tr>)
             })}</tbody>
       </table>
+      <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+      <Modal.Body >
+        <h3>Retrieving File....  {this.state.document.title} </h3>
+
+      </Modal.Body>
+      </Modal>
+    </div>
 
 
     );
