@@ -9,15 +9,46 @@ class DocumentList extends Component {
 constructor(props)
 {
   super(props);
-  console.log(this.props.list);
+  console.log("here",this.props.list);
  this.state={docs:this.props.docs,
    isAsc:true,nameIcon:"sort",list:this.props.list,showModal:false,document:{}};
 }
 
 componentWillReceiveProps(newProp)
-{console.log(newProp.list);
+{console.log("here2",newProp.list);
   if(newProp.list!==this.state.list)
   this.setState({list:newProp.list});
+}
+
+filterDocs(text)
+{
+  const {docs}=this.props;
+  console.log("text",text);
+    if(text=='/')
+    {text="/home";
+  }
+  if(!text.startsWith('/home'))
+    {return [];}
+//    console.log(text.split('/').length,text);
+  if(text=="/home"){
+      return(docs.filter((doc)=>{
+        let a=doc.title.split('/');
+        console.log("A",a.length);
+        return(
+        a.length==(3)
+        );
+      }));
+  }
+  else{
+    return(docs.filter((doc)=>{
+      let a=doc.title.split('/');
+      let t=text;
+
+      return(
+        doc.title.startsWith(text) && a.length==t.split('/').length+1
+      );
+    }));
+}
 }
 sortByKey(array,key,isAsc){
   array.sort(function(a, b) {
@@ -46,8 +77,9 @@ sortByKey(array,key,isAsc){
    showModal: false });
  }
     render() {
-      var a;
-      a=this.props.docs;
+      const {list}=this.state;
+      const a=this.filterDocs(list);
+
         return (<div>
 		      <table >
         <tbody><tr  >
@@ -58,14 +90,16 @@ sortByKey(array,key,isAsc){
         </tr>
         {a.map(
         		(doc)=>  {
+              const titleA=doc.title.split('/');
+              const title=titleA[titleA.length-1];
               return(
               <tr key={doc.id} ref="listRow" className="listStyle"  >
               <td className="dataStyle" >
                 <img src={doc.img} width="30"/>
                 {
                   doc.type=='file' ?
-                   (<Link onClick={this.openFile.bind(this,doc)}>{doc.title}</Link>) :
-                   (<Link to={'home/'+doc.title} >  {doc.title}</Link>)
+                   (<Link onClick={this.openFile.bind(this,doc)}>{title}</Link>) :
+                   (<Link to={doc.title} >  {title}</Link>)
                  }
               </td>
 

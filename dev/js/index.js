@@ -27,9 +27,8 @@ ReactDOM.render(
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={MainBody}></IndexRoute>
-          <Route path="home/*" name="file" component={MainBody}></Route>
-          <Route path="home"  component={MainBody}></Route>
-
+          <Route path="/*" name="file" component={MainBody}></Route>
+          
         </Route>
       </Router>
    </Provider>,

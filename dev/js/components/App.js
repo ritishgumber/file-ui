@@ -19,7 +19,7 @@ constructor(props)
 render(){
 
   return(    <div className="bodyStyle" >
-        <NavBar />
+        <NavBar location={this.props.location}/>
     	   <div className="container">
           <div className="row">
              <div  className="col-sm-2 col-xs-2 col-md-2">

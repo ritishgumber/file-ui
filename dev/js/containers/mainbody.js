@@ -37,7 +37,7 @@ class MainBody extends Component {
 		<div>
       <div>{breadcrumb}</div>
       <div id="demo"></div>
-      <DocumentList list={a}/>
+      <DocumentList list={location}/>
     </div>
 
 
