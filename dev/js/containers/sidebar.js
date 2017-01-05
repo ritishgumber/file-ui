@@ -12,17 +12,17 @@ export default class SideBar extends Component {
             <br/><div id="side-menu">
               <ul >
                 <li>
-                  <Glyphicon glyph="time"/><a href="#"> Recents</a>
+                  <Glyphicon glyph="time"/><a href="#/"> Recents</a>
                 </li>
                 <li>
-                  <Glyphicon glyph="file"/><a href="#"> Files</a>
+                  <Glyphicon glyph="file"/><a href="#/"> Files</a>
                 </li>
                 <li>
-                  <Glyphicon glyph="picture"/><a href="#"> Photos</a>
+                  <Glyphicon glyph="picture"/><a href="#/"> Photos</a>
                 </li>
                 <hr/>
                 <li>
-                  <Glyphicon glyph="trash"/><a href="#">Deleted Files</a>
+                  <Glyphicon glyph="trash"/><a href="#/">Deleted Files</a>
                 </li>
 
               </ul></div>

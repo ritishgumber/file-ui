@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Button,Nav,Grid,Row,Col ,Modal } from 'react-bootstrap';
-import {Link } from "react-router";
+import {Link ,browserHistory} from "react-router";
 import {addFolder} from '../actions/index'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -11,17 +11,25 @@ class NavBar extends Component {
     constructor(props)
     {
       super(props);
+      console.log("nav-constructor",this.props.location.pathname);
       this.state={
         showUploadModal:false,
-        showCreateModal:false
+        showCreateModal:false,
+        location:this.props.location.pathname
       };
     }
 
     onDrop (acceptedFiles, rejectedFiles) {
       console.log('Accepted files: ', acceptedFiles);
       console.log('Rejected files: ', rejectedFiles);
+      const {location} =this.state;
+
       acceptedFiles.forEach((file)=>{
-        this.createFile(file.name);
+        if(location=="/")
+        this.createFile('/home/'+file.name);
+        else
+        this.createFile(location+'/'+file.name);
+
       });
       this.close();
     }
@@ -36,9 +44,13 @@ class NavBar extends Component {
      this.setState({ showUploadModal: (type=='upload'?true:false),showCreateModal:(type=='upload'?false:true) });
    }
    addFolder(e){
-     console.log(document.getElementById('folderName').value);
-    this.props.addFolder({name:document.getElementById('folderName').value,img:"./assets/folder.png",type:'folder'});
-    this.close();
+     const value=(document.getElementById('folderName').value);
+     const {location}=this.state;
+     if(location=="/")
+     this.props.addFolder({name:"/home/"+value,img:"./assets/folder.png",type:'folder'});
+     else
+     this.props.addFolder({name:location+"/"+value,img:"./assets/folder.png",type:'folder'});
+     this.close();
    }
    createFile(name)
    {
@@ -48,6 +60,17 @@ class NavBar extends Component {
    }
 
     render() {
+      const { listen } = browserHistory;
+      listen(location => {
+        console.log(location);
+
+          console.log("executing");
+        this.setState({
+          location:location.hash.substring(1)
+        });
+
+      });
+      console.log("nav body",this.state.location);
 
         return (
           <div className="container header">

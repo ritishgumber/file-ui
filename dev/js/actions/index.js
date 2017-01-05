@@ -5,3 +5,12 @@ export const addFolder = (data) => {
         payload: data
     }
 };
+export const getFolderFiles=(data) =>{
+  console.log(data);
+  return{
+    type:'GET_FOLDER_FILES',
+    payload:data
+  }
+
+
+}
