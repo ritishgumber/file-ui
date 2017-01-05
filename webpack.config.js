@@ -7,7 +7,6 @@ module.exports = {
         contentBase: './src',
         port: 3000
     },
-    devtool: 'cheap-module-eval-source-map',
     entry: './dev/js/index.js',
     module: {
         loaders: [
@@ -19,6 +18,15 @@ module.exports = {
             {
                 test: /\.scss/,
                 loader: 'style-loader!css-loader!sass-loader'
+            },
+            {
+              test: /\.jsx?$/,
+              exclude: /(node_modules|bower_components)/,
+              loader: 'babel-loader',
+              query: {
+                presets: ['react', 'es2015', 'stage-0'],
+                plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
+              }
             }
         ]
     },

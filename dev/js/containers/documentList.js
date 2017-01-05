@@ -64,7 +64,7 @@ sortByKey(array,key,isAsc){
                 <img src={doc.img} width="30"/>
                 {
                   doc.type=='file' ?
-                   (<span onClick={this.openFile.bind(this,doc)}>{doc.title}</span>) :
+                   (<Link onClick={this.openFile.bind(this,doc)}>{doc.title}</Link>) :
                    (<Link to={'home/'+doc.title} >  {doc.title}</Link>)
                  }
               </td>
