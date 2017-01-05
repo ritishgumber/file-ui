@@ -4,7 +4,7 @@ import {Link ,browserHistory} from "react-router";
 import {addFolder} from '../actions/index'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Dropzone from 'react-dropzone';
+import DropZone from './dropzone';
 
 
 class NavBar extends Component {
@@ -94,10 +94,8 @@ class NavBar extends Component {
           <Modal.Header >
             <Modal.Title>Upload File</Modal.Title>
           </Modal.Header>
-          <Modal.Body className="dropBody">
-            <Dropzone onDrop={this.onDrop.bind(this)}>
-                  <div>Try dropping some files here, or click to select files to upload.</div>
-            </Dropzone>
+          <Modal.Body >
+            <DropZone location={this.state.location} close={this.close.bind(this)} />
 
           </Modal.Body>
           <Modal.Footer>

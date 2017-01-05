@@ -13,7 +13,6 @@ import allReducers from './reducers';
 import App from './components/App';
 import MainBody from './containers/mainbody';
 import DocumentList from './containers/documentList';
-import Test from './containers/test';
 
 
 const logger = createLogger();
@@ -27,8 +26,9 @@ ReactDOM.render(
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={MainBody}></IndexRoute>
+          <Route path="/deleted" name="file" delete="true" component={MainBody}></Route>
           <Route path="/*" name="file" component={MainBody}></Route>
-          
+
         </Route>
       </Router>
    </Provider>,

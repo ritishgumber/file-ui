@@ -33,8 +33,13 @@ padding:20px
     position:fixed;
 }
 .dropBody{
-  border:2px dotted black;
+  border:2px solid #59cbff;
   border-radius: 10px;
+  margin: 10px;
+}
+.dropBody2{
+  background-color: #cdebff;
+  border-radius: 50px;
   margin: 10px;
 }
 .inlineRight{

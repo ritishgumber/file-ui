@@ -20,10 +20,7 @@ export default class SideBar extends Component {
                 <li>
                   <Glyphicon glyph="picture"/><a href="#/"> Photos</a>
                 </li>
-                <hr/>
-                <li>
-                  <Glyphicon glyph="trash"/><a href="#/">Deleted Files</a>
-                </li>
+                
 
               </ul></div>
           </div>

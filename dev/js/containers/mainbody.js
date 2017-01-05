@@ -10,7 +10,7 @@ class MainBody extends Component {
   constructor(props)
   {
     super(props);
-    console.log(this.props);
+    console.log("mainbody",this.props.routes[1].delete);
     this.state={
       location:this.props.location.pathname
     };
@@ -31,13 +31,15 @@ class MainBody extends Component {
       if(a[0]=="")
       a.splice(0,1);
       console.log(a);
-
-      const breadcrumb =a.map((b)=><Link to={'/'+b}>  {b} &gt; </Link> );
+      let link="";
+      const breadcrumb =a.map((b)=>{
+      link=link+"/"+b;
+      return(<Link to={link}>  {b} &gt; </Link> );});
         return (
 		<div>
       <div>{breadcrumb}</div>
       <div id="demo"></div>
-      <DocumentList list={location}/>
+      <DocumentList location={location} delete={this.props.routes[1].delete}/>
     </div>
 
 

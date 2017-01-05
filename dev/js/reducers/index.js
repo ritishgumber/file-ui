@@ -11,6 +11,6 @@ import ActiveDocument from './reducer-active-doc';
 const allReducers = combineReducers({
     documents: DocumentReducer,
     activeDoc:ActiveDocument
-});
+  });
 
 export default allReducers

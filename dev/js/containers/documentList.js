@@ -2,22 +2,24 @@ import React, {Component} from 'react';
 import { Navbar,NavItem,NavDropdown,MenuItem,Nav,Glyphicon,Modal ,Button } from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {addFolder} from '../actions/index'
 import {Link} from "react-router";
+import DropZone from '../containers/dropzone'
 
 
 class DocumentList extends Component {
 constructor(props)
 {
   super(props);
-  console.log("here",this.props.list);
+  console.log("here",this.props.location);
  this.state={docs:this.props.docs,
-   isAsc:true,nameIcon:"sort",list:this.props.list,showModal:false,document:{}};
+   isAsc:true,nameIcon:"sort",location:this.props.location,showModal:false,document:{}};
 }
 
 componentWillReceiveProps(newProp)
-{console.log("here2",newProp.list);
-  if(newProp.list!==this.state.list)
-  this.setState({list:newProp.list});
+{console.log("here2",newProp.location);
+  if(newProp.location!==this.state.location)
+  this.setState({location:newProp.location});
 }
 
 filterDocs(text)
@@ -76,10 +78,16 @@ sortByKey(array,key,isAsc){
  this.setState({
    showModal: false });
  }
-    render() {
-      const {list}=this.state;
-      const a=this.filterDocs(list);
 
+    render() {
+      const {location}=this.state;
+      const filteredDocs=this.filterDocs(location);
+      if(filteredDocs.length==0)
+      {
+        return(<div>
+              <DropZone location={this.state.location}/>
+            </div>);
+      }
         return (<div>
 		      <table >
         <tbody><tr  >
@@ -88,10 +96,10 @@ sortByKey(array,key,isAsc){
           <th  onClick={this.sortDocuments.bind(this,'modified')}>Modified  <Glyphicon glyph={this.state.modifiedIcon}/></th>
           <th>Actions</th>
         </tr>
-        {a.map(
+        {filteredDocs.map(
         		(doc)=>  {
-              const titleA=doc.title.split('/');
-              const title=titleA[titleA.length-1];
+              const titleArr=doc.title.split('/');
+              const title=titleArr[titleArr.length-1];
               return(
               <tr key={doc.id} ref="listRow" className="listStyle"  >
               <td className="dataStyle" >
@@ -103,7 +111,7 @@ sortByKey(array,key,isAsc){
                  }
               </td>
 
-              <td ><a href="#">{doc.modified}</a></td>
+              <td ><a href="#">{new Date(parseInt(doc.modified)).toLocaleString()}</a></td>
               <td >
                 <Glyphicon glyph="remove"/>
                 <Glyphicon glyph="pencil"/>
