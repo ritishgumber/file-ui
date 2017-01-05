@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Navbar,NavItem,NavDropdown,Button,Nav,Grid,Row,Col ,Modal } from 'react-bootstrap';
+import { Button,Nav,Grid,Row,Col ,Modal } from 'react-bootstrap';
 import {Link } from "react-router";
 import {addFolder} from '../actions/index'
 import {bindActionCreators} from 'redux';
@@ -48,8 +48,6 @@ class NavBar extends Component {
    }
 
     render() {
-      const inline={display:"inline-block",padding:"5px"}
-      const inlineRight={display:"inline-block",marginLeft:"30%"}
 
         return (
           <div className="container header">
@@ -96,13 +94,13 @@ class NavBar extends Component {
 
           </Modal.Footer>
         </Modal>
-           <h3 style={inline}>CloudBoost File UI {this.props.params} </h3>
-           <div style={inlineRight}>
-           <img style={inline} onClick={this.open.bind(this,'upload')} src="./assets/fileadd.png" width="30px"/>
-           <img  style={inline} onClick={this.open.bind(this,'create')} src="./assets/folderadd.png" width="30px"/>
-           <img  style={inline} src="./assets/delete.png" width="40px"/>
+           <h3 class="inline">CloudBoost File UI {this.props.params} </h3>
+           <div class="inlineRight">
+           <img class="inline" onClick={this.open.bind(this,'upload')} src="./assets/fileadd.png" width="30px"/>
+           <img  class="inline" onClick={this.open.bind(this,'create')} src="./assets/folderadd.png" width="30px"/>
+           <img  class="inline" src="./assets/delete.png" width="40px"/>
 
-           <input type="text" style={inline} placeholder="Search" />
+           <input type="text" class="inline" placeholder="Search" />
           </div>
          </Col>
    		</Row>
