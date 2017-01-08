@@ -3,7 +3,7 @@ export default function(state = null, action) {
   var docs = [
     {
       id: 1,
-      title: "/home/0",
+      title: "/home/01",
       modified: "1483621103481",
       type: 'folder',
       img: "./assets/folder.png"
