@@ -1,12 +1,12 @@
 #
-# CloudBoost Dashbard Dockerfile
+# CloudBoost File-Ui Dockerfile
 #
 
 # Pull base image nodejs image.
 FROM node:boron
 
 #Maintainer.
-MAINTAINER Nawaz Dhandala <nawazdhandala@outlook.com>
+MAINTAINER Ritish Gumber <ritishgumber@gmail.com>
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
@@ -17,7 +17,7 @@ WORKDIR /opt/app
 ADD . /opt/app
 
 # Expose ports.
-#   - 3000: CloudBoost 
+#   - 3000: CloudBoost File-ui
 EXPOSE 3000
 
 #Run the app
