@@ -12,7 +12,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['react-hot'],
+        loaders: ['babel'],
         exclude: /node_modules/
       }, {
         test: /\.scss/,
@@ -31,7 +31,7 @@ module.exports = {
     ]
   },
   output: {
-    path: '/src',
+    path: 'src',
     filename: 'js/bundle.min.js'
   },
   plugins: [new webpack.optimize.OccurrenceOrderPlugin()]

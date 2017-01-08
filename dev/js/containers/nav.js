@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Button,
   Nav,
@@ -7,17 +7,17 @@ import {
   Col,
   Modal
 } from 'react-bootstrap';
-import {Link, browserHistory} from "react-router";
-import {addFolder} from '../actions/index'
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { Link, browserHistory } from "react-router";
+import { addFolder } from '../actions/index'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import DropZone from './dropzone';
 
 class NavBar extends Component {
-  constructor(props)
+  constructor( props )
   {
-    super(props);
-    console.log("nav-constructor", this.props.location.pathname);
+    super( props );
+    console.log( "nav-constructor", this.props.location.pathname );
     this.state = {
       showUploadModal: false,
       showCreateModal: false,
@@ -25,39 +25,39 @@ class NavBar extends Component {
     };
   }
 
-  onDrop(acceptedFiles, rejectedFiles) {
-    console.log('Accepted files: ', acceptedFiles);
-    console.log('Rejected files: ', rejectedFiles);
-    const {location} = this.state;
+  onDrop( acceptedFiles, rejectedFiles ) {
+    console.log( 'Accepted files: ', acceptedFiles );
+    console.log( 'Rejected files: ', rejectedFiles );
+    const { location } = this.state;
 
-    acceptedFiles.forEach((file) => {
-      if (location == "/")
-        this.createFile('/home/' + file.name);
+    acceptedFiles.forEach(( file ) => {
+      if ( location == "/" )
+        this.createFile( '/home/' + file.name );
       else
-        this.createFile(location + '/' + file.name);
+        this.createFile( location + '/' + file.name );
 
       }
     );
-    this.close();
+    this.close( );
   }
 
-  close() {
-    this.setState({showUploadModal: false, showCreateModal: false});
+  close( ) {
+    this.setState({ showUploadModal: false, showCreateModal: false });
   }
-  open(type) {
+  open( type ) {
     this.setState({
-      showUploadModal: (type == 'upload'
+      showUploadModal: ( type == 'upload'
         ? true
-        : false),
-      showCreateModal: (type == 'upload'
+        : false ),
+      showCreateModal: ( type == 'upload'
         ? false
-        : true)
+        : true )
     });
   }
-  addFolder(e) {
-    const value = (document.getElementById('folderName').value);
-    const {location} = this.state;
-    if (location == "/")
+  addFolder( e ) {
+    const value = ( document.getElementById( 'folderName' ).value );
+    const { location } = this.state;
+    if ( location == "/" )
       this.props.addFolder({
         name: "/home/" + value,
         img: "./assets/folder.png",
@@ -69,24 +69,24 @@ class NavBar extends Component {
         img: "./assets/folder.png",
         type: 'folder'
       });
-    this.close();
+    this.close( );
   }
-  createFile(name)
+  createFile( name )
   {
-    this.props.addFolder({name: name, img: "./assets/file.png", type: 'file'});
+    this.props.addFolder({ name: name, img: "./assets/file.png", type: 'file' });
 
   }
 
-  render() {
-    const {listen} = browserHistory;
+  render( ) {
+    const { listen } = browserHistory;
     listen(location => {
-      console.log(location);
+      console.log( location );
 
-      console.log("executing");
-      this.setState({location: location.hash.substring(1)});
+      console.log( "executing" );
+      this.setState({location: location.hash.substring( 1 )});
 
     });
-    console.log("nav body", this.state.location);
+    console.log( "nav body", this.state.location );
 
     return (
       <div className="container header">
@@ -107,19 +107,19 @@ class NavBar extends Component {
                 </div>
               </Col>
               <Col md={10}>
-                <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
+                <Modal show={this.state.showUploadModal} onHide={this.close.bind( this )}>
                   <Modal.Header >
                     <Modal.Title>Upload File</Modal.Title>
                   </Modal.Header>
                   <Modal.Body >
-                    <DropZone location={this.state.location} close={this.close.bind(this)}/>
+                    <DropZone location={this.state.location} close={this.close.bind( this )}/>
 
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button onClick={this.close.bind(this)}>Close</Button>
+                    <Button onClick={this.close.bind( this )}>Close</Button>
                   </Modal.Footer>
                 </Modal>
-                <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
+                <Modal show={this.state.showCreateModal} onHide={this.close.bind( this )}>
                   <Modal.Header >
                     <Modal.Title>Enter Folder name</Modal.Title>
                   </Modal.Header>
@@ -127,16 +127,16 @@ class NavBar extends Component {
                     <input className="form-control" id="folderName" placeholder="Enter Folder name"/>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button onClick={this.close.bind(this)}>Close</Button>
-                    <Button className="btn-primary" onClick={this.addFolder.bind(this)}>Create</Button>
+                    <Button onClick={this.close.bind( this )}>Close</Button>
+                    <Button className="btn-primary" onClick={this.addFolder.bind( this )}>Create</Button>
 
                   </Modal.Footer>
                 </Modal>
                 <h3 class="inline">CloudBoost File UI {this.props.params}
                 </h3>
                 <div class="inlineRight">
-                  <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="30px"/>
-                  <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="30px"/>
+                  <img class="inline" onClick={this.open.bind( this, 'upload' )} src="./assets/fileadd.png" width="30px"/>
+                  <img class="inline" onClick={this.open.bind( this, 'create' )} src="./assets/folderadd.png" width="30px"/>
                   <img class="inline" src="./assets/delete.png" width="40px"/>
 
                   <input type="text" class="inline" placeholder="Search"/>
@@ -151,12 +151,12 @@ class NavBar extends Component {
   }
 
 }
-function mapStateToProps(state) {
-  return {document: state.activeDoc};
+function mapStateToProps( state ) {
+  return { document: state.activeDoc };
 }
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({
+function matchDispatchToProps( dispatch ) {
+  return bindActionCreators( {
     addFolder: addFolder
-  }, dispatch);
+  }, dispatch );
 }
-export default connect(mapStateToProps, matchDispatchToProps)(NavBar);
+export default connect( mapStateToProps, matchDispatchToProps )( NavBar );
