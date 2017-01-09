@@ -135,7 +135,7 @@ class DocumentList extends Component {
                                     <td className="dataStyle">
                                         <img src={doc.img} width="30"/> {doc.type == 'file'
                                             ? (
-                                                <Link onClick={this.openFile.bind(this, doc)}>{title}</Link>
+                                                <a href={doc.url} onClick={this.openFile.bind(this, doc)}>{title}</a>
                                             )
                                             : (
                                                 <Link to={doc.title}>

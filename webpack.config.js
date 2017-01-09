@@ -7,9 +7,7 @@ module.exports = {
         contentBase: './src',
         port: 8888
     },
-    entry: [
-        './dev/js/index.js', 'webpack-hot-middleware/client', 'webpack/hot/dev-server'
-    ],
+    entry: ['./dev/js/index.js'],
     module: {
         loaders: [
             {
@@ -34,9 +32,9 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, '/'),
-        filename: 'bundle.min.js',
-        publicPath: '/src/js'
+        filename: 'js/bundle.min.js',
+        publicPath: '/src'
 
     },
-    plugins: [new webpack.optimize.OccurrenceOrderPlugin(), new webpack.HotModuleReplacementPlugin(), new webpack.NoErrorsPlugin()]
+    plugins: [new webpack.optimize.OccurrenceOrderPlugin()]
 };

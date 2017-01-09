@@ -1,3 +1,5 @@
-import * as CB from './api/files';
+/*const api = require('../api/files');
+module.exports = function(app) {
+    app.get("/test", api.addFile);
 
-app.get("/test", CB.addFle);
+}*/
