@@ -1,9 +1,33 @@
 var config = require("./webpack.config.js");
 var webpack = require('webpack');
 var webpackDevServer = require('webpack-dev-server');
+var http = require('http');
+var path = require('path');
 var compiler = webpack(config);
+var Express = require('express');
+var app = Express();
 var server = new webpackDevServer(compiler, {
-  hot: true,
-  contentBase: "./src"
+    hot: true,
+    contentBase: "./src"
 });
-server.listen(3000);
+//app.use('/', Express.static(__dirname));
+app.use('/', Express.static(path.join(__dirname, '/src')));
+app.set('views', __dirname + '/src');
+app.engine('html', require('ejs').renderFile);
+app.use(require("webpack-dev-middleware")(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+}));
+app.use(require("webpack-hot-middleware")(compiler, {log: console.log}));
+
+app.get('/', function(req, res) {
+    res.render('./index.html');
+});
+app.get('/test', function(req, res) {
+    res.send('hahah testing');
+
+});
+var server = http.createServer(app);
+server.listen(process.env.PORT || 8888, function() {
+    console.log("Listening on %j", server.address());
+});
