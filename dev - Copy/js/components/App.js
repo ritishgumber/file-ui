@@ -3,34 +3,37 @@ import NavBar from '../containers/nav';
 import SideBar from '../containers/sidebar';
 import MainBody from '../containers/mainbody';
 
-import {Row,Grid,Col} from 'react-bootstrap';
+import {Row, Grid, Col} from 'react-bootstrap';
 
-require('../../scss/style.scss');
-const d={
-  position:"fixed"
+const d = {
+    position: "fixed"
 };
-export default class App extends React.Component{
-constructor(props)
-{
-  super(props);
-  //console.log(this.props.location);
-}
+export default class App extends React.Component {
+    constructor(props)
+    {
+        super(props);
+        //console.log(this.props.location);
+        CB.CloudApp.init('http://localhost:4730', 'wfjdlqitrnig', '19e6ae3a-3a8b-42ed-8562-57731d2cefa5');
 
-render(){
+    }
 
-  return(    <div className="bodyStyle" >
-        <NavBar location={this.props.location}/>
-    	   <div className="container">
-          <div className="row">
-             <div  className="col-sm-2 col-xs-2 col-md-2">
-             <SideBar  />
+    render() {
+
+        return (
+            <div className="bodyStyle">
+                <NavBar location={this.props.location}/>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-2 col-xs-2 col-md-2">
+                            <SideBar/>
+                        </div>
+                        <div className="col-sm-10 col-xs-10 col-md-10">
+                            {this.props.children}
+                        </div>
+
+                    </div>
+                </div>
             </div>
-             <div className="col-sm-10 col-xs-10 col-md-10">
-                {this.props.children}
-             </div>
-
-           </div>
-         </div>
-      </div>);
+        );
     }
 }

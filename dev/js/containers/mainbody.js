@@ -10,6 +10,8 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
+import {deleteFile, fetchAllFiles, addItem} from '../actions/index';
+
 import {browserHistory, Link} from "react-router";
 
 class MainBody extends Component {
@@ -36,10 +38,10 @@ class MainBody extends Component {
             a.splice(0, 1);
         console.log(a);
         let link = "";
-        const breadcrumb = a.map((b) => {
+        const breadcrumb = a.map((b, i) => {
             link = link + "/" + b;
             return (
-                <Link to={link}>
+                <Link key={i} to={link}>
                     {b}
                     &gt;
                 </Link>
@@ -56,6 +58,11 @@ class MainBody extends Component {
 
 }
 function mapStateToProps(state) {
-    return {documents: state.documents};
+    return {fetching: state.documents.fetching};
 }
-export default connect(mapStateToProps)(MainBody);
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        addItem: addItem
+    }, dispatch);
+}
+export default connect(mapStateToProps, matchDispatchToProps)(MainBody);

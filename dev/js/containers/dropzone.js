@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Glyphicon} from 'react-bootstrap';
 import {browserHistory, Link} from 'react-router';
-import {addFolder} from '../actions/index';
+import {fetchAllFiles} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
@@ -12,7 +12,7 @@ class DropZone extends Component {
     constructor(props)
     {
         super(props);
-        CB.CloudApp.init('xlamefwqcqyd', '0f07bd06-ee6c-4eed-9aa0-fa291747b757');
+
         this.state = {
             location: this.props.location
         };
@@ -20,51 +20,28 @@ class DropZone extends Component {
 
     }
 
-    addFolder(e) {
-        const value = (document.getElementById('folderName').value);
-        const {location} = this.state;
-        if (location == "/")
-            this.props.addFolder({
-                name: "/home/" + value,
-                img: "./assets/folder.png",
-                type: 'folder'
-            });
-        else
-            this.props.addFolder({
-                name: location + "/" + value,
-                img: "./assets/folder.png",
-                type: 'folder'
-            });
-        }
-    createFile(name, url)
-    {
-        this.props.addFolder({name: name, img: "./assets/file.png", type: 'file', url: url});
-
-    }
     onDrop(acceptedFiles, rejectedFiles) {
         console.log('Accepted files: ', acceptedFiles);
         console.log('Rejected files: ', rejectedFiles);
         const {location} = this.state;
-        //test code
 
-        //test code ends
         let length = acceptedFiles.length;
         acceptedFiles.forEach((file) => {
-            var name = file.name;
-            var cloudFile = new CB.CloudFile(file);
-            const thisPreserved = this;
+            let path = "/";
+            if (location == "/") {
+                path = "/home";
+            } else {
+                path = location;
+            }
+            var cloudFile = new CB.CloudFile(file, null, null, path);
+            const thisObj = this;
             cloudFile.save({
                 success: function(cloudFile) {
                     length--;
-                    //success
-                    if (location == "/") {
-                        thisPreserved.createFile('/home/' + file.name, cloudFile.document.url);
+                    thisObj.props.fetchAllFiles({path: thisObj.state.location});
 
-                    } else {
-                        thisPreserved.createFile(location + '/' + file.name, cloudFile.document.url);
-                    }
                     if (length == 0)
-                        thisPreserved.props.close();
+                        thisObj.props.close();
                     }
                 ,
                 error: function(error) {
@@ -73,8 +50,8 @@ class DropZone extends Component {
                 uploadProgress: function(percentComplete) {
                     //upload progress.
                     console.log(percentComplete);
-                    thisPreserved.state.completed = parseInt(percentComplete * 100);
-                    thisPreserved.setState(thisPreserved.state)
+                    thisObj.state.completed = parseInt(percentComplete * 100);
+                    thisObj.setState(thisObj.state)
                 }
             });
 
@@ -87,7 +64,10 @@ class DropZone extends Component {
                 <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2">
                     <img src="./assets/dropfile.png"/>
                 </Dropzone>
-                <ProgressBar now={this.state.completed} label={this.state.completed + '%'}/>
+
+                {this.state.completed
+                    ? <ProgressBar now={this.state.completed} label={this.state.completed + '%'}/>
+                    : null}
             </div>
         );
     }
@@ -99,7 +79,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        addFolder: addFolder
+        fetchAllFiles: fetchAllFiles
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(DropZone);
