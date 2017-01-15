@@ -1,4 +1,6 @@
-export default function(state = null, action) {
+export default function(state = {
+    docs: []
+}, action) {
     console.log(action);
 
     switch (action.type) {
@@ -28,16 +30,23 @@ export default function(state = null, action) {
                 fetching: true
             }
         case 'FETCH_ALL_FILES':
-            return {docs: action.payload, fetching: false, total: state.total};
+            if (action.payload.fetchMoreFiles)
+                return {
+                    docs: [...state.docs.concat(action.payload.data)],
+                    fetching: false,
+                    total: state.total
+                };
+            return {docs: action.payload.data, fetching: false, total: state.total};
             break;
-        case 'TOTAL_RECORDS':
+        case 'TOTAL_FILES':
             return {
                 ...state,
                 total: action.payload
             };
             break;
+
     }
     //  return state;
 
-    return {docs: []};
+    return state;
 }

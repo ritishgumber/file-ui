@@ -10,6 +10,8 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
+import {deleteFile, fetchAllFiles, addItem} from '../actions/index';
+
 import {browserHistory, Link} from "react-router";
 
 class MainBody extends Component {
@@ -56,6 +58,11 @@ class MainBody extends Component {
 
 }
 function mapStateToProps(state) {
-    return {documents: state.documents};
+    return {fetching: state.documents.fetching};
 }
-export default connect(mapStateToProps)(MainBody);
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({
+        addItem: addItem
+    }, dispatch);
+}
+export default connect(mapStateToProps, matchDispatchToProps)(MainBody);

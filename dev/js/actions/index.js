@@ -1,9 +1,5 @@
 import axios from 'axios';
 
-export const addFolder = (data) => {
-    console.log("Adding Folder name: ", data);
-    return {type: 'ADD_FOLDER', payload: data}
-};
 export const deleteFile = (data) => {
     return ((dispatch) => {
 
@@ -27,6 +23,7 @@ export const deleteFile = (data) => {
 export const fetchAllFiles = (data) => {
     console.log(data);
     let response = [];
+    //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
     if (path == "/")
         path = "/home";
@@ -61,23 +58,7 @@ export const fetchAllFiles = (data) => {
                 console.log("files", files);
                 files.forEach((cloudFile) => {
                     let file = cloudFile.document;
-                    let img = "./assets/file.png",
-                        str = file.contentType;
-                    switch (str) {
-                        case(str.match(/(.*)image(.*)/i) || {}).input:
-                            img = "./assets/png.png";
-                            break;
-                        case(str.match(/(.*)folder(.*)/) || {}).input:
-                            img = "./assets/folder.png";
-                            break;
-                        case(str.match(/(.*)pdf(.*)/) || {}).input:
-                            img = "./assets/pdf.png";
-                            break;
-                        case(str.match(/(.*)audio(.*)/) || {}).input:
-                            img = "./assets/audio.png";
-                            break;
 
-                    }
                     response.push({
                         id: file._id,
                         url: file.url,
@@ -88,7 +69,7 @@ export const fetchAllFiles = (data) => {
                         type: file.contentType == 'folder'
                             ? 'folder'
                             : 'file',
-                        img: img
+                        img: imagePath(file.contentType)
                     })
                 });
                 dispatch({
@@ -105,4 +86,50 @@ export const fetchAllFiles = (data) => {
 
     })
 
+}
+
+export const addFile = (payload) => {
+    let {file, data, type, path} = payload;
+    if (path == "/")
+        path = "/home"
+    return ((dispatch) => {
+        let cloudFile = new CB.CloudFile(file, data, type, path);
+        cloudFile.save({
+            success: function(cloudFile) {
+                dispatch({type: "ADD_FILE_SUCCESS"})
+            },
+            error: function(error) {},
+            uploadProgress: function(percentComplete) {
+                dispatch({
+                    type: 'UPLOAD_PROGRESS',
+                    payload: percentComplete * 100
+                });
+            }
+        });
+
+    })
+}
+
+/*
+desc : return path of image depending on file type;
+*/
+
+function imagePath(type) {
+    let img = "./assets/file.png";
+    switch (type) {
+        case(type.match(/(.*)image(.*)/i) || {}).input:
+            img = "./assets/png.png";
+            break;
+        case(type.match(/(.*)folder(.*)/) || {}).input:
+            img = "./assets/folder.png";
+            break;
+        case(type.match(/(.*)pdf(.*)/) || {}).input:
+            img = "./assets/pdf.png";
+            break;
+        case(type.match(/(.*)audio(.*)/) || {}).input:
+            img = "./assets/audio.png";
+            break;
+
+    }
+    return img;
 }

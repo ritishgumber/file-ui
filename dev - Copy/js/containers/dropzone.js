@@ -33,7 +33,7 @@ class DropZone extends Component {
             } else {
                 path = location;
             }
-            var cloudFile = new CB.CloudFile(file, path);
+            var cloudFile = new CB.CloudFile(file, null, null, path);
             const thisObj = this;
             cloudFile.save({
                 success: function(cloudFile) {
@@ -64,7 +64,10 @@ class DropZone extends Component {
                 <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2">
                     <img src="./assets/dropfile.png"/>
                 </Dropzone>
-                <ProgressBar now={this.state.completed} label={this.state.completed + '%'}/>
+
+                {this.state.completed
+                    ? <ProgressBar now={this.state.completed} label={this.state.completed + '%'}/>
+                    : null}
             </div>
         );
     }

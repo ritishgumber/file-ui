@@ -46,7 +46,7 @@ class NavBar extends Component {
         } else {
             location = location;
         }
-        var cloudFile = new CB.CloudFile(value, location, 'folder', 'folder');
+        var cloudFile = new CB.CloudFile(value, 'folder', 'folder', location);
         let thisObj = this;
         cloudFile.save({
             success: function(cloudFile) {
@@ -57,6 +57,10 @@ class NavBar extends Component {
         });
 
         this.close();
+    }
+    handleChange(e) {
+        console.log("value:", e.target.value);
+        this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
 
     render() {
@@ -122,7 +126,7 @@ class NavBar extends Component {
                                     <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="30px"/>
                                     <img class="inline" src="./assets/delete.png" width="40px"/>
 
-                                    <input type="text" class="inline" placeholder="Search"/>
+                                    <input type="text" class="inline" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                                 </div>
                             </Col>
                         </Row>

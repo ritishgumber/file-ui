@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Glyphicon} from 'react-bootstrap';
 import {browserHistory, Link} from 'react-router';
-import {fetchAllFiles} from '../actions/index';
+import {fetchAllFiles, addFile} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
@@ -27,33 +27,33 @@ class DropZone extends Component {
 
         let length = acceptedFiles.length;
         acceptedFiles.forEach((file) => {
-            let path = "/";
-            if (location == "/") {
-                path = "/home";
-            } else {
-                path = location;
-            }
-            var cloudFile = new CB.CloudFile(file, null, null, path);
-            const thisObj = this;
-            cloudFile.save({
-                success: function(cloudFile) {
-                    length--;
-                    thisObj.props.fetchAllFiles({path: thisObj.state.location});
 
-                    if (length == 0)
-                        thisObj.props.close();
-                    }
-                ,
-                error: function(error) {
-                    //error
-                },
-                uploadProgress: function(percentComplete) {
-                    //upload progress.
-                    console.log(percentComplete);
-                    thisObj.state.completed = parseInt(percentComplete * 100);
-                    thisObj.setState(thisObj.state)
-                }
-            });
+            this.props.addFile({path: location, file: file, data: null, type: null});
+
+            this.props.fetchAllFiles({path: this.state.location});
+            this.props.close();
+
+            // var cloudFile = new CB.CloudFile(file, null, null, path);
+            // const thisObj = this;
+            // cloudFile.save({
+            //     success: function(cloudFile) {
+            //         length--;
+            //         thisObj.props.fetchAllFiles({path: thisObj.state.location});
+            //
+            //         if (length == 0)
+            //             thisObj.props.close();
+            //         }
+            //     ,
+            //     error: function(error) {
+            //         //error
+            //     },
+            //     uploadProgress: function(percentComplete) {
+            //         //upload progress.
+            //         console.log(percentComplete);
+            //         thisObj.state.completed = parseInt(percentComplete * 100);
+            //         thisObj.setState(thisObj.state)
+            //     }
+            // });
 
         });
     }
@@ -65,8 +65,8 @@ class DropZone extends Component {
                     <img src="./assets/dropfile.png"/>
                 </Dropzone>
 
-                {this.state.completed
-                    ? <ProgressBar now={this.state.completed} label={this.state.completed + '%'}/>
+                {this.props.percentComplete
+                    ? <ProgressBar now={this.props.percentComplete} label={this.props.percentComplete + '%'}/>
                     : null}
             </div>
         );
@@ -75,11 +75,12 @@ class DropZone extends Component {
 }
 
 function mapStateToProps(state) {
-    return {documents: state.documents};
+    return {percentComplete: state.documents.percentComplete};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchAllFiles: fetchAllFiles
+        fetchAllFiles: fetchAllFiles,
+        addFile: addFile
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(DropZone);

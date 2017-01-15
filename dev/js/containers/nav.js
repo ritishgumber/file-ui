@@ -8,7 +8,7 @@ import {
     Modal
 } from 'react-bootstrap';
 import {Link, browserHistory} from "react-router";
-import {fetchAllFiles} from '../actions/index'
+import {fetchAllFiles, addFile} from '../actions/index'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DropZone from './dropzone';
@@ -40,21 +40,8 @@ class NavBar extends Component {
     }
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
-        let {location} = this.state;
-        if (location == "/") {
-            location = "/home";
-        } else {
-            location = location;
-        }
-        var cloudFile = new CB.CloudFile(value, 'folder', 'folder', location);
-        let thisObj = this;
-        cloudFile.save({
-            success: function(cloudFile) {
-                thisObj.props.fetchAllFiles({path: location});
-            },
-            error: function(error) {},
-            uploadProgress: function(percentComplete) {}
-        });
+        this.props.addFile({path: this.state.location, file: value, data: 'folder', type: 'folder'});
+        this.props.fetchAllFiles({path: this.state.location})
 
         this.close();
     }
@@ -89,7 +76,7 @@ class NavBar extends Component {
                         <Row>
                             <Col md={2}>
                                 <div id="logo">
-                                    <Link to="settings"><img src="./assets/cblogo.png" width="50"/></Link>
+                                    <Link href="#"><img src="./assets/cblogo.png" width="50"/></Link>
 
                                 </div>
                             </Col>
@@ -143,7 +130,8 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchAllFiles: fetchAllFiles
+        fetchAllFiles: fetchAllFiles,
+        addFile: addFile
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(NavBar);

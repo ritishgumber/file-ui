@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Glyphicon, Modal, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {deleteFile, fetchAllFiles} from '../actions/index';
+import {deleteFile, fetchAllFiles, addItem} from '../actions/index';
 import {Link} from "react-router";
 import DropZone from '../containers/dropzone'
 
@@ -30,11 +30,36 @@ class DocumentList extends Component {
         console.log("here2", newProp.location);
         if (newProp.location !== this.state.location) {
             this.setState({location: newProp.location});
-            this.props.fetchAllFiles({path: newProp.location, skip: this.state.selectedPage});;
+            this.props.fetchAllFiles({path: newProp.location, skip: 1});
+            this.setState({selectedPage: 1})
 
         }
     }
-    componentWillMount() {}
+    handleScroll(scroll) {
+        this.setState({scroll: scroll});
+        //console.log(window.innerHeight, scroll);
+        let {scrollTop, scrollHeight} = scroll.target.body;
+        if (scrollTop > (scrollHeight - window.innerHeight) * 0.75) {
+            console.log('now');
+            if (this.state.selectedPage < this.props.total) {
+                this.props.fetchAllFiles({
+                    path: this.state.location,
+                    skip: this.state.selectedPage + 1,
+                    fetchMoreFiles: true
+                });
+                this.setState({
+                    selectedPage: this.state.selectedPage + 1
+                })
+            }
+        }
+    }
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll.bind(this));
+    }
 
     sortByKey(array, key, isAsc) {
         array.sort(function(a, b) {
@@ -80,75 +105,6 @@ class DocumentList extends Component {
 
     close() {
         this.setState({showModal: false});
-    }
-    fetchPage(pageNo) {
-        this.state.selectedPage = pageNo;
-        this.setState(this.state);
-        this.props.fetchAllFiles({path: this.state.location, skip: pageNo});
-    }
-    changePage(type)
-    {
-        let {selectedPageSet, selectedPage} = this.state;
-        let {total} = this.props;
-        if (type == 'next') {
-            if (selectedPageSet < Math.floor(total / 5)) {
-                selectedPageSet++;
-            } else {
-                selectedPageSet = Math.floor(total / 5);
-            }
-        } else {
-            if (selectedPageSet > 0) {
-                selectedPageSet--;
-            } else {
-                selectedPageSet = 0;
-            }
-
-        }
-        console.log("page", selectedPage);
-        selectedPage = selectedPageSet * 5 + 1;
-        this.setState({selectedPageSet: selectedPageSet, selectedPage: selectedPage});
-        this.props.fetchAllFiles({path: this.state.location, skip: selectedPage});
-
-    }
-    renderPagination() {
-        let {total} = this.props;
-        const {selectedPage, selectedPageSet} = this.state;
-        let list = [];
-        if (selectedPageSet > 0)
-            list.push(
-                <li onClick={this.changePage.bind(this, 'prev')} key={0}>
-                    <a>
-                        <img width="20px" src="./assets/backicon.png"/>
-                    </a>
-                </li>
-            );
-
-        for (let i = 1 + selectedPageSet * 5; i <= 5 + selectedPageSet * 5; i++) {
-            if (i > total)
-                break;
-
-            list.push(
-                <li key={i} onClick={this.fetchPage.bind(this, i)} class={i == selectedPage
-                    ? 'active'
-                    : ''}>
-
-                    <a >
-                        {i}
-                    </a>
-                </li>
-            );
-        }
-
-        if (selectedPageSet < Math.floor((total - 1) / 5))
-            list.push(
-                <li onClick={this.changePage.bind(this, 'next')} key={100}>
-                    <a>
-                        <img width="20px" src="./assets/righticon.png"/>
-                    </a>
-                </li>
-            );
-
-        return list;
     }
     render() {
         const {location} = this.state;
@@ -198,7 +154,9 @@ class DocumentList extends Component {
                                     <td >
                                         <Glyphicon glyph="remove" onClick={this.props.deleteFile.bind(this, doc.id)}/>
                                         <Glyphicon glyph="pencil"/>
-                                        <Glyphicon glyph="download-alt"/>
+                                        <a target="_blank" key={i} href={doc.url}>
+                                            <Glyphicon glyph="download-alt"/>
+                                        </a>
                                     </td>
                                 </tr>
                             )
@@ -206,7 +164,7 @@ class DocumentList extends Component {
                 </table>
                 {this.props.fetching
                     ? <img src="./assets/smallrectLoader.gif" class="" width="50px"/>
-                    : <ul class="pagination">{this.renderPagination()}</ul>}
+                    : null}
             </div>
 
         );
@@ -221,7 +179,8 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         deleteFile: deleteFile,
-        fetchAllFiles: fetchAllFiles
+        fetchAllFiles: fetchAllFiles,
+        addItem: addItem
     }, dispatch);
 }
 
