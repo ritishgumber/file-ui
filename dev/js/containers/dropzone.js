@@ -16,9 +16,12 @@ class DropZone extends Component {
         this.state = {
             location: this.props.location
         };
-        //    this.test();
 
     }
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.fileAddSuccess)
+            this.props.fetchAllFiles({path: this.state.location});
+        }
 
     onDrop(acceptedFiles, rejectedFiles) {
         console.log('Accepted files: ', acceptedFiles);
@@ -30,30 +33,8 @@ class DropZone extends Component {
 
             this.props.addFile({path: location, file: file, data: null, type: null});
 
-            this.props.fetchAllFiles({path: this.state.location});
+            //  this.props.fetchAllFiles({path: this.state.location});
             this.props.close();
-
-            // var cloudFile = new CB.CloudFile(file, null, null, path);
-            // const thisObj = this;
-            // cloudFile.save({
-            //     success: function(cloudFile) {
-            //         length--;
-            //         thisObj.props.fetchAllFiles({path: thisObj.state.location});
-            //
-            //         if (length == 0)
-            //             thisObj.props.close();
-            //         }
-            //     ,
-            //     error: function(error) {
-            //         //error
-            //     },
-            //     uploadProgress: function(percentComplete) {
-            //         //upload progress.
-            //         console.log(percentComplete);
-            //         thisObj.state.completed = parseInt(percentComplete * 100);
-            //         thisObj.setState(thisObj.state)
-            //     }
-            // });
 
         });
     }
@@ -75,7 +56,7 @@ class DropZone extends Component {
 }
 
 function mapStateToProps(state) {
-    return {percentComplete: state.documents.percentComplete};
+    return {percentComplete: state.documents.percentComplete, fileAddSuccess: state.documents.fileAddSuccess};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
