@@ -17,8 +17,8 @@ WORKDIR /opt/app
 ADD . /opt/app
 
 # Expose ports.
-#   - 8888: CloudBoost File-ui
-EXPOSE 8888
+#   - 3012: CloudBoost File-ui
+EXPOSE 3012
 
 #Run the app
 CMD [ "node", "server.js" ]
