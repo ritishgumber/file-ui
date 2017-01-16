@@ -15601,6 +15601,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	var _CB = __webpack_require__(1);
 
 	var _CB2 = _interopRequireDefault(_CB);
@@ -15705,7 +15707,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.document.defaultValue;
 	    },
 	    set: function set(defaultValue) {
-	        this.document.defaultValue = defaultValue;
+
+	        if (typeof defaultValue === 'string') {
+	            supportedStringDataTypes = ['Text', 'EncryptedText', 'DateTime'];
+	            if (supportedStringDataTypes.indexOf(this.document.dataType) > -1) {
+	                this.document.defaultValue = defaultValue;
+	            } else if (this.document.dataType === 'URL') {
+	                if (defaultValue.match(/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i)[0] === defaultValue) {
+	                    this.document.defaultValue = defaultValue;
+	                } else {
+	                    throw new TypeError("Invalid URL");
+	                }
+	            } else if (this.document.dataType === 'Email') {
+	                if (defaultValue.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i)[0] === defaultValue) {
+	                    this.document.defaultValue = defaultValue;
+	                } else {
+	                    throw new TypeError("Invalid Email");
+	                }
+	            } else {
+	                throw new TypeError("Unsupported DataType");
+	            }
+	        } else if (['number', 'boolean', 'object', 'undefined'].indexOf(typeof defaultValue === 'undefined' ? 'undefined' : _typeof(defaultValue)) > -1) {
+	            if (this.document.dataType.toUpperCase() === (typeof defaultValue === 'undefined' ? 'undefined' : _typeof(defaultValue)).toUpperCase()) {
+	                this.document.defaultValue = defaultValue;
+	            } else {
+	                throw new TypeError("Unsupported DataType");
+	            }
+	        } else if (defaultValue === null) {
+	            this.document.defaultValue = defaultValue;
+	        } else {
+	            throw new TypeError("Unsupported DataType");
+	        }
 	    }
 	});
 
@@ -17025,6 +17057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.document.name = name;
 	    }
 	});
+
 	Object.defineProperty(_CB2.default.CloudFile.prototype, 'path', {
 	    get: function get() {
 	        return this.document.path;
@@ -17033,23 +17066,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.document.path = path;
 	    }
 	});
+
 	Object.defineProperty(_CB2.default.CloudFile.prototype, 'createdAt', {
 	    get: function get() {
 	        return this.document.createdAt;
-	    },
-	    set: function set(createdAt) {
-	        this.document.createdAt = createdAt;
-	    }
-	});
-	Object.defineProperty(_CB2.default.CloudFile.prototype, 'updatedAt', {
-	    get: function get() {
-	        return this.document.updatedAt;
-	    },
-	    set: function set(createdAt) {
-	        this.document.updatedAt = updatedAt;
 	    }
 	});
 
+	Object.defineProperty(_CB2.default.CloudFile.prototype, 'updatedAt', {
+	    get: function get() {
+	        return this.document.updatedAt;
+	    }
+	});
 	/**
 	 * Uploads File
 	 *
@@ -17201,38 +17229,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return def.promise;
 	    }
 	};
-
-	_CB2.default.CloudFile.getDirectory = function (path, callback) {
-	    var def;
-
-	    if (!callback) {
-	        def = new _CB2.default.Promise();
-	    }
-	    var thisObj = this;
-
-	    var params = JSON.stringify({ key: _CB2.default.appKey, method: "GET" });
-	    var url = _CB2.default.apiUrl + '/file/' + _CB2.default.appId;
-
-	    _CB2.default._request('POST', url, params).then(function (response) {
-	        if (callback) {
-	            callback.success(response);
-	        } else {
-	            def.resolve(response);
-	        }
-	    }, function (err) {
-	        if (callback) {
-	            callback.error(err);
-	        } else {
-	            def.reject(err);
-	        }
-	    });
-
-	    if (!callback) {
-	        return def.promise;
-	    }
-	};
-
-	//test code end
 
 	exports.default = _CB2.default.CloudFile;
 
@@ -19720,7 +19716,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.select = {};
 	        this.sort = {};
 	        this.skip = 0;
-	        this.limit = 10; //default limit
+	        this.limit = 10; //default limit is 10
 	    }
 
 	    _createClass(CloudQuery, [{
@@ -19770,18 +19766,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (columnName === 'id') columnName = '_' + columnName;
 
+	            console.log(data);
+	            console.log(columnName);
 	            if (data !== null) {
 	                if (data.constructor === _CB2.default.CloudObject) {
 	                    columnName = columnName + '._id';
 	                    data = data.get('id');
 	                }
-
-	                this.query[columnName] = data;
-	            } else {
-
-	                //This is for people who code : obj.equalTo('column', null);
-	                this.doesNotExists(columnName);
 	            }
+
+	            this.query[columnName] = data;
 
 	            return this;
 	        }
@@ -19836,19 +19830,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (columnName === 'id') columnName = '_' + columnName;
 
 	            if (data !== null) {
-
 	                if (data.constructor === _CB2.default.CloudObject) {
 	                    columnName = columnName + '._id';
 	                    data = data.get('id');
 	                }
-
-	                this.query[columnName] = {
-	                    $ne: data
-	                };
-	            } else {
-	                //This is for people who code : obj.notEqualTo('column', null);
-	                this.exists(columnName);
 	            }
+
+	            this.query[columnName] = {
+	                $ne: data
+	            };
 
 	            return this;
 	        }
@@ -20124,6 +20114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else {
 	                //if the argument is a string then push if it is not present already
 
+
 	                if (data instanceof _CB2.default.CloudObject) {
 
 	                    if (!data.id) {
@@ -20276,6 +20267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (Object.prototype.toString.call(data) === '[object Array]') {
 	                //if array is passed, then replace the whole
 
+
 	                for (var i = 0; i < data.length; i++) {
 	                    if (data[i] instanceof _CB2.default.CloudObject) {
 
@@ -20412,10 +20404,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (!this.query[columnName]) {
 	                this.query[columnName] = {};
 	                this.query[columnName]['$near'] = {
-	                    '$geometry': {
-	                        coordinates: geoPoint['document'].coordinates,
-	                        type: 'Point'
-	                    },
+	                    '$geometry': { coordinates: geoPoint['document'].coordinates, type: 'Point' },
 	                    '$maxDistance': maxDistance,
 	                    '$minDistance': minDistance
 	                };
@@ -20475,7 +20464,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                def = new _CB2.default.Promise();
 	            }
 	            var thisObj = this;
-	            var params = JSON.stringify({ query: thisObj.query, limit: thisObj.limit, skip: thisObj.skip, key: _CB2.default.appKey });
+	            var params = JSON.stringify({
+	                query: thisObj.query,
+	                limit: thisObj.limit,
+	                skip: thisObj.skip,
+	                key: _CB2.default.appKey
+	            });
 	            var url = _CB2.default.apiUrl + "/data/" + _CB2.default.appId + "/" + thisObj.tableName + '/count';
 
 	            _CB2.default._request('POST', url, params).then(function (response) {
@@ -20683,7 +20677,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (!callback) {
 	                def = new _CB2.default.Promise();
 	            }
-	            var params = JSON.stringify({ query: this.query, select: this.select, sort: this.sort, skip: this.skip, key: _CB2.default.appKey });
+	            var params = JSON.stringify({
+	                query: this.query,
+	                select: this.select,
+	                sort: this.sort,
+	                skip: this.skip,
+	                key: _CB2.default.appKey
+	            });
 	            var url = _CB2.default.apiUrl + "/data/" + _CB2.default.appId + "/" + this.tableName + '/findOne';
 
 	            _CB2.default._request('POST', url, params).then(function (response) {
@@ -20759,7 +20759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return obj;
 	};
 	CloudQuery._validateQuery = function (cloudObject, query) {
-	    //validate query.
+	    //validate query. 
 	    for (var key in query) {
 
 	        if (query[key]) {
@@ -20804,21 +20804,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            }
 	                        }
 
-	                        //greater than and equalTo.
+	                        //greater than and equalTo. 
 	                        if (objectKeys === '$gte') {
 	                            if (cloudObject.get(key) < query[key]['$gte']) {
 	                                return false;
 	                            }
 	                        }
 
-	                        //less than and equalTo.
+	                        //less than and equalTo. 
 	                        if (objectKeys === '$lte') {
 	                            if (cloudObject.get(key) > query[key]['$lte']) {
 	                                return false;
 	                            }
 	                        }
 
-	                        //exists
+	                        //exists 
 	                        if (objectKeys === '$exists') {
 	                            if (query[key][objectKeys] && cloudObject.get(key)) {
 	                                //do nothing.
@@ -20827,20 +20827,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            }
 	                        }
 
-	                        //doesNot exists.
+	                        //doesNot exists. 
 	                        if (objectKeys === '$exists') {
 	                            if (!query[key][objectKeys] && cloudObject.get(key)) {
 	                                return false;
 	                            }
 	                        }
 
-	                        //startsWith.
+	                        //startsWith. 
 	                        if (objectKeys === '$regex') {
 
 	                            var reg = new RegExp(query[key][objectKeys]);
 
 	                            if (!query[key]['$options']) {
-	                                if (!reg.test(cloudObject.get(key))) //test actial regex.
+	                                if (!reg.test(cloudObject.get(key))) //test actial regex. 
 	                                    return false;
 	                            } else {
 	                                if (query[key]['$options'] === 'im') {
@@ -20852,7 +20852,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            }
 	                        }
 
-	                        //containedIn.
+	                        //containedIn. 
 	                        if (objectKeys === '$in') {
 
 	                            if (query[key][objectKeys]) {
@@ -20891,7 +20891,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            }
 	                        }
 
-	                        //doesNot containedIn.
+	                        //doesNot containedIn. 
 	                        if (objectKeys === '$nin') {
 	                            if (query[key][objectKeys]) {
 	                                var arr = query[key][objectKeys];
@@ -20929,7 +20929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            }
 	                        }
 
-	                        //containsAll.
+	                        //containsAll. 
 	                        if (objectKeys === '$all') {
 	                            if (query[key][objectKeys]) {
 	                                var arr = query[key][objectKeys];
@@ -20962,7 +20962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	            } else {
-	                //it might be a plain equalTo query.
+	                //it might be a plain equalTo query. 
 	                if (key.indexOf('.') !== -1) {
 	                    // for keys with "key._id" - This is for CloudObjects.
 	                    var temp = key.substring(0, key.indexOf('.'));

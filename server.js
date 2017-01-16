@@ -25,6 +25,6 @@ app.get('/', function(req, res) {
 });
 
 var server = http.createServer(app);
-server.listen(process.env.PORT || 8888, function() {
+server.listen(process.env.PORT || 3012, function() {
     console.log("Listening on %j", server.address());
 });
