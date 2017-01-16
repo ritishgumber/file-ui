@@ -30,10 +30,6 @@ th {
     padding: 20px;
 }
 
-.bodyStyle {
-    height: 100%;
-}
-
 .fixed {
     position: fixed;
 }
@@ -57,5 +53,14 @@ th {
 
 .inline {
     display: inline-block;
-    padding: 5px;
+    padding:5px
+}
+
+.profile-photo
+{
+  border-radius: 50%;
+}
+.fetching-loader
+{
+  margin-left: 30%
 }

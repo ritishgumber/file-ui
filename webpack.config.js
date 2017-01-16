@@ -5,36 +5,36 @@ module.exports = {
     devServer: {
         inline: true,
         contentBase: './src',
-        port: 3000
+        port: 8888
     },
-    entry: './dev/js/index.js',
+    entry: ['./dev/js/index.js'],
     module: {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['babel'],
+                loaders: ['react-hot'],
                 exclude: /node_modules/
-            },
-            {
+            }, {
                 test: /\.scss/,
                 loader: 'style-loader!css-loader!sass-loader'
-            },
-            {
-              test: /\.jsx?$/,
-              exclude: /(node_modules|bower_components)/,
-              loader: 'babel-loader',
-              query: {
-                presets: ['react', 'es2015', 'stage-0'],
-                plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
-              }
+            }, {
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel-loader',
+                query: {
+                    presets: [
+                        'react', 'es2015', 'stage-0'
+                    ],
+                    plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties']
+                }
             }
         ]
     },
     output: {
-        path: 'src',
-        filename: 'js/bundle.min.js'
+        path: path.join(__dirname, '/'),
+        filename: 'js/bundle.min.js',
+        publicPath: '/src'
+
     },
-    plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin()
-    ]
+    plugins: [new webpack.optimize.OccurrenceOrderPlugin()]
 };

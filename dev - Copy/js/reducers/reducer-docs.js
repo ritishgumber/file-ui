@@ -4,10 +4,26 @@ export default function(state = {
     console.log(action);
 
     switch (action.type) {
+        case 'ADD_FOLDER':
+            console.log(state);
+            return {
+                docs: [
+                    ...state.docs, {
+                        id: Date.now(),
+                        url: action.payload.url,
+                        title: action.payload.name,
+                        modified: "" + Date.now(),
+                        type: action.payload.type,
+                        img: action.payload.img
+                    }
+                ]
+            };
+            break;
         case 'DELETE_FILE':
             return {
                 docs: [...state.docs.filter((doc) => doc.id != action.payload)]
             };
+            break;
         case 'FETCHING_ALL_FILES':
             return {
                 ...state,
@@ -21,21 +37,13 @@ export default function(state = {
                     total: state.total
                 };
             return {docs: action.payload.data, fetching: false, total: state.total};
+            break;
         case 'TOTAL_FILES':
             return {
                 ...state,
                 total: action.payload
             };
-        case 'UPLOAD_PROGRESS':
-            return {
-                ...state,
-                percentComplete: action.payload
-            }
-        case 'ADD_FILE_SUCCESS':
-            return {
-                ...state,
-                percentComplete: 0
-            }
+            break;
 
     }
     //  return state;
