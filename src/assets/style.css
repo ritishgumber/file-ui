@@ -27,11 +27,24 @@ th {
 }
 
 .header {
-    padding: 20px;
+    padding: 20px
 }
 
-.fixed {
+.navBarComponent {
+    padding: 20px;
     position: fixed;
+    background-color: white;
+    z-index: 100;
+    width: 100%;
+    border: 2px solid black;
+}
+
+.fixed-navbar {
+    position: fixed;
+    width: 75%;
+    background-color: white;
+    z-index: 100;
+    border-bottom: 1px solid #549afc;
 }
 
 .dropBody {
@@ -48,19 +61,75 @@ th {
 
 .inlineRight {
     display: inline-block;
-    margin-left: 30%;
+    float: right;
+    padding-top: 5px;
+}
+
+.inlineLeft {
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
 }
 
 .inline {
     display: inline-block;
-    padding:5px
+    padding: 5px
 }
 
-.profile-photo
-{
-  border-radius: 50%;
+.profile-photo {
+    border-radius: 50%;
 }
-.fetching-loader
-{
-  margin-left: 30%
+
+.fetching-loader {
+    margin-left: 30%
+}
+
+.sideBarComponent {
+    position: fixed;
+    margin-top: 15%;
+    height: 71%;
+    border: 2px solid red;
+    height
+}
+
+.mainBodyComponent {
+    margin-left: 15%;
+    margin-top: 25%;
+    border: 2px solid yellow;
+}
+
+.tableHeading {
+    display: inline-block;
+    padding: 15px
+}
+
+#logo {
+    padding: 20px;
+}
+
+.breadcrumb-row {
+    margin-bottom: 20px
+}
+
+.header-elements {
+    padding-left: 5px;
+    padding-right: 5px
+}
+
+.header-row {
+    margin-left: 60%;
+    padding: 5px
+}
+
+.search-bar {
+    border-width: 0.5px;
+    border-radius: 4px;
+    background-image: url(https://cfl.dropboxstatic.com/static/images/search/search-icon-dark-vflabFggm.png);
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+.document-list {
+    position: relative;
+    top: 100px;
 }
