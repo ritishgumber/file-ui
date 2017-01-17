@@ -41,10 +41,13 @@ class NavBar extends Component {
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
         this.props.addFile({path: this.state.location, file: value, data: 'folder', type: 'folder'});
-        this.props.fetchAllFiles({path: this.state.location})
 
         this.close();
     }
+    componentWillUpdate(nextProps, nextState) {
+        if (nextProps.fileAddSuccess)
+            this.props.fetchAllFiles({path: this.state.location});
+        }
     handleChange(e) {
         console.log("value:", e.target.value);
         this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
@@ -126,7 +129,7 @@ class NavBar extends Component {
 
 }
 function mapStateToProps(state) {
-    return {document: state.activeDoc};
+    return {fileAddSuccess: state.documents.fileAddSuccess};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({

@@ -34,7 +34,8 @@ export default function(state = {
         case 'ADD_FILE_SUCCESS':
             return {
                 ...state,
-                percentComplete: 0
+                percentComplete: 0,
+                fileAddSuccess: true
             }
 
     }
