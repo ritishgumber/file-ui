@@ -1,17 +1,9 @@
 import React, {Component} from 'react';
-import {
-    Nav,
-    Glyphicon,
-    Grid,
-    Row,
-    Col,
-    Modal,
-    Button
-} from 'react-bootstrap';
+import {Nav, Glyphicon, Modal, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
-import {deleteFile, fetchAllFiles, addFile} from '../actions/index';
+import {deleteFile, fetchAllFiles, addFile, sortDocuments} from '../actions/index';
 import DropZone from './dropzone';
 import {browserHistory, Link} from "react-router";
 
@@ -22,7 +14,8 @@ class MainBody extends Component {
         super(props);
         console.log("mainbody", this.props.routes[1].delete);
         this.state = {
-            location: this.props.location.pathname
+            location: this.props.location.pathname,
+            isAscending: true
         };
 
     }
@@ -53,7 +46,11 @@ class MainBody extends Component {
         console.log("value:", e.target.value);
         this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
-
+    sortDocuments(key) {
+        this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
+        this.state.isAscending = !this.state.isAscending;
+        this.setState(this.state);
+    }
     render() {
         const {listen} = browserHistory;
         listen(location => {
@@ -78,9 +75,9 @@ class MainBody extends Component {
             }
         );
         return (
-            <div class="row">
+            <div class="row-fluid">
                 <div className=" col-md-12 ">
-                    <div class="fixed-navbar">
+                    <div class="fixed-navbar" id="nabar">
                         <div class="header-row ">
                             <a href="#" class="header-elements">
                                 <img src="./assets/upgrade.png" width="15px"/>
@@ -109,9 +106,13 @@ class MainBody extends Component {
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
                         </div>
-                        <div>
-                            <span>2.pdf
-                            </span>
+
+                        <div class="fixed-table-heading ">
+                            <div class="row">
+                                <div class="col-md-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>Name</div>
+                                <div class="col-md-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>Modified</div>
+                                <div class="col-md-2 heading-style">Action</div>
+                            </div>
                         </div>
                         <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
                             <Modal.Header >
@@ -143,6 +144,7 @@ class MainBody extends Component {
                 </div>
                 <div class="col-md-12">
                     <DocumentList location={location}/>
+
                 </div>
             </div>
 
@@ -156,7 +158,8 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         addFile: addFile,
-        fetchAllFiles: fetchAllFiles
+        fetchAllFiles: fetchAllFiles,
+        sortDocuments: sortDocuments
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(MainBody);

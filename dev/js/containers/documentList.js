@@ -61,7 +61,7 @@ class DocumentList extends Component {
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
 
-    sortByKey(array, key, isAsc) {
+    /*  sortByKey(array, key, isAsc) {
         array.sort(function(a, b) {
             var x = a[key];
             var y = b[key];
@@ -101,7 +101,7 @@ class DocumentList extends Component {
                 nameIcon: "",
                 docs: this.sortByKey(this.props.docs, key, isAsc)
             })
-    }
+    }*/
 
     close() {
         this.setState({showModal: false});
@@ -117,55 +117,42 @@ class DocumentList extends Component {
             );
         }
         return (
-            <div class="document-list">
-                <table >
-                    <tbody>
-                        <tr >
-                            <th onClick={this.sortDocuments.bind(this, 'title')}>
-                                Name
-                                <Glyphicon glyph={this.state.nameIcon}/>
-                            </th>
-                            <th onClick={this.sortDocuments.bind(this, 'modified')}>Modified
-                                <Glyphicon glyph={this.state.modifiedIcon}/></th>
-                            <th>Actions</th>
-                        </tr>
-                        {this.props.docs.map((doc, i) => {
-                            const titleArr = doc.title.split('/');
-                            const title = titleArr[titleArr.length - 1];
-                            return (
-                                <tr key={i} ref="listRow" className="listStyle">
-                                    <td className="dataStyle">
-                                        <img src={doc.img} width="30"/> {doc.type == 'file'
-                                            ? (
-                                                <a key={doc.id} href={doc.url} target="_blank">{title}</a>
-                                            )
-                                            : (
-                                                <Link to={(this.state.location == '/'
-                                                    ? '/home'
-                                                    : this.state.location) + '/' + doc.title}>
-                                                    {title}</Link>
-                                            )
-}
-                                    </td>
+            <table class="document-list" id="document-list">
+                <tbody>
 
-                                    <td >
-                                        <a href="#">{doc.modified}</a>
-                                    </td>
-                                    <td >
-                                        <Glyphicon glyph="remove" onClick={this.props.deleteFile.bind(this, doc.id)}/>
-                                        <Glyphicon glyph="pencil"/>
-                                        <a target="_blank" key={i} href={doc.url}>
-                                            <Glyphicon glyph="download-alt"/>
-                                        </a>
-                                    </td>
-                                </tr>
-                            )
-                        })}</tbody>
-                </table>
-                {this.props.fetching
-                    ? <img src="./assets/smallrectLoader.gif" class="" width="50px"/>
-                    : null}
-            </div>
+                    {this.props.docs.map((doc, i) => {
+                        const titleArr = doc.title.split('/');
+                        const title = titleArr[titleArr.length - 1];
+                        return (
+                            <tr key={i} ref="listRow" className="listStyle">
+                                <td className="dataStyle">
+                                    <img src={doc.img} width="30"/> {doc.type == 'file'
+                                        ? (
+                                            <a key={doc.id} href={doc.url} target="_blank">{title}</a>
+                                        )
+                                        : (
+                                            <Link to={(this.state.location == '/'
+                                                ? '/home'
+                                                : this.state.location) + '/' + doc.title}>
+                                                {title}</Link>
+                                        )
+}
+                                </td>
+
+                                <td >
+                                    {doc.modified}
+                                </td>
+                                <td >
+                                    <Glyphicon glyph="remove" onClick={this.props.deleteFile.bind(this, doc.id)}/>
+                                    <Glyphicon glyph="pencil"/>
+                                    <a target="_blank" key={i} href={doc.url}>
+                                        <Glyphicon glyph="download-alt"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        )
+                    })}</tbody>
+            </table>
 
         );
     }

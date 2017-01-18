@@ -43,15 +43,15 @@ export const fetchAllFiles = (data) => {
             success: function(number) {
                 dispatch({
                     type: 'TOTAL_FILES',
-                    payload: Math.ceil(number / 10)
+                    payload: Math.ceil(number / 20)
                 })
             },
             error: function(error) {
                 //error
             }
         });
-        query.setSkip((skip - 1) * 10)
-        query.setLimit(10);
+        query.setSkip((skip - 1) * 20)
+        query.setLimit(20);
         query.orderByDesc('createdAt');
         query.find({
             success: function(files) {
@@ -102,12 +102,15 @@ export const addFile = (payload) => {
             uploadProgress: function(percentComplete) {
                 dispatch({
                     type: 'UPLOAD_PROGRESS',
-                    payload: percentComplete * 100
+                    payload: percentComplete * 200
                 });
             }
         });
 
     })
+}
+export const sortDocuments = (data) => {
+    return ({type: 'SORT_DOCUMENTS', payload: data});
 }
 
 /*
