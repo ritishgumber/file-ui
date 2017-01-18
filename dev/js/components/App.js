@@ -28,7 +28,7 @@ export default class App extends React.Component {
                     <div className="col-sm-2 col-xs-2 col-md-2">
                         <SideBar location={this.props.location}/>
                     </div>
-                    <div className="col-sm-10 col-xs-10 col-md-10">
+                    <div className="col-sm-10 col-xs-10 col-md-10 container-fluid">
                         {this.props.children}
                     </div>
 

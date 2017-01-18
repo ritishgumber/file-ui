@@ -37,6 +37,28 @@ export default function(state = {
                 percentComplete: 0,
                 fileAddSuccess: true
             }
+        case 'SORT_DOCUMENTS':
+            return {
+                ...state,
+                docs: [...state.docs.sort((a, b) => {
+                        var x = a[action.payload.key].toLowerCase();
+                        var y = b[action.payload.key].toLowerCase();
+                        if (action.payload.isAscending) 
+                            return ((x < y)
+                                ? -1
+                                : ((x > y)
+                                    ? 1
+                                    : 0));
+                        else
+                            return ((x < y)
+                                ? 1
+                                : ((x > y)
+                                    ? -1
+                                    : 0));
+
+                        }
+                    )]
+            }
 
     }
     //  return state;
