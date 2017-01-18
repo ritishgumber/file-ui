@@ -142,3 +142,17 @@ th {
     color: #737373;
     font-weight: 600;
 }
+
+.side-menu-items {
+    cursor: pointer;
+    color: #549afc;
+    padding: 5px;
+    font-size: 13px;
+}
+
+.side-menu-items:active {
+    cursor: pointer;
+    color: black;
+    padding: 5px;
+    font-size: 13px;
+}

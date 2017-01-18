@@ -15,7 +15,9 @@ class MainBody extends Component {
         console.log("mainbody", this.props.routes[1].delete);
         this.state = {
             location: this.props.location.pathname,
-            isAscending: true
+            isAscending: true,
+            titleSortIcon: '',
+            modifiedSortIcon: ''
         };
 
     }
@@ -49,6 +51,22 @@ class MainBody extends Component {
     sortDocuments(key) {
         this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
         this.state.isAscending = !this.state.isAscending;
+        if (this.state.isAscending) {
+            (key == 'title'
+                ? this.state.titleSortIcon = 'chevron-down'
+                : this.state.modifiedSortIcon = '');
+            (key == 'modified'
+                ? this.state.titleSortIcon = ''
+                : this.state.modifiedSortIcon = 'chevron-down');
+        } else {
+            (key == 'title'
+                ? this.state.titleSortIcon = 'chevron-up'
+                : this.state.modifiedSortIcon = '');
+            (key == 'modified'
+                ? this.state.titleSortIcon = ''
+                : this.state.modifiedSortIcon = 'chevron-up');
+
+        }
         this.setState(this.state);
     }
     render() {
@@ -75,76 +93,82 @@ class MainBody extends Component {
             }
         );
         return (
-            <div class="row-fluid">
-                <div className=" col-md-12 ">
-                    <div class="fixed-navbar" id="nabar">
-                        <div class="header-row ">
-                            <a href="#" class="header-elements">
-                                <img src="./assets/upgrade.png" width="15px"/>
-                                &nbsp;Upgrade account&nbsp;&nbsp;
-                            </a>
-                            <a href="#" class="header-elements">
-                                <img src="./assets/notification.png" width="15px"/>
-                            </a>
-                            <a href="#" class="header-elements">
-                                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                                &nbsp;My Profile
-                            </a>
-                        </div>
-                        <div >
-                            <span class="inlineLeft">
-                                <h4 class=" inline breadcrumb-row">
-                                    <a href="#">CloudBoost &nbsp;</a>
-                                    {breadcrumb}
-                                </h4>
-                            </span>
-                            <span class="inlineRight">
-                                <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="30px"/>
-                                <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="30px"/>
-                                <img class="inline" src="./assets/delete.png" width="35px"/>
-
-                                <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
-                            </span>
-                        </div>
-
-                        <div class="fixed-table-heading ">
-                            <div class="row">
-                                <div class="col-md-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>Name</div>
-                                <div class="col-md-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>Modified</div>
-                                <div class="col-md-2 heading-style">Action</div>
+            <div class="">
+                <div class="row-fluid">
+                    <div className=" col-md-12 ">
+                        <div class="fixed-navbar " id="nabar">
+                            <div class="header-row ">
+                                <a href="#" class="header-elements">
+                                    <img src="./assets/upgrade.png" width="15px"/>
+                                    &nbsp;Upgrade account&nbsp;&nbsp;
+                                </a>
+                                <a href="#" class="header-elements">
+                                    <img src="./assets/notification.png" width="15px"/>
+                                </a>
+                                <a href="#" class="header-elements">
+                                    <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
+                                    &nbsp;My Profile
+                                </a>
                             </div>
+                            <div >
+                                <span class="inlineLeft">
+                                    <h4 class=" inline breadcrumb-row">
+                                        <a href="#">CloudBoost &nbsp;</a>
+                                        {breadcrumb}
+                                    </h4>
+                                </span>
+                                <span class="inlineRight">
+                                    <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="30px"/>
+                                    <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="30px"/>
+                                    <img class="inline" src="./assets/delete.png" width="35px"/>
+
+                                    <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
+                                </span>
+                            </div>
+
+                            <div class="fixed-table-heading ">
+                                <div class="row">
+                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>Name
+                                    </div>
+                                    <div class="col-md-3  col-lg-3 col-sm-3 col-xs-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
+                                    </div>
+                                    <div class="col-md-2  col-lg-2 col-sm-2 col-xs-2 heading-style">Action</div>
+                                </div>
+                            </div>
+                            <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
+                                <Modal.Header >
+                                    <Modal.Title>Upload File</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body >
+                                    <DropZone location={this.state.location} close={this.close.bind(this)}/>
+
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button onClick={this.close.bind(this)}>Close</Button>
+                                </Modal.Footer>
+                            </Modal>
+                            <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
+                                <Modal.Header >
+                                    <Modal.Title>Enter Folder name</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body >
+                                    <input className="form-control" id="folderName" placeholder="Enter Folder name"/>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button onClick={this.close.bind(this)}>Close</Button>
+                                    <Button className="btn-primary" onClick={this.addFolder.bind(this)}>Create</Button>
+
+                                </Modal.Footer>
+                            </Modal>
+
                         </div>
-                        <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
-                            <Modal.Header >
-                                <Modal.Title>Upload File</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body >
-                                <DropZone location={this.state.location} close={this.close.bind(this)}/>
-
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button onClick={this.close.bind(this)}>Close</Button>
-                            </Modal.Footer>
-                        </Modal>
-                        <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
-                            <Modal.Header >
-                                <Modal.Title>Enter Folder name</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body >
-                                <input className="form-control" id="folderName" placeholder="Enter Folder name"/>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button onClick={this.close.bind(this)}>Close</Button>
-                                <Button className="btn-primary" onClick={this.addFolder.bind(this)}>Create</Button>
-
-                            </Modal.Footer>
-                        </Modal>
-
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <DocumentList location={location}/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <DocumentList location={location}/>
 
+                    </div>
                 </div>
             </div>
 
@@ -153,7 +177,7 @@ class MainBody extends Component {
 
 }
 function mapStateToProps(state) {
-    return {fetching: state.documents.fetching};
+    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({

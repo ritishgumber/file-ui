@@ -35,20 +35,22 @@ class SideBar extends Component {
                 <div id="side-menu">
                     <ul >
 
-                        <li>
-                            <Glyphicon glyph="file"/>
-                            <a onClick={this.renderSpecificFileType.bind(this, '(.*)')}>
-                                &nbsp;&nbsp;All Files</a>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)')}>
+                            <img src="./assets/allfiles.png" width="20px"/>
+                            &nbsp;&nbsp;All Files
                         </li>
-                        <li>
-                            <Glyphicon glyph="picture"/>
-                            <a onClick={this.renderSpecificFileType.bind(this, '(.*)image(.*)')}>
-                                &nbsp;&nbsp;Photos</a>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)image(.*)')}>
+                            <img src="./assets/allphotos.png" width="20px"/>
+                            &nbsp;&nbsp;Photos
                         </li>
-                        <li>
-                            <Glyphicon glyph="folder-open"/>
-                            <a onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
-                                &nbsp;&nbsp;Folders</a>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
+                            <img src="./assets/allfolders.png" width="20px"/>
+                            &nbsp;&nbsp;Folders
+                        </li>
+                        <br/>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
+                            <img src="./assets/delete.png" width="20px"/>
+                            &nbsp;&nbsp;Deleted Files
                         </li>
 
                     </ul>
