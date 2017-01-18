@@ -26,7 +26,11 @@ class SideBar extends Component {
         });
 
         return (
-            <div>
+            <div class="affix">
+                <div id="logo">
+                    <a href="#"><img src="./assets/cblogo.png" width="50"/></a>
+
+                </div>
                 <br/>
                 <div id="side-menu">
                     <ul >

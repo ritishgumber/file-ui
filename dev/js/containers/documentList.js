@@ -117,7 +117,7 @@ class DocumentList extends Component {
             );
         }
         return (
-            <div>
+            <div class="document-list">
                 <table >
                     <tbody>
                         <tr >
