@@ -18,10 +18,6 @@ class DropZone extends Component {
         };
 
     }
-    componentWillUpdate(nextProps, nextState) {
-        if (nextProps.fileAddSuccess)
-            this.props.fetchAllFiles({path: this.state.location});
-        }
 
     onDrop(acceptedFiles, rejectedFiles) {
         console.log('Accepted files: ', acceptedFiles);
@@ -30,20 +26,17 @@ class DropZone extends Component {
 
         let length = acceptedFiles.length;
         acceptedFiles.forEach((file) => {
-
             this.props.addFile({path: location, file: file, data: null, type: null});
-
-            //  this.props.fetchAllFiles({path: this.state.location});
-            this.props.close();
-
         });
+        this.props.close();
     }
 
     render() {
         return (
             <div>
                 <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2">
-                    <img src="./assets/dropfile.png"/>
+                    <img src="./assets/emptybox.png"/>
+                    <h5>Drag and drop files onto this window to upload</h5>
                 </Dropzone>
 
                 {this.props.percentComplete

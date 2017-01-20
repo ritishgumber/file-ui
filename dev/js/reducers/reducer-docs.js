@@ -4,38 +4,57 @@ export default function(state = {
     console.log(action);
 
     switch (action.type) {
+        case 'APP_INIT_SUCCESS':
+            return {appInitSuccess: true, appId: action.payload.appId, fileAddSuccess: false, docs: [], appName: action.payload.appName}
+
+            break;
         case 'DELETE_FILE':
             return {
-                docs: [...state.docs.filter((doc) => doc.id != action.payload)]
+                ...state,
+                docs: [...state.docs.filter((doc) => doc.id != action.payload)],
+                appInitSuccess: false
             };
         case 'FETCHING_ALL_FILES':
             return {
                 ...state,
-                fetching: true
+                fetching: true,
+                appInitSuccess: false
             }
         case 'FETCH_ALL_FILES':
             if (action.payload.fetchMoreFiles)
                 return {
+                    ...state,
                     docs: [...state.docs.concat(action.payload.data)],
                     fetching: false,
-                    total: state.total
+                    total: state.total,
+                    appInitSuccess: false,
+                    fileAddSuccess: false
                 };
-            return {docs: action.payload.data, fetching: false, total: state.total};
+            return {
+                ...state,
+                docs: action.payload.data,
+                fetching: false,
+                total: state.total,
+                appInitSuccess: false
+            };
         case 'TOTAL_FILES':
             return {
                 ...state,
-                total: action.payload
+                total: action.payload,
+                appInitSuccess: false
             };
         case 'UPLOAD_PROGRESS':
             return {
                 ...state,
-                percentComplete: action.payload
+                percentComplete: action.payload,
+                appInitSuccess: false
             }
         case 'ADD_FILE_SUCCESS':
             return {
                 ...state,
                 percentComplete: 0,
-                fileAddSuccess: true
+                fileAddSuccess: true,
+                appInitSuccess: false
             }
         case 'SORT_DOCUMENTS':
             return {
@@ -43,7 +62,7 @@ export default function(state = {
                 docs: [...state.docs.sort((a, b) => {
                         var x = a[action.payload.key].toLowerCase();
                         var y = b[action.payload.key].toLowerCase();
-                        if (action.payload.isAscending) 
+                        if (action.payload.isAscending)
                             return ((x < y)
                                 ? -1
                                 : ((x > y)
@@ -57,7 +76,8 @@ export default function(state = {
                                     : 0));
 
                         }
-                    )]
+                    )],
+                appInitSuccess: false
             }
 
     }

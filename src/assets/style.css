@@ -11,6 +11,46 @@ th {
     padding: 5px;
 }
 
+body {
+    font-family: "Roboto";
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
 .listStyle {
     border-bottom: 1px solid #d2cdcd;
 }
@@ -31,7 +71,6 @@ th {
 .navBarComponent {
     padding: 20px;
     position: fixed;
-    background-color: white;
     z-index: 100;
     width: 100%;
     border: 2px solid black;
@@ -40,7 +79,6 @@ th {
 .fixed-navbar {
     /*position: fixed;
     width: 71%;*/
-    background-color: white;
     z-index: 100;
     border-bottom: 1px solid #549afc;
 }
@@ -49,12 +87,16 @@ th {
     border: 2px solid #59cbff;
     border-radius: 10px;
     margin: 10px;
+    padding-left: 5%;
+    padding-bottom: 5%;
 }
 
 .dropBody2 {
     background-color: #cdebff;
     border-radius: 50px;
     margin: 10px;
+    padding-left: 5%;
+    padding-bottom: 5%;
 }
 
 .inlineRight {
@@ -102,7 +144,11 @@ th {
 }
 
 #logo {
-    padding: 20px;
+    border-radius: 10%
+}
+
+.logo {
+    padding: 10px
 }
 
 .breadcrumb-row {
@@ -111,7 +157,25 @@ th {
 
 .header-elements {
     padding-left: 5px;
-    padding-right: 5px
+    padding-right: 5px;
+    font-weight: 400;
+    font-family: "Roboto";
+    cursor: pointer;
+    color: #B6BDC5
+}
+
+.upgrade-style {
+    color: #3dcc6c;
+}
+
+.header-elements:hover {
+    background-color: white;
+    color: #549afc;
+}
+
+#remove-hover-bg:hover {
+    background-color: white;
+    border-bottom: 2px solid #549afc;
 }
 
 .header-row {
@@ -122,6 +186,7 @@ th {
 .search-bar {
     border-width: 0.5px;
     border-radius: 4px;
+    background: #fcfcfd;
     background-image: url(https://cfl.dropboxstatic.com/static/images/search/search-icon-dark-vflabFggm.png);
     background-position: right;
     background-repeat: no-repeat;
@@ -155,4 +220,12 @@ th {
     color: black;
     padding: 5px;
     font-size: 13px;
+}
+
+.navbar-style {
+    background: white;
+}
+
+.navbar-border {
+    border-bottom: 1px solid rgba(84, 154, 252, 0.56);
 }

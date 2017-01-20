@@ -27,10 +27,7 @@ class SideBar extends Component {
 
         return (
             <div class="affix">
-                <div id="logo">
-                    <a href="#"><img src="./assets/cblogo.png" width="50"/></a>
-
-                </div>
+                <div id="logo"></div>
                 <br/>
                 <div id="side-menu">
                     <ul >
@@ -47,10 +44,13 @@ class SideBar extends Component {
                             <img src="./assets/allfolders.png" width="20px"/>
                             &nbsp;&nbsp;Folders
                         </li>
-                        <br/>
-                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
-                            <img src="./assets/delete.png" width="20px"/>
-                            &nbsp;&nbsp;Deleted Files
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)audio(.*)')}>
+                            <img src="./assets/music.png" width="20px"/>
+                            &nbsp;&nbsp;Music
+                        </li>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)video(.*)')}>
+                            <img src="./assets/video.png" width="20px"/>
+                            &nbsp;&nbsp;Video
                         </li>
 
                     </ul>

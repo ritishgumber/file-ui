@@ -11,7 +11,9 @@ class DocumentList extends Component {
     {
         super(props);
         console.log("here", this.props.location);
-        this.props.fetchAllFiles({path: this.props.location});
+        if (this.props.appInitSuccess) {
+            this.props.fetchAllFiles({path: this.props.location});
+        }
         this.state = {
             docs: this.props.docs,
             isAsc: true,
@@ -27,8 +29,11 @@ class DocumentList extends Component {
 
     componentWillReceiveProps(newProp)
     {
-        console.log("here2", newProp.location);
-        if (newProp.location !== this.state.location) {
+
+        if (newProp.fileAddSuccess || newProp.percentComplete == 100 || newProp.appInitSuccess) {
+            this.props.fetchAllFiles({path: this.state.location});
+        }
+        if (newProp.location !== this.props.location) {
             this.setState({location: newProp.location});
             this.props.fetchAllFiles({path: newProp.location, skip: 1});
             this.setState({selectedPage: 1})
@@ -60,48 +65,6 @@ class DocumentList extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
-
-    /*  sortByKey(array, key, isAsc) {
-        array.sort(function(a, b) {
-            var x = a[key];
-            var y = b[key];
-            if (isAsc)
-                return ((x < y)
-                    ? -1
-                    : ((x > y)
-                        ? 1
-                        : 0));
-            else
-                return ((x < y)
-                    ? 1
-                    : ((x > y)
-                        ? -1
-                        : 0));
-            }
-        );
-    }
-    sortDocuments(key) {
-        var isAsc = this.state.isAsc;
-        this.setState({
-            isAsc: !isAsc
-        });
-        if (key == "title")
-            this.setState({
-                nameIcon: (isAsc
-                    ? 'sort-by-alphabet'
-                    : 'sort-by-alphabet-alt'),
-                modifiedIcon: "",
-                docs: this.sortByKey(this.props.docs, key, isAsc)
-            })
-        else
-            this.setState({
-                modifiedIcon: (isAsc
-                    ? 'sort-by-order'
-                    : 'sort-by-order-alt'),
-                nameIcon: "",
-                docs: this.sortByKey(this.props.docs, key, isAsc)
-            })
-    }*/
 
     close() {
         this.setState({showModal: false});
@@ -143,10 +106,9 @@ class DocumentList extends Component {
                                     {doc.modified}
                                 </td>
                                 <td >
-                                    <Glyphicon glyph="remove" onClick={this.props.deleteFile.bind(this, doc.id)}/>
-                                    <Glyphicon glyph="pencil"/>
+                                    <img src="./assets/remove.png" width="15px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>&nbsp;
                                     <a target="_blank" key={i} href={doc.url}>
-                                        <Glyphicon glyph="download-alt"/>
+                                        <img src="./assets/download.png" width="20px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>
                                     </a>
                                 </td>
                             </tr>
@@ -160,14 +122,12 @@ class DocumentList extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log("inside mapStateToProps", state.documents);
-    return {docs: state.documents.docs, fetching: state.documents.fetching, total: state.documents.total};
+    return {docs: state.documents.docs, percentComplete: state.documents.percentComplete, fetching: state.documents.fetching, total: state.documents.total, appInitSuccess: state.documents.appInitSuccess};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         deleteFile: deleteFile,
-        fetchAllFiles: fetchAllFiles,
-        addItem: addItem
+        fetchAllFiles: fetchAllFiles
     }, dispatch);
 }
 

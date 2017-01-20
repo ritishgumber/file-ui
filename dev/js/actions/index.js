@@ -1,5 +1,38 @@
 import axios from 'axios';
 
+export const initApp = (appId) => {
+    return ((dispatch) => {
+        axios.defaults.withCredentials = true
+
+        axios.get(USER_SERVICE_URL + 'user').then((userData) => {
+            console.log("/user success");
+            axios.get(USER_SERVICE_URL + 'app/' + appId).then((data) => {
+                if (data.data && appId) {
+                    if (__isHosted == "true" || __isHosted == true) {
+                        CB.CloudApp.init(appId, data.data.keys.master)
+                    } else
+                        CB.CloudApp.init(SERVER_URL, appId, data.data.keys.master)
+                    dispatch({
+                        type: 'APP_INIT_SUCCESS',
+                        payload: {
+                            appId: appId,
+                            appName: data.data.name
+                        }
+                    });
+                } else {
+                    window.location.href = DASHBOARD_URL
+                }
+            }, (err) => {
+                console.log(err)
+                window.location.href = DASHBOARD_URL
+            })
+        }, (err) => {
+            console.log('err');
+            window.location.href = ACCOUNTS_URL
+        })
+
+    })
+}
 export const deleteFile = (data) => {
     return ((dispatch) => {
 
@@ -25,6 +58,7 @@ export const fetchAllFiles = (data) => {
     let response = [];
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
+
     if (path == "/")
         path = "/home";
     var query = new CB.CloudQuery("_File");
@@ -90,6 +124,7 @@ export const fetchAllFiles = (data) => {
 
 export const addFile = (payload) => {
     let {file, data, type, path} = payload;
+
     if (path == "/")
         path = "/home"
     return ((dispatch) => {
@@ -102,7 +137,7 @@ export const addFile = (payload) => {
             uploadProgress: function(percentComplete) {
                 dispatch({
                     type: 'UPLOAD_PROGRESS',
-                    payload: percentComplete * 200
+                    payload: parseInt(percentComplete * 100)
                 });
             }
         });
