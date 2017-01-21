@@ -104,7 +104,7 @@ class MainBody extends Component {
                             <div >
                                 <span class="inlineLeft">
                                     <h4 class=" inline breadcrumb-row">
-                                        <a href={'#/' + this.props.appId + "/home"}>{this.props.appName}
+                                        <a href={'#/' + this.props.appId}>{this.props.appName}
                                             &nbsp;</a>
                                         {breadcrumb}
                                     </h4>

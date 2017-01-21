@@ -59,8 +59,8 @@ export const fetchAllFiles = (data) => {
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
 
-    if (path == "/")
-        path = "/home";
+    if (path.endsWith('/'))
+        path = path.slice(0, path.length - 1)
     var query = new CB.CloudQuery("_File");
     if (searchText)
         query.regex('name', '(.*)' + searchText + '(.*)', true);
@@ -125,8 +125,8 @@ export const fetchAllFiles = (data) => {
 export const addFile = (payload) => {
     let {file, data, type, path} = payload;
 
-    if (path == "/")
-        path = "/home"
+    if (path.endsWith('/'))
+        path = path.slice(0, path.length - 1)
     return ((dispatch) => {
         let cloudFile = new CB.CloudFile(file, data, type, path);
         cloudFile.save({
