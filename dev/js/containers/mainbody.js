@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Nav, Glyphicon, Modal, Button} from 'react-bootstrap';
+import {Glyphicon, Modal, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
@@ -22,6 +22,7 @@ class MainBody extends Component {
 
     }
     close() {
+        this.props.fetchAllFiles({path: this.state.location})
         this.setState({showUploadModal: false, showCreateModal: false});
     }
     open(type) {
@@ -37,13 +38,9 @@ class MainBody extends Component {
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
         this.props.addFile({path: this.state.location, file: value, data: 'folder', type: 'folder'});
-
         this.close();
     }
-    componentWillUpdate(nextProps, nextState) {
-        if (nextProps.fileAddSuccess)
-            this.props.fetchAllFiles({path: this.state.location});
-        }
+
     handleChange(e) {
         console.log("value:", e.target.value);
         this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
@@ -52,24 +49,28 @@ class MainBody extends Component {
         this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
         this.state.isAscending = !this.state.isAscending;
         if (this.state.isAscending) {
-            (key == 'title'
-                ? this.state.titleSortIcon = 'chevron-down'
-                : this.state.modifiedSortIcon = '');
-            (key == 'modified'
-                ? this.state.titleSortIcon = ''
-                : this.state.modifiedSortIcon = 'chevron-down');
+            if (key == 'title') {
+                this.state.titleSortIcon = 'chevron-down';
+                this.state.modifiedSortIcon = '';
+            } else {
+                this.state.titleSortIcon = '';
+                this.state.modifiedSortIcon = 'chevron-down';
+            }
         } else {
-            (key == 'title'
-                ? this.state.titleSortIcon = 'chevron-up'
-                : this.state.modifiedSortIcon = '');
-            (key == 'modified'
-                ? this.state.titleSortIcon = ''
-                : this.state.modifiedSortIcon = 'chevron-up');
+            if (key == 'title') {
+                this.state.titleSortIcon = 'chevron-up';
+                this.state.modifiedSortIcon = '';
+            } else {
+                this.state.titleSortIcon = '';
+                this.state.modifiedSortIcon = 'chevron-up';
+            }
 
         }
         this.setState(this.state);
     }
+
     render() {
+
         const {listen} = browserHistory;
         listen(location => {
             console.log(location);
@@ -83,55 +84,46 @@ class MainBody extends Component {
         let link = "";
         const breadcrumb = a.map((b, i) => {
             link = link + "/" + b;
-            if (b != 'home')
+            if (b != 'home' && i != 0)
                 return (
-                    <Link key={i} to={link}>
-                        {b}
-                        &gt;
-                    </Link>
+                    <span>
+                        <Glyphicon glyph="chevron-right"/>
+                        <Link key={i} to={link}>
+                            &nbsp; {b}</Link>
+                    </span>
                 );
             }
         );
+
         return (
             <div class="">
                 <div class="row-fluid">
                     <div className=" col-md-12 ">
-                        <div class="fixed-navbar " id="nabar">
-                            <div class="header-row ">
-                                <a href="#" class="header-elements">
-                                    <img src="./assets/upgrade.png" width="15px"/>
-                                    &nbsp;Upgrade account&nbsp;&nbsp;
-                                </a>
-                                <a href="#" class="header-elements">
-                                    <img src="./assets/notification.png" width="15px"/>
-                                </a>
-                                <a href="#" class="header-elements">
-                                    <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                                    &nbsp;My Profile
-                                </a>
-                            </div>
+                        <div class="fixed-navbar ">
+
                             <div >
                                 <span class="inlineLeft">
                                     <h4 class=" inline breadcrumb-row">
-                                        <a href="#">CloudBoost &nbsp;</a>
+                                        <a href={'#/' + this.props.appId + "/home"}>{this.props.appName}
+                                            &nbsp;</a>
                                         {breadcrumb}
                                     </h4>
                                 </span>
                                 <span class="inlineRight">
-                                    <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="30px"/>
-                                    <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="30px"/>
-                                    <img class="inline" src="./assets/delete.png" width="35px"/>
-
+                                    <a title="ww">
+                                        <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
+                                    </a><img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
                                     <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                                 </span>
                             </div>
 
                             <div class="fixed-table-heading ">
                                 <div class="row">
-                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>Name
+                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>
+                                        Name &nbsp;<Glyphicon glyph={this.state.titleSortIcon}/>
                                     </div>
-                                    <div class="col-md-3  col-lg-3 col-sm-3 col-xs-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
-                                    </div>
+                                    <div class="col-md-3  col-lg-3 col-sm-3 col-xs-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>
+                                        Modified&nbsp;<Glyphicon glyph={this.state.modifiedSortIcon}/></div>
                                     <div class="col-md-2  col-lg-2 col-sm-2 col-xs-2 heading-style">Action</div>
                                 </div>
                             </div>
@@ -164,7 +156,7 @@ class MainBody extends Component {
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row-fluid">
                     <div class="col-md-12">
                         <DocumentList location={location}/>
 
@@ -177,7 +169,7 @@ class MainBody extends Component {
 
 }
 function mapStateToProps(state) {
-    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess};
+    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess, appName: state.documents.appName, appId: state.documents.appId};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
