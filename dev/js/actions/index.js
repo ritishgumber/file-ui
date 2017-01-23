@@ -6,19 +6,36 @@ export const initApp = (appId) => {
 
         axios.get(USER_SERVICE_URL + 'user').then((userData) => {
             console.log("/user success");
-            axios.get(USER_SERVICE_URL + 'app/' + appId).then((data) => {
-                if (data.data && appId) {
-                    if (__isHosted == "true" || __isHosted == true) {
-                        CB.CloudApp.init(appId, data.data.keys.master)
-                    } else
-                        CB.CloudApp.init(SERVER_URL, appId, data.data.keys.master)
-                    dispatch({
-                        type: 'APP_INIT_SUCCESS',
-                        payload: {
-                            appId: appId,
-                            appName: data.data.name
-                        }
+            axios.get(USER_SERVICE_URL + 'app/' + appId).then((appdata) => {
+                if (appdata.data && appId) {
+                    axios.get(USER_SERVICE_URL + 'app').then((data) => {
+
+                        if (__isHosted == "true" || __isHosted == true) {
+                            CB.CloudApp.init(appId, appdata.data.keys.master)
+                        } else
+                            CB.CloudApp.init(SERVER_URL, appId, appdata.data.keys.master)
+
+                        let allApps = [];
+                        let length = data.data.length;
+                        data.data.forEach((app) => {
+                            allApps.push({name: app.name, id: app.appId});
+                            length--;
+                            if (length == 0)
+
+                                dispatch({
+                                    type: 'APP_INIT_SUCCESS',
+                                    payload: {
+                                        appId: appId,
+                                        appName: appdata.data.name,
+                                        allApps: allApps
+                                    }
+                                });
+                            }
+                        );
+                    }, (err) => {
+                        console.log(err);
                     });
+
                 } else {
                     window.location.href = DASHBOARD_URL
                 }

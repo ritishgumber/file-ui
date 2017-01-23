@@ -148,7 +148,7 @@ body {
 }
 
 .logo {
-    padding: 10px
+    padding: 5px
 }
 
 .breadcrumb-row {
@@ -175,7 +175,6 @@ body {
 
 #remove-hover-bg:hover {
     background-color: white;
-    border-bottom: 2px solid #549afc;
 }
 
 .header-row {

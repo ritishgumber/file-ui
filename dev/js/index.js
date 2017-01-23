@@ -21,7 +21,8 @@ ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={MainBody}></IndexRoute>
-            <Route path="/:appId(/*)" component={MainBody}></Route>
+            <Route path="/:appId/*" component={MainBody}></Route>
+            <Route path="/:appId" component={MainBody}></Route>
         </Route>
     </Router>
 </Provider>, document.getElementById('root'));

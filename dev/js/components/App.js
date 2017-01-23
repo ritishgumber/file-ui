@@ -6,7 +6,19 @@ import axios from 'axios';
 import {initApp} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Row, Grid, Col, Glyphicon} from 'react-bootstrap';
+import {browserHistory, Link} from "react-router";
+
+import {
+    Row,
+    Grid,
+    Col,
+    Glyphicon,
+    Navbar,
+    Nav,
+    NavItem,
+    NavDropdown,
+    MenuItem
+} from 'react-bootstrap';
 
 const d = {
     position: "fixed"
@@ -23,41 +35,50 @@ class App extends React.Component {
         };
 
     }
+    navigate(route) {
+        browserHistory.push(route);
+    }
+    allApps() {}
 
     render() {
-
+        let allApps = '';
+        if (this.props.allApps) {
+            allApps = this.props.allApps.map((app, i) => {
+                return (
+                    <MenuItem key={i} onClick={this.navigate.bind(this, '#/' + app.id)}>{app.name}</MenuItem>
+                );
+            })
+        }
         return (
 
             <div class="container">
 
-                <nav class="navbar navbar-style navbar-fixed-top ">
-                    <div class="container navbar-border">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                            </button>
+                <Navbar class="navbar-style navbar-border container" collapseOnSelect fixedTop={true}>
+                    <Navbar.Header>
+                        <Navbar.Brand>
                             <a class="navbar-brand logo" href="#"><img id="logo" src="./assets/cblogo.png" width="40px"/></a>
-                        </div>
-                        <div class="collapse navbar-collapse" id="myNavbar">
-
-                            <ul class="nav navbar-nav navbar-right">
-
-                                <li>
-                                    <a href="https://tutorials.cloudboost.io/en/datastorage/files#" target="_blank" class="header-elements" id="remove-hover-bg">
-                                        &nbsp;Documentation
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="header-elements" id="remove-hover-bg">
-                                        <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                                        &nbsp;My Profile
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-
+                        </Navbar.Brand>
+                        <Navbar.Toggle/>
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Nav>
+                            <NavDropdown eventKey={3} title="All Apps" id="basic-nav-dropdown">{allApps}</NavDropdown>
+                        </Nav>
+                        <Nav pullRight>
+                            <NavItem eventKey={1} href="#">
+                                <a href="https://tutorials.cloudboost.io/en/datastorage/files#" target="_blank" class="header-elements" id="remove-hover-bg">
+                                    &nbsp;Documentation
+                                </a>
+                            </NavItem>
+                            <NavItem eventKey={2} href="#">
+                                <a href="#" class="header-elements" id="remove-hover-bg">
+                                    <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
+                                    &nbsp;My Profile
+                                </a>
+                            </NavItem>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
                 <div class="container">
                     <h3>&nbsp;</h3>
                     <div className="row">
@@ -76,7 +97,7 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess};
+    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess, allApps: state.documents.allApps};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
