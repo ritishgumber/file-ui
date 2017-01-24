@@ -69,6 +69,10 @@ class DocumentList extends Component {
     close() {
         this.setState({showModal: false});
     }
+    toggleC() {
+        this.refs.trash.className = "";
+        this.setState({fake: Date.now()})
+    }
     render() {
         const {location} = this.state;
 
@@ -82,6 +86,11 @@ class DocumentList extends Component {
         return (
             <table class="document-list" id="document-list">
                 <tbody>
+                    <tr class="listHeading">
+                        <th class="dataStyle">Name</th>
+                        <th class="dataStyle">Modified</th>
+                        <th class="dataStyle">Actions</th>
+                    </tr>
 
                     {this.props.docs.map((doc, i) => {
                         const titleArr = doc.title.split('/');
@@ -102,14 +111,13 @@ class DocumentList extends Component {
 }
                                 </td>
 
-                                <td >
+                                <td class="dataStyle">
                                     {doc.modified}
                                 </td>
-                                <td >
-                                    <img src="./assets/remove.png" width="15px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>&nbsp;
-                                    <a target="_blank" key={i} href={doc.url}>
-                                        <img src="./assets/download.png" width="20px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>
-                                    </a>
+                                <td class="dataStyle">
+                                    <div class="trash-icon"></div>
+                                    <i class="ion ion-ios-download-outline action-icons"></i>
+
                                 </td>
                             </tr>
                         )

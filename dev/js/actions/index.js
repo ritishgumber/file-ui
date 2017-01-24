@@ -5,7 +5,6 @@ export const initApp = (appId) => {
         axios.defaults.withCredentials = true
 
         axios.get(USER_SERVICE_URL + 'user').then((userData) => {
-            console.log("/user success");
             axios.get(USER_SERVICE_URL + 'app/' + appId).then((appdata) => {
                 if (appdata.data && appId) {
                     axios.get(USER_SERVICE_URL + 'app').then((data) => {

@@ -87,7 +87,7 @@ class MainBody extends Component {
             if (b != 'home' && i != 0)
                 return (
                     <span>
-                        <Glyphicon glyph="chevron-right"/>
+                        <i class="icon ion-chevron-right breadcrumb-color"></i>
                         <Link key={i} to={link}>
                             &nbsp; {b}</Link>
                     </span>
@@ -99,37 +99,26 @@ class MainBody extends Component {
             <div class="">
                 <div class="row-fluid">
                     <div className=" col-md-12 ">
-                        <div class="fixed-navbar ">
+                        <div class="below-navbar ">
 
-                            <div >
-                                <span class="inlineLeft">
-                                    <h4 class=" inline breadcrumb-row">
-                                        <a href={'#/' + this.props.appId}>{this.props.appName}
-                                            &nbsp;</a>
-                                        {breadcrumb}
-                                    </h4>
-                                </span>
-                                <span class="inlineRight">
-                                    <a title="ww">
-                                        <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
-                                    </a><img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
-                                    <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
-                                </span>
-                            </div>
+                            <span class="inlineLeft">
+                                <h4 class=" inline breadcrumb-row">
+                                    <a href={'#/' + this.props.appId}>Home &nbsp;</a>
+                                    {breadcrumb}
+                                </h4>
+                            </span>
+                            <span class="inlineRight">
+                                <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
+                                <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
+                                <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
+                            </span>
 
-                            <div class="fixed-table-heading ">
-                                <div class="row">
-                                    <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7 heading-style" onClick={this.sortDocuments.bind(this, 'title')}>
-                                        Name &nbsp;<Glyphicon glyph={this.state.titleSortIcon}/>
-                                    </div>
-                                    <div class="col-md-3  col-lg-3 col-sm-3 col-xs-3 heading-style" onClick={this.sortDocuments.bind(this, 'modified')}>
-                                        Modified&nbsp;<Glyphicon glyph={this.state.modifiedSortIcon}/></div>
-                                    <div class="col-md-2  col-lg-2 col-sm-2 col-xs-2 heading-style">Action</div>
-                                </div>
-                            </div>
                             <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
-                                <Modal.Header >
-                                    <Modal.Title>Upload File</Modal.Title>
+                                <Modal.Header class="modal-header-style">
+                                    <Modal.Title>Upload File
+                                        <i class="ion ion-upload pull-right modal-icon-style"></i>
+                                        <h5>Upload as many files you want.</h5>
+                                    </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
                                     <DropZone location={this.state.location} close={this.close.bind(this)}/>
@@ -140,15 +129,15 @@ class MainBody extends Component {
                                 </Modal.Footer>
                             </Modal>
                             <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
-                                <Modal.Header >
-                                    <Modal.Title>Enter Folder name</Modal.Title>
+                                <Modal.Header class="modal-header-style">
+                                    <Modal.Title>New Folder</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
-                                    <input className="form-control" id="folderName" placeholder="Enter Folder name"/>
+                                    <input className="" id="folderName" placeholder="Enter Folder name"/>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button onClick={this.close.bind(this)}>Close</Button>
-                                    <Button className="btn-primary" onClick={this.addFolder.bind(this)}>Create</Button>
+                                    <Button className="btn-primary create-btn" onClick={this.addFolder.bind(this)}>Create</Button>
 
                                 </Modal.Footer>
                             </Modal>
