@@ -79,8 +79,6 @@ class App extends React.Component {
                         <Nav pullRight>
                             <NavItem onClick={this.navigate.bind(this, DASHBOARD_URL, true)}>Dashboard
                             </NavItem>
-                            <NavItem><img src="./assets/notification.png" width='24px'/>
-                            </NavItem>
 
                             <NavDropdown eventKey={3} title={< img src = "./assets/user-default-image.jpg" class = "profile-photo" />} id="basic-nav-dropdown" class="profile">
 
@@ -119,8 +117,6 @@ class App extends React.Component {
                             <NavItem eventKey={2} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/', true)}>Terms</NavItem>
                             <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy', true)}>Privacy</NavItem>
                             <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/', true)}>Help</NavItem>
-                            <NavItem eventKey={5} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/', true)}>Feedback</NavItem>
-
                         </Nav>
                         <Nav pullRight>
                             <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#', true)}>Documentation</NavItem>

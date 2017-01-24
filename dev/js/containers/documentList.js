@@ -22,7 +22,7 @@ class DocumentList extends Component {
             showModal: false,
             document: {},
             selectedPage: 1,
-            selectedPageSet: 0
+            condition: false
         };
 
     }
@@ -69,9 +69,24 @@ class DocumentList extends Component {
     close() {
         this.setState({showModal: false});
     }
-    toggleC() {
-        this.refs.trash.className = "";
-        this.setState({fake: Date.now()})
+    toggleClass() {
+        $(".trash-icon").hover(function() {
+            $(this).removeClass("ion-ios-trash-outline");
+            $(this).addClass("ion-ios-trash");
+        }, function() {
+            $(this).removeClass("ion-ios-trash");
+            $(this).addClass("ion-ios-trash-outline");
+        });
+        $(".download-icon").hover(function() {
+            $(this).removeClass("ion-ios-download-outline");
+            $(this).addClass("ion-ios-download");
+        }, function() {
+            $(this).removeClass("ion-ios-download");
+            $(this).addClass("ion-ios-download-outline");
+        });
+    }
+    deleteFile(id) {
+        this.props.deleteFile(id);
     }
     render() {
         const {location} = this.state;
@@ -114,10 +129,9 @@ class DocumentList extends Component {
                                 <td class="dataStyle">
                                     {doc.modified}
                                 </td>
-                                <td class="dataStyle">
-                                    <div class="trash-icon"></div>
-                                    <i class="ion ion-ios-download-outline action-icons"></i>
-
+                                <td class="dataStyle ">
+                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
                                 </td>
                             </tr>
                         )

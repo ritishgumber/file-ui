@@ -223,7 +223,7 @@ body {
 }
 
 .action-icons {
-    font-size: 20px;
+    font-size: 24px;
     padding-right: 5px;
 }
 
@@ -237,6 +237,8 @@ body {
 .modal-header-style {
     color: white;
     background: #4f9cf5;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
 }
 
 .create-btn {
@@ -252,18 +254,11 @@ body {
     border-radius: 50%;
 }
 
-.trash-icon {
-    background-image: url('./trash-outline.png');
-}
-
-.trash-icon:hover {
-    background-image: url('./trash-solid.png');
-}
-
 .modal-icon-style {
     border-radius: 50%;
     background: #2c5f9a;
     font-size: 30px;
+    width: 60px;
     padding: 15px;
 }
 
@@ -272,6 +267,7 @@ body {
     border: none;
     display: block;
     margin: auto;
+    font-size: 18px;
 }
 
 #folderName:focus {
@@ -290,4 +286,23 @@ body {
 .listHeading {
     padding: 10px;
     background: rgba(179, 179, 179, 0.15);
+}
+
+.modal-title-style {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.modal-title-inner-text {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.side-item-selected {
+    background-color: #4f9cf5;
+    color: white
+}
+
+.modal-content {
+    border-radius: 20px;
 }

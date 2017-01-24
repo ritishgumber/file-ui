@@ -103,7 +103,7 @@ class MainBody extends Component {
 
                             <span class="inlineLeft">
                                 <h4 class=" inline breadcrumb-row">
-                                    <a href={'#/' + this.props.appId}>Home &nbsp;</a>
+                                    <a href={'#/' + this.props.appId}>Home</a>
                                     {breadcrumb}
                                 </h4>
                             </span>
@@ -115,22 +115,26 @@ class MainBody extends Component {
 
                             <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
                                 <Modal.Header class="modal-header-style">
-                                    <Modal.Title>Upload File
-                                        <i class="ion ion-upload pull-right modal-icon-style"></i>
-                                        <h5>Upload as many files you want.</h5>
+                                    <Modal.Title class="modal-title-style">
+                                        Upload File
+                                        <img src="./assets/upload-icon.png" class="modal-icon-style pull-right"></img>
+                                        <div class="modal-title-inner-text">Upload as many files you want.</div>
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
                                     <DropZone location={this.state.location} close={this.close.bind(this)}/>
 
                                 </Modal.Body>
-                                <Modal.Footer>
+                                <Modal.Footer >
                                     <Button onClick={this.close.bind(this)}>Close</Button>
                                 </Modal.Footer>
                             </Modal>
                             <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
                                 <Modal.Header class="modal-header-style">
-                                    <Modal.Title>New Folder</Modal.Title>
+                                    <Modal.Title>
+                                        New Folder
+                                        <img src="./assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
+                                    </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
                                     <input className="" id="folderName" placeholder="Enter Folder name"/>
