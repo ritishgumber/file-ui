@@ -6,6 +6,7 @@ import DocumentList from '../containers/documentList';
 import {deleteFile, fetchAllFiles, addFile, sortDocuments} from '../actions/index';
 import DropZone from './dropzone';
 import {browserHistory, Link} from "react-router";
+import ReactTooltip from 'react-tooltip';
 
 class MainBody extends Component {
 
@@ -86,7 +87,7 @@ class MainBody extends Component {
             link = link + "/" + b;
             if (b != 'home' && i != 0)
                 return (
-                    <span>
+                    <span>&nbsp;
                         <i class="icon ion-chevron-right breadcrumb-color"></i>
                         <Link key={i} to={link}>
                             &nbsp; {b}</Link>
@@ -108,8 +109,9 @@ class MainBody extends Component {
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <img class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
-                                <img class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
+                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
+                                <ReactTooltip place="bottom" effect="solid"/>
+                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
 

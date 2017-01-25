@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {deleteFile, fetchAllFiles, addItem} from '../actions/index';
 import {Link} from "react-router";
 import DropZone from '../containers/dropzone'
+import ReactTooltip from 'react-tooltip';
 
 class DocumentList extends Component {
     constructor(props)
@@ -99,7 +100,7 @@ class DocumentList extends Component {
             );
         }
         return (
-            <table class="document-list" id="document-list">
+            <table class="document-list responsive" id="document-list">
                 <tbody>
                     <tr class="listHeading">
                         <th class="dataStyle">Name</th>
@@ -130,8 +131,18 @@ class DocumentList extends Component {
                                     {doc.modified}
                                 </td>
                                 <td class="dataStyle ">
-                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
-                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
+                                    <span data-tip data-for="delete-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                                    <ReactTooltip id='delete-icon' type='error' place="bottom" effect='solid'>
+                                        <span>{"Delete " + doc.type}</span>
+                                    </ReactTooltip>
+
+                                    <a href={doc.url} target="_blank">
+                                        <span data-tip data-for="download-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
+                                    </a>
+                                    <ReactTooltip id='download-icon' place="bottom" effect='solid'>
+                                        <span>Download File</span>
+                                    </ReactTooltip>
+
                                 </td>
                             </tr>
                         )
