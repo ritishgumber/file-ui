@@ -43,7 +43,6 @@ export const initApp = (appId) => {
                 window.location.href = DASHBOARD_URL
             })
         }, (err) => {
-            console.log('err');
             window.location.href = ACCOUNTS_URL
         })
 
@@ -52,13 +51,11 @@ export const initApp = (appId) => {
 export const deleteFile = (data) => {
     return ((dispatch) => {
 
-        console.log("id", data);
         var query = new CB.CloudQuery("_File");
         query.findById(data, {
             success: function(obj) {
                 obj.delete({
                     success: function(obj) {
-                        console.log("delete", obj);
                         dispatch({type: "DELETE_FILE", payload: data});
 
                     },
@@ -70,7 +67,7 @@ export const deleteFile = (data) => {
     });
 }
 export const fetchAllFiles = (data) => {
-    console.log(data);
+
     let response = [];
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
@@ -82,8 +79,6 @@ export const fetchAllFiles = (data) => {
         query.regex('name', '(.*)' + searchText + '(.*)', true);
     if (regex)
         query.regex('contentType', regex, true);
-
-    //query.containedIn('name', searchText.split(" "));
 
     return ((dispatch) => {
         dispatch({type: "FETCHING_ALL_FILES"});
@@ -105,7 +100,6 @@ export const fetchAllFiles = (data) => {
         query.orderByDesc('createdAt');
         query.find({
             success: function(files) {
-                console.log("files", files);
                 files.forEach((cloudFile) => {
                     let file = cloudFile.document;
 
@@ -137,7 +131,7 @@ export const fetchAllFiles = (data) => {
     })
 
 }
-
+/*
 export const addFile = (payload) => {
     let {file, data, type, path} = payload;
 
@@ -159,6 +153,39 @@ export const addFile = (payload) => {
         });
 
     })
+}*/
+export const addFile = (payload) => {
+    let {file, data, type, path} = payload;
+
+    if (path.endsWith('/'))
+        path = path.slice(0, path.length - 1)
+    let length = file.length;
+    return ((dispatch) => {
+        dispatch({type: "UPLOADING_FILES"});
+
+        file.forEach((fileObj) => {
+            let cloudFile = new CB.CloudFile(fileObj, data, type, path);
+            cloudFile.save({
+                success: function(cloudFile) {
+                    length--;
+                    if (length == 0)
+                        dispatch({type: "ADD_FILE_SUCCESS"})
+                },
+                error: function(error) {
+                    length--;
+                    if (length == 0)
+                        dispatch({type: "ADD_FILE_SUCCESS"})
+                },
+                uploadProgress: function(percentComplete) {
+                    dispatch({
+                        type: 'UPLOAD_PROGRESS',
+                        payload: parseInt(percentComplete * 100)
+                    });
+                }
+            });
+        });
+
+    })
 }
 export const sortDocuments = (data) => {
     return ({type: 'SORT_DOCUMENTS', payload: data});
@@ -169,19 +196,19 @@ desc : return path of image depending on file type;
 */
 
 function imagePath(type) {
-    let img = "./assets/file.png";
+    let img = "/assets/file.png";
     switch (type) {
         case(type.match(/(.*)image(.*)/i) || {}).input:
-            img = "./assets/png.png";
+            img = "/assets/png.png";
             break;
         case(type.match(/(.*)folder(.*)/) || {}).input:
-            img = "./assets/folder.png";
+            img = "/assets/folder.png";
             break;
         case(type.match(/(.*)pdf(.*)/) || {}).input:
-            img = "./assets/pdf.png";
+            img = "/assets/pdf.png";
             break;
         case(type.match(/(.*)audio(.*)/) || {}).input:
-            img = "./assets/audio.png";
+            img = "/assets/audio.png";
             break;
 
     }

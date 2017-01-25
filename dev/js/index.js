@@ -18,11 +18,9 @@ const store = createStore(allReducers, applyMiddleware(thunk, promise, logger));
 
 ReactDOM.render(
     <Provider store={store}>
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <IndexRoute component={MainBody}></IndexRoute>
-            <Route path="/:appId/*" component={MainBody}></Route>
-            <Route path="/:appId" component={MainBody}></Route>
+            <Route path="*" component={MainBody}></Route>
         </Route>
     </Router>
 </Provider>, document.getElementById('root'));

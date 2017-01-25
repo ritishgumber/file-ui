@@ -105,7 +105,8 @@ body {
 }
 
 .fetching-loader {
-    margin-left: 30%
+    margin-left: 30%;
+    width: 50px;
 }
 
 .sideBarComponent {
@@ -168,6 +169,7 @@ body {
 }
 
 .search-bar {
+    width: 75%;
     margin-top: 10px;
     border-width: 0.5px;
     border-radius: 4px;
@@ -226,6 +228,8 @@ body {
 .action-icons {
     font-size: 24px;
     padding-right: 5px;
+    cursor: pointer;
+    color: black;
 }
 
 .center-aligned {
@@ -306,4 +310,15 @@ body {
 
 .modal-content {
     border-radius: 20px;
+}
+
+.sortIcon {
+    padding-left: 5px;
+    font-size: 14px;
+}
+
+.upload-complete-icon {
+    padding-left: 5px;
+    font-size: 20px;
+    color: green;
 }

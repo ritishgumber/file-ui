@@ -13,17 +13,14 @@ class MainBody extends Component {
     constructor(props)
     {
         super(props);
-        console.log("mainbody", this.props.routes[1].delete);
         this.state = {
-            location: this.props.location.pathname,
-            isAscending: true,
-            titleSortIcon: '',
-            modifiedSortIcon: ''
+            location: this.props.location.pathname
         };
 
     }
     close() {
-        this.props.fetchAllFiles({path: this.state.location})
+        if (!this.props.fetching)
+            this.props.fetchAllFiles({path: this.state.location})
         this.setState({showUploadModal: false, showCreateModal: false});
     }
     open(type) {
@@ -38,50 +35,25 @@ class MainBody extends Component {
     }
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
-        this.props.addFile({path: this.state.location, file: value, data: 'folder', type: 'folder'});
+        this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder'});
         this.close();
     }
 
     handleChange(e) {
-        console.log("value:", e.target.value);
-        this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
-    }
-    sortDocuments(key) {
-        this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
-        this.state.isAscending = !this.state.isAscending;
-        if (this.state.isAscending) {
-            if (key == 'title') {
-                this.state.titleSortIcon = 'chevron-down';
-                this.state.modifiedSortIcon = '';
-            } else {
-                this.state.titleSortIcon = '';
-                this.state.modifiedSortIcon = 'chevron-down';
-            }
-        } else {
-            if (key == 'title') {
-                this.state.titleSortIcon = 'chevron-up';
-                this.state.modifiedSortIcon = '';
-            } else {
-                this.state.titleSortIcon = '';
-                this.state.modifiedSortIcon = 'chevron-up';
-            }
-
-        }
-        this.setState(this.state);
+        if (!this.props.fetching)
+            this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
 
     render() {
 
         const {listen} = browserHistory;
         listen(location => {
-            console.log(location);
-            this.setState({location: location.hash.substring(1)});
+            this.setState({location: location.pathname});
         });
         const {location} = this.state;
         const a = location.split("/");
         if (a[0] == "")
             a.splice(0, 1);
-        console.log(a);
         let link = "";
         const breadcrumb = a.map((b, i) => {
             link = link + "/" + b;
@@ -104,14 +76,14 @@ class MainBody extends Component {
 
                             <span class="inlineLeft">
                                 <h4 class=" inline breadcrumb-row">
-                                    <a href={'#/' + this.props.appId}>Home</a>
+                                    <Link to={"/" + this.props.appId}>Home</Link>
                                     {breadcrumb}
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
+                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/>
                                 <ReactTooltip place="bottom" effect="solid"/>
-                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
+                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
 
@@ -119,7 +91,7 @@ class MainBody extends Component {
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title class="modal-title-style">
                                         Upload File
-                                        <img src="./assets/upload-icon.png" class="modal-icon-style pull-right"></img>
+                                        <img src="/assets/upload-icon.png" class="modal-icon-style pull-right"></img>
                                         <div class="modal-title-inner-text">Upload as many files you want.</div>
                                     </Modal.Title>
                                 </Modal.Header>
@@ -135,7 +107,7 @@ class MainBody extends Component {
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title>
                                         New Folder
-                                        <img src="./assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
+                                        <img src="/assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
@@ -153,7 +125,10 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <DocumentList location={location}/>
+                        <DocumentList location={location}/> {this.props.fetching
+                            ? <img src="/assets/fetching.gif" class="fetching-loader"/>
+                            : null}
+                        <h3>&nbsp;</h3>
 
                     </div>
                 </div>
