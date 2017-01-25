@@ -53,15 +53,20 @@ export default function(state = {
         case 'UPLOAD_PROGRESS':
             return {
                 ...state,
-                percentComplete: action.payload,
-                appInitSuccess: false
+                percentComplete: action.payload
             }
         case 'ADD_FILE_SUCCESS':
             return {
                 ...state,
                 percentComplete: 0,
                 fileAddSuccess: true,
-                appInitSuccess: false
+                uploading: false
+            }
+        case 'UPLOADING_FILES':
+            return {
+                ...state,
+                uploading: true,
+                fileAddSuccess: false
             }
         case 'SORT_DOCUMENTS':
             return {
@@ -83,8 +88,7 @@ export default function(state = {
                                     : 0));
 
                         }
-                    )],
-                appInitSuccess: false
+                    )]
             }
 
     }

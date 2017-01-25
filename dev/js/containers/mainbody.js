@@ -14,15 +14,13 @@ class MainBody extends Component {
     {
         super(props);
         this.state = {
-            location: this.props.location.pathname,
-            isAscending: true,
-            titleSortIcon: '',
-            modifiedSortIcon: ''
+            location: this.props.location.pathname
         };
 
     }
     close() {
-        this.props.fetchAllFiles({path: this.state.location})
+        if (!this.props.fetching)
+            this.props.fetchAllFiles({path: this.state.location})
         this.setState({showUploadModal: false, showCreateModal: false});
     }
     open(type) {
@@ -37,50 +35,25 @@ class MainBody extends Component {
     }
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
-        this.props.addFile({path: this.state.location, file: value, data: 'folder', type: 'folder'});
+        this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder'});
         this.close();
     }
 
     handleChange(e) {
-        console.log("value:", e.target.value);
-        this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
-    }
-    sortDocuments(key) {
-        this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
-        this.state.isAscending = !this.state.isAscending;
-        if (this.state.isAscending) {
-            if (key == 'title') {
-                this.state.titleSortIcon = 'chevron-down';
-                this.state.modifiedSortIcon = '';
-            } else {
-                this.state.titleSortIcon = '';
-                this.state.modifiedSortIcon = 'chevron-down';
-            }
-        } else {
-            if (key == 'title') {
-                this.state.titleSortIcon = 'chevron-up';
-                this.state.modifiedSortIcon = '';
-            } else {
-                this.state.titleSortIcon = '';
-                this.state.modifiedSortIcon = 'chevron-up';
-            }
-
-        }
-        this.setState(this.state);
+        if (!this.props.fetching)
+            this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
 
     render() {
 
         const {listen} = browserHistory;
         listen(location => {
-            console.log("latest", location);
             this.setState({location: location.pathname});
         });
         const {location} = this.state;
         const a = location.split("/");
         if (a[0] == "")
             a.splice(0, 1);
-        console.log(a);
         let link = "";
         const breadcrumb = a.map((b, i) => {
             link = link + "/" + b;
@@ -152,7 +125,10 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <DocumentList location={location}/>
+                        <DocumentList location={location}/> {this.props.fetching
+                            ? <img src="/assets/fetching.gif" class="fetching-loader"/>
+                            : null}
+                        <h3>&nbsp;</h3>
 
                     </div>
                 </div>

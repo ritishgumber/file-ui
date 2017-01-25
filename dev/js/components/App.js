@@ -1,17 +1,11 @@
 import React from 'react';
-import NavBar from '../containers/nav';
 import SideBar from '../containers/sidebar';
 import MainBody from '../containers/mainbody';
-import axios from 'axios';
 import {initApp} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {
-    Row,
-    Grid,
-    Col,
-    Glyphicon,
     Navbar,
     Nav,
     NavItem,
@@ -20,15 +14,10 @@ import {
     Dropdown
 } from 'react-bootstrap';
 
-const d = {
-    position: "fixed"
-};
 class App extends React.Component {
     constructor(props)
     {
         super(props);
-        //console.log(this.props.location);
-        console.log();
         this.props.initApp('' + window.location.pathname.split('/')[1]);
         this.state = {
             scroll: {}
@@ -130,8 +119,7 @@ function mapStateToProps(state) {
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        initApp,
-        initApp
+        initApp: initApp
     }, dispatch);
 }
 export default connect(mapStateToProps, matchDispatchToProps)(App);;

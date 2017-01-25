@@ -17,7 +17,6 @@ class NavBar extends Component {
     constructor(props)
     {
         super(props);
-        console.log("nav-constructor", this.props.location.pathname);
         this.state = {
             showUploadModal: false,
             showCreateModal: false,
@@ -49,20 +48,15 @@ class NavBar extends Component {
             this.props.fetchAllFiles({path: this.state.location});
         }
     handleChange(e) {
-        console.log("value:", e.target.value);
         this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
 
     render() {
         const {listen} = browserHistory;
         listen(location => {
-            console.log(location);
-
-            console.log("executing");
             this.setState({location: location.hash.substring(1)});
 
         });
-        console.log("nav body", this.state.location);
 
         return (
             <div className="container header">

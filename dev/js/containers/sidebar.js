@@ -18,13 +18,12 @@ class SideBar extends Component {
             $(this).addClass("side-item-selected");
             $(this).siblings().removeClass("side-item-selected");
         });
-        this.props.fetchAllFiles({path: this.state.location, regex: regex})
+        if (!this.props.fetching)
+            this.props.fetchAllFiles({path: this.state.location, regex: regex})
     }
     render() {
         const {listen} = browserHistory;
         listen(location => {
-            console.log(location);
-
             this.setState({location: location.pathname});
 
         });

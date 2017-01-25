@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Glyphicon} from 'react-bootstrap';
 import {browserHistory, Link} from 'react-router';
-import {fetchAllFiles, addFile} from '../actions/index';
+import {addFile} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
@@ -20,27 +20,27 @@ class DropZone extends Component {
     }
 
     onDrop(acceptedFiles, rejectedFiles) {
-        console.log('Accepted files: ', acceptedFiles);
-        console.log('Rejected files: ', rejectedFiles);
         const {location} = this.state;
 
         let length = acceptedFiles.length;
-        acceptedFiles.forEach((file) => {
-            this.props.addFile({path: location, file: file, data: null, type: null});
-        });
-        this.props.close();
+        this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
     }
 
     render() {
+
         return (
             <div>
                 <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2">
                     <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">Drag and drop files onto this window to upload</h5>
                 </Dropzone>
-
                 {this.props.percentComplete
                     ? <ProgressBar now={this.props.percentComplete} label={this.props.percentComplete + '%'}/>
+                    : null}
+                {this.props.fileAddSuccess
+                    ? <h5 class="center-aligned">Upload Complete
+                            <i class="ion-android-cloud-done upload-complete-icon"></i>
+                        </h5>
                     : null}
             </div>
         );
@@ -49,11 +49,10 @@ class DropZone extends Component {
 }
 
 function mapStateToProps(state) {
-    return {percentComplete: state.documents.percentComplete, fileAddSuccess: state.documents.fileAddSuccess};
+    return {percentComplete: state.documents.percentComplete, fileAddSuccess: state.documents.fileAddSuccess, uploading: state.documents.uploading};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
-        fetchAllFiles: fetchAllFiles,
         addFile: addFile
     }, dispatch);
 }

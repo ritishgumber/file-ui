@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Glyphicon, Modal, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {deleteFile, fetchAllFiles, addItem} from '../actions/index';
+import {deleteFile, fetchAllFiles, sortDocuments} from '../actions/index';
 import {Link} from "react-router";
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
@@ -11,19 +11,18 @@ class DocumentList extends Component {
     constructor(props)
     {
         super(props);
-        console.log("here", this.props.location);
         if (this.props.appInitSuccess) {
-            this.props.fetchAllFiles({path: this.props.location});
-        }
+            if (!this.props.fetching)
+                this.props.fetchAllFiles({path: this.props.location});
+            }
         this.state = {
             docs: this.props.docs,
             isAsc: true,
-            nameIcon: "sort",
             location: this.props.location,
-            showModal: false,
-            document: {},
             selectedPage: 1,
-            condition: false
+            isAscending: true,
+            titleSortIcon: '',
+            modifiedSortIcon: ''
         };
 
     }
@@ -32,27 +31,28 @@ class DocumentList extends Component {
     {
 
         if (newProp.fileAddSuccess || newProp.percentComplete == 100 || newProp.appInitSuccess) {
-            this.props.fetchAllFiles({path: this.state.location});
-        }
+            if (!this.props.fetching)
+                this.props.fetchAllFiles({path: this.state.location});
+            }
         if (newProp.location !== this.props.location) {
             this.setState({location: newProp.location});
-            this.props.fetchAllFiles({path: newProp.location, skip: 1});
+            if (!this.props.fetching)
+                this.props.fetchAllFiles({path: newProp.location, skip: 1});
             this.setState({selectedPage: 1})
 
         }
     }
     handleScroll(scroll) {
         this.setState({scroll: scroll});
-        //console.log(window.innerHeight, scroll);
         let {scrollTop, scrollHeight} = scroll.target.body;
         if (scrollTop > (scrollHeight - window.innerHeight) * 0.75) {
-            console.log('now');
             if (this.state.selectedPage < this.props.total) {
-                this.props.fetchAllFiles({
-                    path: this.state.location,
-                    skip: this.state.selectedPage + 1,
-                    fetchMoreFiles: true
-                });
+                if (!this.props.fetching)
+                    this.props.fetchAllFiles({
+                        path: this.state.location,
+                        skip: this.state.selectedPage + 1,
+                        fetchMoreFiles: true
+                    });
                 this.setState({
                     selectedPage: this.state.selectedPage + 1
                 })
@@ -66,9 +66,28 @@ class DocumentList extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
+    sortDocuments(key) {
+        this.props.sortDocuments({key: key, isAscending: this.state.isAscending});
+        this.state.isAscending = !this.state.isAscending;
+        if (this.state.isAscending) {
+            if (key == 'title') {
+                this.state.titleSortIcon = 'ion-android-arrow-dropup sortIcon';
+                this.state.modifiedSortIcon = '';
+            } else {
+                this.state.titleSortIcon = '';
+                this.state.modifiedSortIcon = 'ion-android-arrow-dropup sortIcon';
+            }
+        } else {
+            if (key == 'title') {
+                this.state.titleSortIcon = 'ion-android-arrow-dropdown sortIcon';
+                this.state.modifiedSortIcon = '';
+            } else {
+                this.state.titleSortIcon = '';
+                this.state.modifiedSortIcon = 'ion-android-arrow-dropdown sortIcon';
+            }
 
-    close() {
-        this.setState({showModal: false});
+        }
+        this.setState(this.state);
     }
     toggleClass() {
         $(".trash-icon").hover(function() {
@@ -92,7 +111,7 @@ class DocumentList extends Component {
     render() {
         const {location} = this.state;
 
-        if (this.props.docs.length == 0) {
+        if (this.props.docs.length == 0 && !this.props.fetching) {
             return (
                 <div>
                     <DropZone location={this.state.location}/>
@@ -103,8 +122,12 @@ class DocumentList extends Component {
             <table class="document-list responsive" id="document-list">
                 <tbody>
                     <tr class="listHeading">
-                        <th class="dataStyle">Name</th>
-                        <th class="dataStyle">Modified</th>
+                        <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'title')}>Name
+                            <i class={this.state.titleSortIcon}></i>
+                        </th>
+                        <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
+                            <i class={this.state.modifiedSortIcon}></i>
+                        </th>
                         <th class="dataStyle">Actions</th>
                     </tr>
 
@@ -162,7 +185,9 @@ function mapStateToProps(state) {
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         deleteFile: deleteFile,
-        fetchAllFiles: fetchAllFiles
+        fetchAllFiles: fetchAllFiles,
+        sortDocuments: sortDocuments
+
     }, dispatch);
 }
 
