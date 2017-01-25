@@ -61,10 +61,10 @@ class App extends React.Component {
                 }
             )
         }
+
         return (
 
             <div class="container">
-
                 <Navbar class="navbar-style navbar-border " collapseOnSelect fixedTop={true}>
                     <Navbar.Header>
                         <Navbar.Brand>

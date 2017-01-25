@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from "react-dom";
 import {Provider} from 'react-redux';
-import {Router, Route, IndexRoute, hashHistory, Redirect} from "react-router";
+import {Router, Route, IndexRoute, hashHistory, browserHistory} from "react-router";
 
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
