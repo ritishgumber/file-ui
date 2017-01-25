@@ -39,6 +39,9 @@ app.get('/status', function(req, res, next) {
 });
 
 let port = process.env.PORT || 3012;
+app.use(function(req, res) {
+    res.sendFile('index.html', {root: './src/'})
+})
 app.listen(port, function() {
     console.log("CloudBoost File Ui running  on ", port);
 });

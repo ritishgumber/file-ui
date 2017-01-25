@@ -169,19 +169,19 @@ desc : return path of image depending on file type;
 */
 
 function imagePath(type) {
-    let img = "./assets/file.png";
+    let img = "/assets/file.png";
     switch (type) {
         case(type.match(/(.*)image(.*)/i) || {}).input:
-            img = "./assets/png.png";
+            img = "/assets/png.png";
             break;
         case(type.match(/(.*)folder(.*)/) || {}).input:
-            img = "./assets/folder.png";
+            img = "/assets/folder.png";
             break;
         case(type.match(/(.*)pdf(.*)/) || {}).input:
-            img = "./assets/pdf.png";
+            img = "/assets/pdf.png";
             break;
         case(type.match(/(.*)audio(.*)/) || {}).input:
-            img = "./assets/audio.png";
+            img = "/assets/audio.png";
             break;
 
     }

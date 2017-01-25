@@ -35,7 +35,7 @@ class DropZone extends Component {
         return (
             <div>
                 <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2">
-                    <img class="center-aligned" src="./assets/emptybox.png"/>
+                    <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">Drag and drop files onto this window to upload</h5>
                 </Dropzone>
 

@@ -13,7 +13,6 @@ class MainBody extends Component {
     constructor(props)
     {
         super(props);
-        console.log("mainbody", this.props.routes[1].delete);
         this.state = {
             location: this.props.location.pathname,
             isAscending: true,
@@ -74,8 +73,8 @@ class MainBody extends Component {
 
         const {listen} = browserHistory;
         listen(location => {
-            console.log(location);
-            this.setState({location: location.hash.substring(1)});
+            console.log("latest", location);
+            this.setState({location: location.pathname});
         });
         const {location} = this.state;
         const a = location.split("/");
@@ -104,14 +103,14 @@ class MainBody extends Component {
 
                             <span class="inlineLeft">
                                 <h4 class=" inline breadcrumb-row">
-                                    <a href={'#/' + this.props.appId}>Home</a>
+                                    <Link to={"/" + this.props.appId}>Home</Link>
                                     {breadcrumb}
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="./assets/fileadd.png" width="25px"/>
+                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/>
                                 <ReactTooltip place="bottom" effect="solid"/>
-                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="./assets/folderadd.png" width="25px"/>
+                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
 
@@ -119,7 +118,7 @@ class MainBody extends Component {
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title class="modal-title-style">
                                         Upload File
-                                        <img src="./assets/upload-icon.png" class="modal-icon-style pull-right"></img>
+                                        <img src="/assets/upload-icon.png" class="modal-icon-style pull-right"></img>
                                         <div class="modal-title-inner-text">Upload as many files you want.</div>
                                     </Modal.Title>
                                 </Modal.Header>
@@ -135,7 +134,7 @@ class MainBody extends Component {
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title>
                                         New Folder
-                                        <img src="./assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
+                                        <img src="/assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >

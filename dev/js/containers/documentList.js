@@ -136,9 +136,11 @@ class DocumentList extends Component {
                                         <span>{"Delete " + doc.type}</span>
                                     </ReactTooltip>
 
-                                    <a href={doc.url} target="_blank">
-                                        <span data-tip data-for="download-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
-                                    </a>
+                                    {doc.type == 'file'
+                                        ? <a href={doc.url} target="_blank">
+                                                <span data-tip data-for="download-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
+                                            </a>
+                                        : null}
                                     <ReactTooltip id='download-icon' place="bottom" effect='solid'>
                                         <span>Download File</span>
                                     </ReactTooltip>

@@ -29,22 +29,16 @@ class App extends React.Component {
         super(props);
         //console.log(this.props.location);
         console.log();
-        this.props.initApp('' + window.location.hash.split('/')[1]);
+        this.props.initApp('' + window.location.pathname.split('/')[1]);
         this.state = {
             scroll: {}
         };
 
     }
     navigate(route, isReplace) {
-        console.log(route);
-        if (!isReplace) {
-            window.location.href = route;
-            location.reload(true);
-        } else {
-            location.assign(route);
-        }
+
+        location.assign(route);
     }
-    allApps() {}
 
     render() {
         let allApps = '';
@@ -54,7 +48,7 @@ class App extends React.Component {
             allApps = this.props.allApps.map((app, i) => {
                 if (app.id != thisObj.props.appId)
                     return (
-                        <MenuItem key={i} onClick={this.navigate.bind(this, '#/' + app.id, false)}>
+                        <MenuItem key={i} onClick={this.navigate.bind(this, "/" + app.id)}>
                             {app.name}
                         </MenuItem>
                     );
@@ -68,7 +62,7 @@ class App extends React.Component {
                 <Navbar class="navbar-style navbar-border " collapseOnSelect fixedTop={true}>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a class="navbar-brand logo" href={DASHBOARD_URL}><img id="logo" src="./assets/cblogo.png" width="40px"/></a>
+                            <a class="navbar-brand logo" href={DASHBOARD_URL}><img id="logo" src="/assets/cblogo.png" width="40px"/></a>
                         </Navbar.Brand>
                         <Navbar.Toggle/>
                     </Navbar.Header>
@@ -77,15 +71,15 @@ class App extends React.Component {
                             <NavDropdown eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}</NavDropdown>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem onClick={this.navigate.bind(this, DASHBOARD_URL, true)}>Dashboard
+                            <NavItem onClick={this.navigate.bind(this, DASHBOARD_URL)}>Dashboard
                             </NavItem>
 
-                            <NavDropdown eventKey={3} title={< img src = "./assets/user-default-image.jpg" class = "profile-photo" />} id="basic-nav-dropdown" class="profile">
+                            <NavDropdown eventKey={3} title={< img src = "/assets/user-default-image.jpg" class = "profile-photo" />} id="basic-nav-dropdown" class="profile">
 
-                                <MenuItem key={1} onClick={this.navigate.bind(this, DASHBOARD_URL + '/#/profile', true)}>
+                                <MenuItem key={1} onClick={this.navigate.bind(this, DASHBOARD_URL + '/#/profile')}>
                                     View Profile
                                 </MenuItem>
-                                <MenuItem key={2} onClick={this.navigate.bind(this, '#/', false)}>
+                                <MenuItem key={2} onClick={this.navigate.bind(this, '#/')}>
                                     Logout
                                 </MenuItem>
                             </NavDropdown>
@@ -114,12 +108,12 @@ class App extends React.Component {
 
                     <Navbar.Collapse>
                         <Nav >
-                            <NavItem eventKey={2} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/', true)}>Terms</NavItem>
-                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy', true)}>Privacy</NavItem>
-                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/', true)}>Help</NavItem>
+                            <NavItem eventKey={2} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/')}>Terms</NavItem>
+                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy')}>Privacy</NavItem>
+                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/')}>Help</NavItem>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#', true)}>Documentation</NavItem>
+                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#')}>Documentation</NavItem>
 
                         </Nav>
 

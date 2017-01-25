@@ -25,7 +25,7 @@ class SideBar extends Component {
         listen(location => {
             console.log(location);
 
-            this.setState({location: location.hash.substring(1)});
+            this.setState({location: location.pathname});
 
         });
 
@@ -37,23 +37,23 @@ class SideBar extends Component {
                     <ul >
 
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)')}>
-                            <img src="./assets/allfiles.png" width="20px"/>
+                            <img src="/assets/allfiles.png" width="20px"/>
                             &nbsp;&nbsp;All Files
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)image(.*)')}>
-                            <img src="./assets/allphotos.png" width="20px"/>
+                            <img src="/assets/allphotos.png" width="20px"/>
                             &nbsp;&nbsp;Photos
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
-                            <img src="./assets/allfolders.png" width="20px"/>
+                            <img src="/assets/allfolders.png" width="20px"/>
                             &nbsp;&nbsp;Folders
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)audio(.*)')}>
-                            <img src="./assets/music.png" width="20px"/>
+                            <img src="/assets/music.png" width="20px"/>
                             &nbsp;&nbsp;Music
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)video(.*)')}>
-                            <img src="./assets/video.png" width="20px"/>
+                            <img src="/assets/video.png" width="20px"/>
                             &nbsp;&nbsp;Video
                         </li>
 
