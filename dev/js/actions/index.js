@@ -5,20 +5,36 @@ export const initApp = (appId) => {
         axios.defaults.withCredentials = true
 
         axios.get(USER_SERVICE_URL + 'user').then((userData) => {
-            console.log("/user success");
-            axios.get(USER_SERVICE_URL + 'app/' + appId).then((data) => {
-                if (data.data && appId) {
-                    if (__isHosted == "true" || __isHosted == true) {
-                        CB.CloudApp.init(appId, data.data.keys.master)
-                    } else
-                        CB.CloudApp.init(SERVER_URL, appId, data.data.keys.master)
-                    dispatch({
-                        type: 'APP_INIT_SUCCESS',
-                        payload: {
-                            appId: appId,
-                            appName: data.data.name
-                        }
+            axios.get(USER_SERVICE_URL + 'app/' + appId).then((appdata) => {
+                if (appdata.data && appId) {
+                    axios.get(USER_SERVICE_URL + 'app').then((data) => {
+
+                        if (__isHosted == "true" || __isHosted == true) {
+                            CB.CloudApp.init(appId, appdata.data.keys.master)
+                        } else
+                            CB.CloudApp.init(SERVER_URL, appId, appdata.data.keys.master)
+
+                        let allApps = [];
+                        let length = data.data.length;
+                        data.data.forEach((app) => {
+                            allApps.push({name: app.name, id: app.appId});
+                            length--;
+                            if (length == 0)
+
+                                dispatch({
+                                    type: 'APP_INIT_SUCCESS',
+                                    payload: {
+                                        appId: appId,
+                                        appName: appdata.data.name,
+                                        allApps: allApps
+                                    }
+                                });
+                            }
+                        );
+                    }, (err) => {
+                        console.log(err);
                     });
+
                 } else {
                     window.location.href = DASHBOARD_URL
                 }
@@ -59,8 +75,8 @@ export const fetchAllFiles = (data) => {
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
 
-    if (path == "/")
-        path = "/home";
+    if (path.endsWith('/'))
+        path = path.slice(0, path.length - 1)
     var query = new CB.CloudQuery("_File");
     if (searchText)
         query.regex('name', '(.*)' + searchText + '(.*)', true);
@@ -125,8 +141,8 @@ export const fetchAllFiles = (data) => {
 export const addFile = (payload) => {
     let {file, data, type, path} = payload;
 
-    if (path == "/")
-        path = "/home"
+    if (path.endsWith('/'))
+        path = path.slice(0, path.length - 1)
     return ((dispatch) => {
         let cloudFile = new CB.CloudFile(file, data, type, path);
         cloudFile.save({

@@ -5,7 +5,14 @@ export default function(state = {
 
     switch (action.type) {
         case 'APP_INIT_SUCCESS':
-            return {appInitSuccess: true, appId: action.payload.appId, fileAddSuccess: false, docs: [], appName: action.payload.appName}
+            return {
+                appInitSuccess: true,
+                appId: action.payload.appId,
+                fileAddSuccess: false,
+                docs: [],
+                appName: action.payload.appName,
+                allApps: action.payload.allApps
+            }
 
             break;
         case 'DELETE_FILE':

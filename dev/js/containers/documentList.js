@@ -22,7 +22,7 @@ class DocumentList extends Component {
             showModal: false,
             document: {},
             selectedPage: 1,
-            selectedPageSet: 0
+            condition: false
         };
 
     }
@@ -69,6 +69,25 @@ class DocumentList extends Component {
     close() {
         this.setState({showModal: false});
     }
+    toggleClass() {
+        $(".trash-icon").hover(function() {
+            $(this).removeClass("ion-ios-trash-outline");
+            $(this).addClass("ion-ios-trash");
+        }, function() {
+            $(this).removeClass("ion-ios-trash");
+            $(this).addClass("ion-ios-trash-outline");
+        });
+        $(".download-icon").hover(function() {
+            $(this).removeClass("ion-ios-download-outline");
+            $(this).addClass("ion-ios-download");
+        }, function() {
+            $(this).removeClass("ion-ios-download");
+            $(this).addClass("ion-ios-download-outline");
+        });
+    }
+    deleteFile(id) {
+        this.props.deleteFile(id);
+    }
     render() {
         const {location} = this.state;
 
@@ -82,6 +101,11 @@ class DocumentList extends Component {
         return (
             <table class="document-list" id="document-list">
                 <tbody>
+                    <tr class="listHeading">
+                        <th class="dataStyle">Name</th>
+                        <th class="dataStyle">Modified</th>
+                        <th class="dataStyle">Actions</th>
+                    </tr>
 
                     {this.props.docs.map((doc, i) => {
                         const titleArr = doc.title.split('/');
@@ -102,14 +126,12 @@ class DocumentList extends Component {
 }
                                 </td>
 
-                                <td >
+                                <td class="dataStyle">
                                     {doc.modified}
                                 </td>
-                                <td >
-                                    <img src="./assets/remove.png" width="15px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>&nbsp;
-                                    <a target="_blank" key={i} href={doc.url}>
-                                        <img src="./assets/download.png" width="20px" onClick={this.props.deleteFile.bind(this, doc.id)}></img>
-                                    </a>
+                                <td class="dataStyle ">
+                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                                    <span onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
                                 </td>
                             </tr>
                         )

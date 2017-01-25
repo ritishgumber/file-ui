@@ -56,7 +56,7 @@ body {
 }
 
 .listStyle:hover {
-    background-color: #dbf1f1;
+    background-color: rgba(79, 156, 245, 0.16);
     border-bottom: 1px solid #d2cdcd;
 }
 
@@ -76,15 +76,7 @@ body {
     border: 2px solid black;
 }
 
-.fixed-navbar {
-    /*position: fixed;
-    width: 71%;*/
-    z-index: 100;
-    border-bottom: 1px solid #549afc;
-}
-
 .dropBody {
-    border: 2px solid #59cbff;
     border-radius: 10px;
     margin: 10px;
     padding-left: 5%;
@@ -93,10 +85,6 @@ body {
 
 .dropBody2 {
     background-color: #cdebff;
-    border-radius: 50px;
-    margin: 10px;
-    padding-left: 5%;
-    padding-bottom: 5%;
 }
 
 .inlineRight {
@@ -114,10 +102,6 @@ body {
 .inline {
     display: inline-block;
     padding: 5px
-}
-
-.profile-photo {
-    border-radius: 50%;
 }
 
 .fetching-loader {
@@ -144,11 +128,12 @@ body {
 }
 
 #logo {
+    margin-left: 50px;
     border-radius: 10%
 }
 
 .logo {
-    padding: 10px
+    padding: 5px
 }
 
 .breadcrumb-row {
@@ -175,7 +160,6 @@ body {
 
 #remove-hover-bg:hover {
     background-color: white;
-    border-bottom: 2px solid #549afc;
 }
 
 .header-row {
@@ -228,4 +212,97 @@ body {
 
 .navbar-border {
     border-bottom: 1px solid rgba(84, 154, 252, 0.56);
+}
+
+.app-items:hover {
+    background: white
+}
+
+.breadcrumb-color {
+    color: grey
+}
+
+.action-icons {
+    font-size: 24px;
+    padding-right: 5px;
+}
+
+.center-aligned {
+    display: block;
+    text-align: center;
+    color: grey;
+    margin: auto;
+}
+
+.modal-header-style {
+    color: white;
+    background: #4f9cf5;
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.create-btn {
+    background: #4f9cf5;
+}
+
+.create-btn:hover {
+    background: #4f9cf5;
+}
+
+.profile-photo {
+    width: 25px;
+    border-radius: 50%;
+}
+
+.modal-icon-style {
+    border-radius: 50%;
+    background: #2c5f9a;
+    font-size: 30px;
+    width: 60px;
+    padding: 15px;
+}
+
+#folderName {
+    padding: 30px;
+    border: none;
+    display: block;
+    margin: auto;
+    font-size: 18px;
+}
+
+#folderName:focus {
+    outline: none;
+    border: none;
+}
+
+.footer-item {
+    font-size: 12px;
+}
+
+.below-navbar {
+    border-bottom: 1px solid #d2cdcd
+}
+
+.listHeading {
+    padding: 10px;
+    background: rgba(179, 179, 179, 0.15);
+}
+
+.modal-title-style {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.modal-title-inner-text {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.side-item-selected {
+    background-color: #4f9cf5;
+    color: white
+}
+
+.modal-content {
+    border-radius: 20px;
 }

@@ -14,6 +14,10 @@ class SideBar extends Component {
     }
 
     renderSpecificFileType(regex) {
+        $(".side-menu-items").click(function() {
+            $(this).addClass("side-item-selected");
+            $(this).siblings().removeClass("side-item-selected");
+        });
         this.props.fetchAllFiles({path: this.state.location, regex: regex})
     }
     render() {

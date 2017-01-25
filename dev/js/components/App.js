@@ -6,7 +6,19 @@ import axios from 'axios';
 import {initApp} from '../actions/index';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {Row, Grid, Col, Glyphicon} from 'react-bootstrap';
+import {Link} from 'react-router';
+import {
+    Row,
+    Grid,
+    Col,
+    Glyphicon,
+    Navbar,
+    Nav,
+    NavItem,
+    NavDropdown,
+    MenuItem,
+    Dropdown
+} from 'react-bootstrap';
 
 const d = {
     position: "fixed"
@@ -23,41 +35,64 @@ class App extends React.Component {
         };
 
     }
+    navigate(route, isReplace) {
+        console.log(route);
+        if (!isReplace) {
+            window.location.href = route;
+            location.reload(true);
+        } else {
+            location.assign(route);
+        }
+    }
+    allApps() {}
 
     render() {
+        let allApps = '';
+        const thisObj = this;
 
+        if (this.props.allApps) {
+            allApps = this.props.allApps.map((app, i) => {
+                if (app.id != thisObj.props.appId)
+                    return (
+                        <MenuItem key={i} onClick={this.navigate.bind(this, '#/' + app.id, false)}>
+                            {app.name}
+                        </MenuItem>
+                    );
+                }
+            )
+        }
         return (
 
             <div class="container">
 
-                <nav class="navbar navbar-style navbar-fixed-top ">
-                    <div class="container navbar-border">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                                <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                            </button>
-                            <a class="navbar-brand logo" href="#"><img id="logo" src="./assets/cblogo.png" width="40px"/></a>
-                        </div>
-                        <div class="collapse navbar-collapse" id="myNavbar">
+                <Navbar class="navbar-style navbar-border " collapseOnSelect fixedTop={true}>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <a class="navbar-brand logo" href={DASHBOARD_URL}><img id="logo" src="./assets/cblogo.png" width="40px"/></a>
+                        </Navbar.Brand>
+                        <Navbar.Toggle/>
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Nav>
+                            <NavDropdown eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}</NavDropdown>
+                        </Nav>
+                        <Nav pullRight>
+                            <NavItem onClick={this.navigate.bind(this, DASHBOARD_URL, true)}>Dashboard
+                            </NavItem>
 
-                            <ul class="nav navbar-nav navbar-right">
+                            <NavDropdown eventKey={3} title={< img src = "./assets/user-default-image.jpg" class = "profile-photo" />} id="basic-nav-dropdown" class="profile">
 
-                                <li>
-                                    <a href="https://tutorials.cloudboost.io/en/datastorage/files#" target="_blank" class="header-elements" id="remove-hover-bg">
-                                        &nbsp;Documentation
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="header-elements" id="remove-hover-bg">
-                                        <img src="https://cfl.dropboxstatic.com/static/images/avatar/faceholder-32-vflKWtuU5.png" class="profile-photo" width='24px'/>
-                                        &nbsp;My Profile
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                                <MenuItem key={1} onClick={this.navigate.bind(this, DASHBOARD_URL + '/#/profile', true)}>
+                                    View Profile
+                                </MenuItem>
+                                <MenuItem key={2} onClick={this.navigate.bind(this, '#/', false)}>
+                                    Logout
+                                </MenuItem>
+                            </NavDropdown>
 
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
                 <div class="container">
                     <h3>&nbsp;</h3>
                     <div className="row">
@@ -70,13 +105,34 @@ class App extends React.Component {
 
                     </div>
                 </div>
+
+                <Navbar class="navbar-style navbar-border " collapseOnSelect fixedBottom={true}>
+                    <Navbar.Brand>
+                        <a class="footer-item" href="https://cloudboost.io">&copy; CloudBoost</a>
+                    </Navbar.Brand>
+                    <Navbar.Toggle/>
+
+                    <Navbar.Collapse>
+                        <Nav >
+                            <NavItem eventKey={2} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/', true)}>Terms</NavItem>
+                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy', true)}>Privacy</NavItem>
+                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/', true)}>Help</NavItem>
+                        </Nav>
+                        <Nav pullRight>
+                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#', true)}>Documentation</NavItem>
+
+                        </Nav>
+
+                    </Navbar.Collapse>
+                </Navbar>
+
             </div>
         )
     }
 }
 
 function mapStateToProps(state) {
-    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess};
+    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess, allApps: state.documents.allApps, appName: state.documents.appName, appId: state.documents.appId};
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
@@ -84,4 +140,4 @@ function matchDispatchToProps(dispatch) {
         initApp
     }, dispatch);
 }
-export default connect(mapStateToProps, matchDispatchToProps)(App);
+export default connect(mapStateToProps, matchDispatchToProps)(App);;
