@@ -102,14 +102,15 @@ export const fetchAllFiles = (data) => {
             success: function(files) {
                 files.forEach((cloudFile) => {
                     let file = cloudFile.document;
-
+                    let date = new Date(parseInt(file.createdAt));
+                    const modified = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
                     response.push({
                         id: file._id,
                         url: file.url,
                         title: file.name.length > 20
                             ? file.name.substring(0, 14) + '.....' + file.name.substring(file.name.length - 5, file.name.length)
                             : file.name,
-                        modified: new Date(parseInt(file.createdAt)).toLocaleString(), //to be changed later
+                        modified: modified,
                         type: file.contentType == 'folder'
                             ? 'folder'
                             : 'file',

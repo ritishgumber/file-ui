@@ -62,6 +62,15 @@ body {
 
 .dataStyle {
     padding: 10px;
+    cursor: default;
+}
+
+.nameDataField {
+    cursor: pointer;
+}
+
+.modifiedDataItem {
+    color: grey;
 }
 
 .header {
@@ -105,8 +114,8 @@ body {
 }
 
 .fetching-loader {
-    margin-left: 30%;
-    width: 50px;
+    margin-left: 40%;
+    width: 35px;
 }
 
 .sideBarComponent {
@@ -242,8 +251,8 @@ body {
 .modal-header-style {
     color: white;
     background: #4f9cf5;
-    border-top-left-radius: 17px;
-    border-top-right-radius: 17px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .create-btn {
@@ -304,12 +313,13 @@ body {
 }
 
 .side-item-selected {
-    background-color: #4f9cf5;
-    color: white
+    background-color: #ececec;
+    color: black;
+    border-radius: 3px;
 }
 
 .modal-content {
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 .sortIcon {
@@ -321,4 +331,27 @@ body {
     padding-left: 5px;
     font-size: 20px;
     color: green;
+}
+
+.trash-icon:hover {
+    color: red;
+}
+
+.download-icon:hover {
+    color: blue;
+}
+
+.__react_component_tooltip.type-dark {
+    background: #ececec!important;
+    color: black!important;
+}
+
+.__react_component_tooltip.type-dark.place-bottom:after {
+    border-bottom-color: #ececec!important;
+    border-bottom-style: solid;
+    border-bottom-width: 6px;
+}
+
+x;
+
 }

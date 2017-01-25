@@ -108,6 +108,13 @@ class DocumentList extends Component {
     deleteFile(id) {
         this.props.deleteFile(id);
     }
+    navigate(route, isFile) {
+        if (isFile) {
+            window.open(route, '_blank');
+        } else {
+            window.location.href = route;
+        }
+    }
     render() {
         const {location} = this.state;
 
@@ -132,36 +139,29 @@ class DocumentList extends Component {
                     </tr>
 
                     {this.props.docs.map((doc, i) => {
-                        const titleArr = doc.title.split('/');
-                        const title = titleArr[titleArr.length - 1];
+                        const isFile = (doc.type == 'file'
+                            ? true
+                            : false);
+                        const route = (isFile
+                            ? doc.url
+                            : this.state.location + '/' + doc.title);
                         return (
                             <tr key={i} ref="listRow" className="listStyle">
-                                <td className="dataStyle">
-                                    <img src={doc.img} width="30"/> {doc.type == 'file'
-                                        ? (
-                                            <a key={doc.id} href={doc.url} target="_blank">{title}</a>
-                                        )
-                                        : (
-                                            <Link to={(this.state.location == '/'
-                                                ? '/home'
-                                                : this.state.location) + '/' + doc.title}>
-                                                {title}</Link>
-                                        )
-}
+                                <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, route, isFile)}>
+                                    <img src={doc.img} width="30"/> {doc.title}
                                 </td>
-
-                                <td class="dataStyle">
+                                <td class="dataStyle modifiedDataItem">
                                     {doc.modified}
                                 </td>
                                 <td class="dataStyle ">
-                                    <span data-tip data-for="delete-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
-                                    <ReactTooltip id='delete-icon' type='error' place="bottom" effect='solid'>
+                                    <span data-tip data-for="delete-icon" onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                                    <ReactTooltip id='delete-icon' place="bottom" effect='solid'>
                                         <span>{"Delete " + doc.type}</span>
                                     </ReactTooltip>
 
                                     {doc.type == 'file'
                                         ? <a href={doc.url} target="_blank">
-                                                <span data-tip data-for="download-icon" onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} class="ion ion-ios-download-outline action-icons download-icon"></span>
+                                                <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
                                             </a>
                                         : null}
                                     <ReactTooltip id='download-icon' place="bottom" effect='solid'>

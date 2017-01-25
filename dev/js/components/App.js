@@ -24,7 +24,7 @@ class App extends React.Component {
         };
 
     }
-    navigate(route, isReplace) {
+    navigate(route) {
 
         location.assign(route);
     }
