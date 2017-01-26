@@ -49,11 +49,6 @@ export default function(state = {
                 ...state,
                 total: action.payload,
                 appInitSuccess: false
-            };
-        case 'UPLOAD_PROGRESS':
-            return {
-                ...state,
-                percentComplete: action.payload
             }
         case 'ADD_FILE_SUCCESS':
             return {

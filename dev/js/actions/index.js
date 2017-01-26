@@ -132,32 +132,9 @@ export const fetchAllFiles = (data) => {
     })
 
 }
-/*
 export const addFile = (payload) => {
     let {file, data, type, path} = payload;
-
-    if (path.endsWith('/'))
-        path = path.slice(0, path.length - 1)
-    return ((dispatch) => {
-        let cloudFile = new CB.CloudFile(file, data, type, path);
-        cloudFile.save({
-            success: function(cloudFile) {
-                dispatch({type: "ADD_FILE_SUCCESS"})
-            },
-            error: function(error) {},
-            uploadProgress: function(percentComplete) {
-                dispatch({
-                    type: 'UPLOAD_PROGRESS',
-                    payload: parseInt(percentComplete * 100)
-                });
-            }
-        });
-
-    })
-}*/
-export const addFile = (payload) => {
-    let {file, data, type, path} = payload;
-
+    let filesUploaded = [];
     if (path.endsWith('/'))
         path = path.slice(0, path.length - 1)
     let length = file.length;
@@ -165,10 +142,13 @@ export const addFile = (payload) => {
         dispatch({type: "UPLOADING_FILES"});
 
         file.forEach((fileObj) => {
+            console.log(fileObj);
             let cloudFile = new CB.CloudFile(fileObj, data, type, path);
             cloudFile.save({
                 success: function(cloudFile) {
                     length--;
+                    filesUploaded.push(fileObj);
+                    dispatch({type: "FILES_UPLOADED", payload: filesUploaded})
                     if (length == 0)
                         dispatch({type: "ADD_FILE_SUCCESS"})
                 },
@@ -180,7 +160,10 @@ export const addFile = (payload) => {
                 uploadProgress: function(percentComplete) {
                     dispatch({
                         type: 'UPLOAD_PROGRESS',
-                        payload: parseInt(percentComplete * 100)
+                        payload: {
+                            uploadProgress: parseInt(percentComplete * 100),
+                            file: fileObj
+                        }
                     });
                 }
             });

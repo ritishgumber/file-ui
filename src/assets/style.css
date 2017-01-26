@@ -352,6 +352,11 @@ body {
     border-bottom-width: 6px;
 }
 
-x;
+.uploaded-file-row {
+    color: green;
+    font-size: 17px;
+}
 
+.glyphicon-ok-circle {
+    padding: 5px
 }
