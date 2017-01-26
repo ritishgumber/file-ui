@@ -4,5 +4,4 @@ $(document).ready(function() {
         $(this).addClass("side-item-selected");
         $(this).siblings().removeClass("side-item-selected");
     });
-
 });
