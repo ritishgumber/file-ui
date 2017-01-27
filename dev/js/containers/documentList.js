@@ -139,7 +139,7 @@ class DocumentList extends Component {
                     </tr>
 
                     {this.props.docs.map((doc, i) => {
-                        const isFile = (doc.type == 'file'
+                        const isFile = (doc.type == 'File'
                             ? true
                             : false);
                         const route = (isFile
@@ -159,7 +159,7 @@ class DocumentList extends Component {
                                         <span>{"Delete " + doc.type}</span>
                                     </ReactTooltip>
 
-                                    {doc.type == 'file'
+                                    {doc.type == 'File'
                                         ? <a href={doc.url} target="_blank">
                                                 <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
                                             </a>
