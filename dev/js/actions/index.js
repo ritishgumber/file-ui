@@ -112,8 +112,8 @@ export const fetchAllFiles = (data) => {
                             : file.name,
                         modified: modified,
                         type: file.contentType == 'folder'
-                            ? 'folder'
-                            : 'file',
+                            ? 'Folder'
+                            : 'File',
                         img: imagePath(file.contentType)
                     })
                 });
@@ -147,7 +147,7 @@ export const addFile = (payload) => {
             cloudFile.save({
                 success: function(cloudFile) {
                     length--;
-                    filesUploaded.push(fileObj);
+                    filesUploaded.unshift(fileObj);
                     dispatch({type: "FILES_UPLOADED", payload: filesUploaded})
                     if (length == 0)
                         dispatch({type: "ADD_FILE_SUCCESS"})

@@ -55,7 +55,7 @@ class DropZone extends Component {
                 return (
                     <div class="uploaded-file-row">
                         <Glyphicon glyph="ok-circle"/>
-                        <a href={file.preview}>{file.name}</a>
+                        <a target="_blank" href={file.preview}>{file.name}</a>
                     </div>
                 )
             }))
@@ -75,8 +75,8 @@ class DropZone extends Component {
         else
             return (
                 <div>
-                    {this.renderUploadedFilesList()}
                     {this.renderUploadingFilesList()}
+                    {this.renderUploadedFilesList()}
                 </div>
             )
     }
