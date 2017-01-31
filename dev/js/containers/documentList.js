@@ -4,8 +4,8 @@ import {
     Modal,
     Button,
     ProgressBar,
-    DropdownButton,
-    MenuItem
+    Popover,
+    OverlayTrigger
 } from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -199,18 +199,31 @@ class DocumentList extends Component {
     }
     selectRow() {
         $('.listStyle').click(function() {
-            console.log('click');
             $(this).addClass('row-selected');
             $(this).siblings().removeClass("row-selected");
 
         });
     }
-    openMoreMenu() {
-        $('.more-icon').click(function() {
-            console.log('a', $(this).children('ul'));
-            $(this).children('ul').css('display', 'block')
+    showNameInput() {
+        $(".nameInput").keypress(function(e) {
+            if (e.key == 'Enter') {
+                $(this).css('display', 'none');
+                $(this).siblings('span').text($(this)[0].value);
+                $(this).siblings('span').css('display', 'inline-block');
+            }
+        });
+        $(".nameInput").focusout(function(e) {
+            console.log('ok');
+            $('.nameInput').css('display', 'none');
+            $('.nameField').css('display', 'inline-block');
+        });
+        $('.nameField').click(function() {
+            $(this).css('display', 'none');
+            $(this).siblings('input').css('display', 'inline-block');
+            $(this).siblings('input').focus();
         });
     }
+
     render() {
         const {location} = this.state;
 
@@ -243,11 +256,20 @@ class DocumentList extends Component {
                         const route = (isFile
                             ? doc.url
                             : this.state.location + '/' + doc.title);
+                        const popoverFocus = (
+                            <Popover id="popover-trigger-focus" title="More..">
+                                <div class="popover-list">Rename</div>
+                                <div class="popover-list">ACL</div>
+                            </Popover>
+                        );
                         return (
-                            <tr key={i} ref="listRow" class="listStyle">
-                                <td className="dataStyle nameDataField" onClick={this.selectRow.bind(this)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
+                            <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
+                                <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, route, isFile)}>
                                     <img src={doc.img} width="30"/>
-                                    <span class="name-field">{doc.title}</span>
+                                    <span class="name-field">
+                                        <span onClick={this.showNameInput.bind(this)} class="nameField">{doc.title}</span>
+                                        <input autoFocus={true} type="text" defaultValue={doc.title} placeholder="Name" class="input-no-border nameInput"/>
+                                    </span>
 
                                 </td>
                                 <td class="dataStyle modifiedDataItem">
@@ -268,14 +290,10 @@ class DocumentList extends Component {
                                         <span>Download
                                         </span>
                                     </ReactTooltip>
-                                    <span title={< i class = "ion ion-ios-more-outline action-icons more-icon" />}>
-                                        <ul class="more-menu" id="a">
-                                            <li>1</li>
-                                            <li>2</li>
-                                        </ul>
-                                    </span>
+                                    <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverFocus}>
+                                        <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                                    </OverlayTrigger>
 
-                                    <span data-tip onClick={this.openMoreMenu.bind(this)} onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
                                     <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                         <span>More
                                         </span>
