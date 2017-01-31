@@ -69,8 +69,20 @@ body {
     cursor: pointer;
 }
 
+.name-field {
+    cursor: text;
+}
+
 .modifiedDataItem {
     color: grey;
+}
+
+.ProgressBar {
+    height: 10px;
+}
+
+.progress-bar {
+    background: #4f9cf5;
 }
 
 .header {
@@ -85,14 +97,7 @@ body {
     border: 2px solid black;
 }
 
-.dropBody {
-    border-radius: 10px;
-    margin: 10px;
-    padding-left: 5%;
-    padding-bottom: 5%;
-}
-
-.dropBody2 {
+.activeDropBody {
     background-color: #cdebff;
 }
 
@@ -223,7 +228,7 @@ body {
 }
 
 .navbar-border {
-    border-bottom: 1px solid rgba(84, 154, 252, 0.56);
+    border-bottom: 1px solid rgba(84, 154, 252, 0.23);
 }
 
 .app-items:hover {
@@ -231,7 +236,8 @@ body {
 }
 
 .breadcrumb-color {
-    color: grey
+    color: grey;
+    padding-right: 4px;
 }
 
 .action-icons {
@@ -263,9 +269,8 @@ body {
     background: #4f9cf5;
 }
 
-.profile-photo {
-    width: 25px;
-    border-radius: 50%;
+.profile-icon {
+    font-size: 25px;
 }
 
 .modal-icon-style {
@@ -299,7 +304,8 @@ body {
 
 .listHeading {
     padding: 10px;
-    background: rgba(179, 179, 179, 0.15);
+    background: #e4e4e4;
+    color: grey;
 }
 
 .modal-title-style {
@@ -318,6 +324,10 @@ body {
     border-radius: 3px;
 }
 
+.row-selected {
+    background: rgba(79, 156, 245, 0.16);
+}
+
 .modal-content {
     border-radius: 5px;
 }
@@ -327,36 +337,40 @@ body {
     font-size: 14px;
 }
 
-.upload-complete-icon {
-    padding-left: 5px;
-    font-size: 20px;
-    color: green;
-}
-
 .trash-icon:hover {
     color: red;
 }
 
 .download-icon:hover {
-    color: blue;
+    color: #285c98;
+}
+
+.edit-icon {
+    font-size: 20px!important;
+}
+
+.edit-icon:hover {
+    color: #0b368a
 }
 
 .__react_component_tooltip.type-dark {
-    background: #ececec!important;
-    color: black!important;
+    background: #4e4e4e!important;
+    color: white!important;
 }
 
 .__react_component_tooltip.type-dark.place-bottom:after {
-    border-bottom-color: #ececec!important;
+    border-bottom-color: #4e4e4e!important;
     border-bottom-style: solid;
     border-bottom-width: 6px;
+    opacity: 1 !important;
 }
 
-.uploaded-file-row {
-    color: green;
-    font-size: 17px;
+.uploadingList {
+    background: rgba(212, 209, 209, 0.39);
+    color: #afabab;
+    border-bottom: 1px solid #d2cdcd;
 }
 
-.glyphicon-ok-circle {
-    padding: 5px
+.more-menu {
+    display: none
 }

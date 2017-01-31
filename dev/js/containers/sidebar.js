@@ -24,7 +24,11 @@ class SideBar extends Component {
     render() {
         const {listen} = browserHistory;
         listen(location => {
-            this.setState({location: location.pathname});
+            $(".side-menu-items:first-child").addClass("side-item-selected");
+            $(".side-menu-items:first-child").siblings().removeClass("side-item-selected");
+            this.setState({
+                location: decodeURIComponent(location.pathname)
+            });
 
         });
 

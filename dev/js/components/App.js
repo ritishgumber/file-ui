@@ -37,7 +37,7 @@ class App extends React.Component {
             allApps = this.props.allApps.map((app, i) => {
                 if (app.id != thisObj.props.appId)
                     return (
-                        <MenuItem key={i} onClick={this.navigate.bind(this, "/" + app.id)}>
+                        <MenuItem key={i} href={'/' + app.id}>
                             {app.name}
                         </MenuItem>
                     );
@@ -57,16 +57,19 @@ class App extends React.Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <NavDropdown eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}</NavDropdown>
+                            <NavDropdown eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}
+                                <MenuItem divider/>
+                                <MenuItem key={4} href={DASHBOARD_URL}>Dashboard</MenuItem>
+                            </NavDropdown>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem onClick={this.navigate.bind(this, DASHBOARD_URL)}>Dashboard
+                            <NavItem href={DASHBOARD_URL} onClick={this.navigate.bind(this, DASHBOARD_URL)}>Dashboard
                             </NavItem>
 
-                            <NavDropdown eventKey={3} title={< img src = "/assets/user-default-image.jpg" class = "profile-photo" />} id="basic-nav-dropdown" class="profile">
+                            <NavDropdown eventKey={3} title={< i class = "ion ion-person profile-icon" > </i>} id="basic-nav-dropdown" class="profile">
 
                                 <MenuItem key={1} onClick={this.navigate.bind(this, DASHBOARD_URL + '/#/profile')}>
-                                    View Profile
+                                    Profile
                                 </MenuItem>
                                 <MenuItem key={2} onClick={this.navigate.bind(this, '#/')}>
                                     Logout
@@ -97,12 +100,12 @@ class App extends React.Component {
 
                     <Navbar.Collapse>
                         <Nav >
-                            <NavItem eventKey={2} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/')}>Terms</NavItem>
-                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy')}>Privacy</NavItem>
-                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/')}>Help</NavItem>
+                            <NavItem eventKey={2} class="footer-item" href='https://cloudboost.io/' onClick={this.navigate.bind(this, 'https://cloudboost.io/')}>Terms</NavItem>
+                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy')} href='https://cloudboost.io/privacy'>Privacy</NavItem>
+                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/')} href='https://slack.cloudboost.io/'>Help</NavItem>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#')}>Documentation</NavItem>
+                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#')} href='https://tutorials.cloudboost.io/en/datastorage/files#'>Documentation</NavItem>
 
                         </Nav>
 
