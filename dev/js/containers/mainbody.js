@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Glyphicon, Modal, Button} from 'react-bootstrap';
+import {Glyphicon, Modal, Button, ProgressBar} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
 import {deleteFile, fetchAllFiles, addFile, sortDocuments} from '../actions/index';
 import DropZone from './dropzone';
+import Dropzone from 'react-dropzone';
 import {browserHistory, Link} from "react-router";
 import ReactTooltip from 'react-tooltip';
 
@@ -14,7 +15,7 @@ class MainBody extends Component {
     {
         super(props);
         this.state = {
-            location: this.props.location.pathname
+            location: decodeURIComponent(this.props.location.pathname)
         };
 
     }
@@ -35,7 +36,7 @@ class MainBody extends Component {
     }
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
-        this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder'});
+        this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder/folder'});
         this.close();
     }
 
@@ -43,12 +44,40 @@ class MainBody extends Component {
         if (!this.props.fetching)
             this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
     }
+    onDrop(acceptedFiles, rejectedFiles) {
+        const {location} = this.state;
+        this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
+    }
+
+    renderUploadingFilesList() {
+        return (
+            <div>
+                <img src="./assets/file.png" width="30px"/>
+                <a href='aa'>aa</a>
+                <ProgressBar class="ProgressBar" now={10} label={'10%'}/>
+            </div>
+        )
+    }
+
+    renderUploadedFilesList() {
+        return (
+            <div>
+                <div class="uploaded-file-row">
+                    <Glyphicon glyph="ok-circle"/>
+                    <a target="_blank" href={'a'}>{'file.name'}</a>
+                </div>
+
+            </div>
+        )
+    }
 
     render() {
 
         const {listen} = browserHistory;
         listen(location => {
-            this.setState({location: location.pathname});
+            this.setState({
+                location: decodeURIComponent(location.pathname)
+            });
         });
         const {location} = this.state;
         const a = location.split("/");
@@ -62,7 +91,7 @@ class MainBody extends Component {
                     <span>&nbsp;
                         <i class="icon ion-chevron-right breadcrumb-color"></i>
                         <Link key={i} to={link}>
-                            &nbsp; {b}</Link>
+                            {b}</Link>
                     </span>
                 );
             }
@@ -126,11 +155,13 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <DocumentList location={location}/> {this.props.fetching
-                            ? <img src="/assets/fetching.gif" class="fetching-loader"/>
-                            : null}
-                        <h3>&nbsp;</h3>
+                        <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick>
 
+                            <DocumentList location={location}/> {this.props.fetching
+                                ? <img src="/assets/fetching.gif" class="fetching-loader"/>
+                                : null}
+                            <h3>&nbsp;</h3>
+                        </Dropzone>
                     </div>
                 </div>
             </div>
@@ -140,7 +171,15 @@ class MainBody extends Component {
 
 }
 function mapStateToProps(state) {
-    return {fetching: state.documents.fetching, fileAddSuccess: state.documents.fileAddSuccess, appName: state.documents.appName, appId: state.documents.appId};
+    return {
+        fetching: state.documents.fetching,
+        fileAddSuccess: state.documents.fileAddSuccess,
+        appName: state.documents.appName,
+        appId: state.documents.appId,
+        uploadingFile: state.uploadingFiles.file,
+        uploadProgress: state.uploadingFiles.uploadProgress,
+        uploadedFiles: state.uploadingFiles.uploadedFiles
+    };
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({

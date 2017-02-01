@@ -24,5 +24,8 @@ module.exports = {
         path: '',
         filename: 'src/js/bundle.min.js'
     },
-    plugins: []
+    plugins: [],
+    node: {
+        fs: "empty"
+    }
 };

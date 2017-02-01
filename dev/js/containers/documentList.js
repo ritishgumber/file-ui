@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
-import {Glyphicon, Modal, Button} from 'react-bootstrap';
+import {
+    Glyphicon,
+    Modal,
+    Button,
+    ProgressBar,
+    Popover,
+    OverlayTrigger
+} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {deleteFile, fetchAllFiles, sortDocuments} from '../actions/index';
-import {Link} from "react-router";
+import {deleteFile, fetchAllFiles, sortDocuments, editFile} from '../actions/index';
+import {Link, browserHistory} from "react-router";
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
 
@@ -25,6 +32,9 @@ class DocumentList extends Component {
             modifiedSortIcon: ''
         };
 
+        $('td').click(function() {
+            console.log('hh');
+        })
     }
 
     componentWillReceiveProps(newProp)
@@ -89,22 +99,7 @@ class DocumentList extends Component {
         }
         this.setState(this.state);
     }
-    toggleClass() {
-        $(".trash-icon").hover(function() {
-            $(this).removeClass("ion-ios-trash-outline");
-            $(this).addClass("ion-ios-trash");
-        }, function() {
-            $(this).removeClass("ion-ios-trash");
-            $(this).addClass("ion-ios-trash-outline");
-        });
-        $(".download-icon").hover(function() {
-            $(this).removeClass("ion-ios-download-outline");
-            $(this).addClass("ion-ios-download");
-        }, function() {
-            $(this).removeClass("ion-ios-download");
-            $(this).addClass("ion-ios-download-outline");
-        });
-    }
+
     deleteFile(id) {
         this.props.deleteFile(id);
     }
@@ -112,9 +107,123 @@ class DocumentList extends Component {
         if (isFile) {
             window.open(route, '_blank');
         } else {
-            window.location.href = route;
+            browserHistory.push(route);
         }
     }
+    editFile(id) {
+        this.props.editFile(id);
+    }
+    toggleClass() {
+        $(".more-icon").hover(function() {
+            $(this).removeClass("ion-ios-more-outline");
+            $(this).addClass("ion-ios-more");
+        }, function() {
+            $(this).removeClass("ion-ios-more");
+            $(this).addClass("ion-ios-more-outline");
+        });
+
+    }
+    formatBytes(bytes, decimals) {
+        if (bytes == 0)
+            return '0 Bytes';
+        var k = 1000,
+            dm = decimals + 1 || 3,
+            sizes = [
+                'Bytes',
+                'KB',
+                'MB',
+                'GB',
+                'TB',
+                'PB',
+                'EB',
+                'ZB',
+                'YB'
+            ],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    renderUploadingFilesList() {
+        if (this.props.uploadingFile)
+            return (
+                <tr className=" uploadingList">
+                    <td className="dataStyle nameDataField">
+                        <img src='/assets/file-types/file.png' width="30"/> {this.props.uploadingFile.name}
+                    </td>
+                    <td colSpan="2" class="dataStyle progressBarField">
+                        <ProgressBar class="ProgressBar" now={this.props.uploadProgress}/>
+                    </td>
+
+                </tr>
+            )
+    }
+
+    renderUploadedFilesList() {
+        if (this.props.uploadedFiles)
+            return (this.props.uploadedFiles.map((doc, i) => {
+                let date = new Date(parseInt(doc.createdAt));
+                const modified = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()
+                return (
+                    <tr key={'1.' + i} ref="listRow" className="listStyle">
+                        <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, doc.url, true)}>
+                            <img src='/assets/file-types/file.png' width="30"/>
+                            <span class="name-field">{doc.name}</span>
+                        </td>
+                        <td class="dataStyle modifiedDataItem">
+                            {modified}
+                        </td>
+                        <td class="dataStyle ">
+                            <span data-tip data-for="delete-icon" onClick={this.deleteFile.bind(this, doc._id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                            <ReactTooltip id='delete-icon' place="bottom" effect='solid'>
+                                <span>{"Delete "}</span>
+                            </ReactTooltip>
+
+                            <a href={doc.url} target="_blank">
+                                <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
+                            </a>
+                            <ReactTooltip id='download-icon' place="bottom" effect='solid'>
+                                <span>Download
+                                </span>
+                            </ReactTooltip>
+                            <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                            <ReactTooltip id='more-icon' place="bottom" effect='solid'>
+                                <span>More
+                                </span>
+                            </ReactTooltip>
+                        </td>
+                    </tr>
+
+                )
+            }))
+
+    }
+    selectRow() {
+        $('.listStyle').click(function() {
+            $(this).addClass('row-selected');
+            $(this).siblings().removeClass("row-selected");
+
+        });
+    }
+    showNameInput() {
+        $(".nameInput").keypress(function(e) {
+            if (e.key == 'Enter') {
+                $(this).css('display', 'none');
+                $(this).siblings('span').text($(this)[0].value);
+                $(this).siblings('span').css('display', 'inline-block');
+            }
+        });
+        $(".nameInput").focusout(function(e) {
+            console.log('ok');
+            $('.nameInput').css('display', 'none');
+            $('.nameField').css('display', 'inline-block');
+        });
+        $('.nameField').click(function() {
+            $(this).css('display', 'none');
+            $(this).siblings('input').css('display', 'inline-block');
+            $(this).siblings('input').focus();
+        });
+    }
+
     render() {
         const {location} = this.state;
 
@@ -137,6 +246,8 @@ class DocumentList extends Component {
                         </th>
                         <th class="dataStyle">Actions</th>
                     </tr>
+                    {this.renderUploadingFilesList()}
+                    {this.renderUploadedFilesList()}
 
                     {this.props.docs.map((doc, i) => {
                         const isFile = (doc.type == 'File'
@@ -145,10 +256,21 @@ class DocumentList extends Component {
                         const route = (isFile
                             ? doc.url
                             : this.state.location + '/' + doc.title);
+                        const popoverFocus = (
+                            <Popover id="popover-trigger-focus" title="More..">
+                                <div class="popover-list">Rename</div>
+                                <div class="popover-list">ACL</div>
+                            </Popover>
+                        );
                         return (
-                            <tr key={i} ref="listRow" className="listStyle">
+                            <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
                                 <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, route, isFile)}>
-                                    <img src={doc.img} width="30"/> {doc.title}
+                                    <img src={doc.img} width="30"/>
+                                    <span class="name-field">
+                                        <span onClick={this.showNameInput.bind(this)} class="nameField">{doc.title}</span>
+                                        <input autoFocus={true} type="text" defaultValue={doc.title} placeholder="Name" class="input-no-border nameInput"/>
+                                    </span>
+
                                 </td>
                                 <td class="dataStyle modifiedDataItem">
                                     {doc.modified}
@@ -156,7 +278,7 @@ class DocumentList extends Component {
                                 <td class="dataStyle ">
                                     <span data-tip data-for="delete-icon" onClick={this.deleteFile.bind(this, doc.id)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
                                     <ReactTooltip id='delete-icon' place="bottom" effect='solid'>
-                                        <span>{"Delete " + doc.type}</span>
+                                        <span>{"Delete "}</span>
                                     </ReactTooltip>
 
                                     {doc.type == 'File'
@@ -165,9 +287,17 @@ class DocumentList extends Component {
                                             </a>
                                         : null}
                                     <ReactTooltip id='download-icon' place="bottom" effect='solid'>
-                                        <span>Download File</span>
+                                        <span>Download
+                                        </span>
                                     </ReactTooltip>
+                                    <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverFocus}>
+                                        <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                                    </OverlayTrigger>
 
+                                    <ReactTooltip id='more-icon' place="bottom" effect='solid'>
+                                        <span>More
+                                        </span>
+                                    </ReactTooltip>
                                 </td>
                             </tr>
                         )
@@ -180,13 +310,24 @@ class DocumentList extends Component {
 }
 
 function mapStateToProps(state) {
-    return {docs: state.documents.docs, percentComplete: state.documents.percentComplete, fetching: state.documents.fetching, total: state.documents.total, appInitSuccess: state.documents.appInitSuccess};
+    return {
+        docs: state.documents.docs,
+        percentComplete: state.documents.percentComplete,
+        fetching: state.documents.fetching,
+        total: state.documents.total,
+        appInitSuccess: state.documents.appInitSuccess,
+        uploading: state.documents.uploading,
+        uploadingFile: state.uploadingFiles.file,
+        uploadProgress: state.uploadingFiles.uploadProgress,
+        uploadedFiles: state.uploadingFiles.uploadedFiles
+    };
 }
 function matchDispatchToProps(dispatch) {
     return bindActionCreators({
         deleteFile: deleteFile,
         fetchAllFiles: fetchAllFiles,
-        sortDocuments: sortDocuments
+        sortDocuments: sortDocuments,
+        editFile: editFile
 
     }, dispatch);
 }
