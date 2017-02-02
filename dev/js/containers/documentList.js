@@ -32,9 +32,6 @@ class DocumentList extends Component {
             modifiedSortIcon: ''
         };
 
-        $('td').click(function() {
-            console.log('hh');
-        })
     }
 
     componentWillReceiveProps(newProp)
@@ -142,7 +139,45 @@ class DocumentList extends Component {
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+    renderUploadingStatus() {
+        if (this.props.uploading || this.props.uploadFinish)
+            if (this.props.uploadFinish) {
+                return (
+                    <tr className="">
+                        <td className="uploadingStatusRow" colSpan="3">
+                            <i class="ion ion-android-cloud-done upload-complete-icon"></i>{this.props.totalFiles + ' Files Uploaded Successfully'}
+                        </td>
+                    </tr>
+                )
+            }
+        else {
+            return (
+                <tr className="">
+                    <td className="uploadingStatusRow" colSpan="3">
+                        {this.props.remainingFiles - 1}&nbsp; of {this.props.totalFiles}&nbsp; remaining
+                    </td>
+                </tr>
+            )
+        }
+    }
+    renderRemainingFilesList() {
+        if (this.props.uploadingFile && this.props.up)
+            return (this.props.up.map((doc, i) => {
+                if (i != 0)
+                    return (
+                        <tr className=" uploadingList">
+                            <td className="dataStyle nameDataField">
+                                <img src='/assets/file-types/file.png' width="30"/> {doc.name}
+                            </td>
+                            <td colSpan="2" class="dataStyle progressBarField">
+                                <ProgressBar class="ProgressBar" now={0}/>
+                            </td>
 
+                        </tr>
+                    )
+            }))
+
+            }
     renderUploadingFilesList() {
         if (this.props.uploadingFile)
             return (
@@ -213,7 +248,6 @@ class DocumentList extends Component {
             }
         });
         $(".nameInput").focusout(function(e) {
-            console.log('ok');
             $('.nameInput').css('display', 'none');
             $('.nameField').css('display', 'inline-block');
         });
@@ -246,6 +280,8 @@ class DocumentList extends Component {
                         </th>
                         <th class="dataStyle">Actions</th>
                     </tr>
+                    {this.renderUploadingStatus()}
+                    {this.renderRemainingFilesList()}
                     {this.renderUploadingFilesList()}
                     {this.renderUploadedFilesList()}
 
@@ -319,7 +355,11 @@ function mapStateToProps(state) {
         uploading: state.documents.uploading,
         uploadingFile: state.uploadingFiles.file,
         uploadProgress: state.uploadingFiles.uploadProgress,
-        uploadedFiles: state.uploadingFiles.uploadedFiles
+        uploadedFiles: state.uploadingFiles.uploadedFiles,
+        up: state.uploadingFiles.up,
+        remainingFiles: state.uploadingFiles.remainingFiles,
+        totalFiles: state.uploadingFiles.totalFiles,
+        uploadFinish: state.uploadingFiles.uploadFinish
     };
 }
 function matchDispatchToProps(dispatch) {

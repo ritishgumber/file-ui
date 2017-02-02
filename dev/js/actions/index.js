@@ -1,4 +1,5 @@
 import axios from 'axios';
+import async from 'async';
 export const initApp = (appId) => {
     return ((dispatch) => {
         axios.defaults.withCredentials = true
@@ -142,26 +143,31 @@ export const fetchAllFiles = (data) => {
 
 }
 export const addFile = (payload) => {
-    let {file, data, type, path} = payload;
-    let filesUploaded = [];
-    if (path.endsWith('/'))
-        path = path.slice(0, path.length - 1)
-    let length = file.length;
     return ((dispatch) => {
+
+        let {file, data, type, path} = payload;
+        let length = file.length;
+        let filesUploaded = [];
+        let filesUploading = file.slice();
+        console.log('init', filesUploading);
+        if (path.endsWith('/'))
+            path = path.slice(0, path.length - 1)
         if (type != 'folder/folder')
             dispatch({type: "UPLOADING_FILES"});
-
-        file.forEach((fileObj) => {
-            console.log(fileObj);
+        async.eachSeries(file, function(fileObj, done) {
             let cloudFile = new CB.CloudFile(fileObj, data, type, path);
             cloudFile.save({
                 success: function(cloudFile) {
                     length--;
-                    filesUploaded.unshift(cloudFile.document);
+                    filesUploaded.push(cloudFile.document);
+                    filesUploading.splice(0, 1);
+
                     if (type != 'folder/folder')
                         dispatch({type: "FILES_UPLOADED", payload: filesUploaded})
                     if (length == 0)
                         dispatch({type: "ADD_FILE_SUCCESS"})
+                    done();
+
                 },
                 error: function(error) {
                     length--;
@@ -174,13 +180,22 @@ export const addFile = (payload) => {
                             type: 'UPLOAD_PROGRESS',
                             payload: {
                                 uploadProgress: parseInt(percentComplete * 100),
-                                file: fileObj
+                                file: fileObj,
+                                up: filesUploading,
+                                remainingFiles: length,
+                                totalFiles: file.length
                             }
                         });
                     }
                 });
-        });
 
+        }, function(err) {
+            if (err) {
+                throw err;
+            }
+            dispatch({type: 'UPLOADING_DONE'});
+            dispatch(fetchAllFiles({path: path}));
+        });
     })
 }
 
@@ -195,7 +210,7 @@ desc : return path of image depending on file type;
 function imagePath(type) {
     let img = "/assets/file-types/file.png";
     const fileType = type.split('/')[1];
-    let fileTypes = 'after-effects.pngai.pngaudition.pngavi.pngbridge.pngcss.pngcsv.pngdbf.pngdoc.pngdreamweaver.pngdwg.pngexe.pngfile.pngfireworks.pngfla.pngflash.pnghtml.pngillustrator.pngindesign.pngiso.pngjavascript.pngjpg.pngjson-file.pngmp3.pngmp4.pngpdf.pngphotoshop.pngpng.pngppt.pngprelude.pngpremiere.pngpsd.pngrtf.pngsearch.pngsvg.pngtxt.pngxls.pngxml.pngzip-1.pngzip.pngfolder.pngjpeg.png';
+    let fileTypes = 'after-effects.pngai.pngaudition.pngavi.pngbridge.pngcss.pngcsv.pngdbf.pngdoc.pngdreamweaver.pngdwg.pngexe.pngfile.pngfireworks.pngfla.pngflash.pnghtml.pngillustrator.pngindesign.pngiso.pngjavascript.pngjpg.pngjson-file.pngmp3.pngmp4.pngpdf.pngphotoshop.pngpng.pngppt.pngprelude.pngpremiere.pngpsd.pngrtf.pngsearch.pngsvg.pngtxt.pngxls.pngxml.pngzip-1.pngzip.pngfolder.pngjpeg.pngdocx.png';
     fileTypes = fileTypes.split('.png');
     if (fileTypes.indexOf(fileType) != -1) {
         img = '/assets/file-types/' + fileType + '.png';
