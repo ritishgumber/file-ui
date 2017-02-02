@@ -55,7 +55,18 @@ body {
     border-bottom: 1px solid #d2cdcd;
 }
 
-.listStyle:hover {
+.uploadingStatusRow {
+    padding: 5px;
+    text-align: center;
+    background: #a9d4a9;
+}
+
+.upload-complete-icon {
+    padding: 5px;
+    font-size: 20px
+}
+
+.uploadingStatusRow .listStyle:hover {
     background-color: rgba(79, 156, 245, 0.16);
     border-bottom: 1px solid #d2cdcd;
 }
@@ -402,4 +413,9 @@ body {
 
 .nameInput {
     display: none;
+}
+
+.close-icon {
+    font-size: 25px;
+    padding-right: 5px;
 }

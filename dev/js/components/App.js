@@ -100,7 +100,7 @@ class App extends React.Component {
 
                     <Navbar.Collapse>
                         <Nav >
-                            <NavItem eventKey={2} class="footer-item" href='https://cloudboost.io/' onClick={this.navigate.bind(this, 'https://cloudboost.io/')}>Terms</NavItem>
+                            <NavItem eventKey={2} class="footer-item" href='https://cloudboost.io/terms' onClick={this.navigate.bind(this, 'https://cloudboost.io/terms')}>Terms</NavItem>
                             <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy')} href='https://cloudboost.io/privacy'>Privacy</NavItem>
                             <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/')} href='https://slack.cloudboost.io/'>Help</NavItem>
                         </Nav>
