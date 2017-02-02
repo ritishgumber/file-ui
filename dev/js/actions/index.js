@@ -81,14 +81,16 @@ export const fetchAllFiles = (data) => {
     let response = [];
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
+    console.log('skip', skip);
 
     if (path.endsWith('/'))
         path = path.slice(0, path.length - 1)
     var query = new CB.CloudQuery("_File");
     if (searchText)
         query.regex('name', '(.*)' + searchText + '(.*)', true);
-    if (regex)
-        query.regex('contentType', regex, true);
+    if (!regex)
+        regex = '(.*)';
+    query.regex('contentType', regex, true);
 
     return ((dispatch) => {
         dispatch({type: "FETCHING_ALL_FILES"});
@@ -105,6 +107,8 @@ export const fetchAllFiles = (data) => {
                 //error
             }
         });
+        if (!skip)
+            skip = 1;
         query.setSkip((skip - 1) * 20)
         query.setLimit(20);
         query.orderByDesc('createdAt');
@@ -131,7 +135,9 @@ export const fetchAllFiles = (data) => {
                     type: "FETCH_ALL_FILES",
                     payload: {
                         data: response,
-                        fetchMoreFiles: fetchMoreFiles
+                        fetchMoreFiles: fetchMoreFiles,
+                        selectedPage: skip,
+                        regex: regex
                     }
                 })
 

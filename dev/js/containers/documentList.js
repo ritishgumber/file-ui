@@ -20,13 +20,12 @@ class DocumentList extends Component {
         super(props);
         if (this.props.appInitSuccess) {
             if (!this.props.fetching)
-                this.props.fetchAllFiles({path: this.props.location});
+                this.props.fetchAllFiles({path: this.props.location, regex: this.props.regex});
             }
         this.state = {
             docs: this.props.docs,
             isAsc: true,
             location: this.props.location,
-            selectedPage: 1,
             isAscending: true,
             titleSortIcon: '',
             modifiedSortIcon: ''
@@ -39,32 +38,29 @@ class DocumentList extends Component {
 
         if (newProp.fileAddSuccess || newProp.percentComplete == 100 || newProp.appInitSuccess) {
             if (!this.props.fetching)
-                this.props.fetchAllFiles({path: this.state.location});
+                this.props.fetchAllFiles({path: this.state.location, regex: this.props.regex});
             }
         if (newProp.location !== this.props.location) {
             this.setState({location: newProp.location});
             if (!this.props.fetching)
-                this.props.fetchAllFiles({path: newProp.location, skip: 1});
-            this.setState({selectedPage: 1})
+                this.props.fetchAllFiles({path: newProp.location, skip: 1, regex: this.props.regex});
 
+            }
         }
-    }
     handleScroll(scroll) {
-        this.setState({scroll: scroll});
         let {scrollTop, scrollHeight} = scroll.target.body;
         if (scrollTop > (scrollHeight - window.innerHeight) * 0.75) {
-            if (this.state.selectedPage < this.props.total) {
+            if (this.props.selectedPage < this.props.total) {
                 if (!this.props.fetching)
                     this.props.fetchAllFiles({
                         path: this.state.location,
-                        skip: this.state.selectedPage + 1,
-                        fetchMoreFiles: true
+                        skip: this.props.selectedPage + 1,
+                        fetchMoreFiles: true,
+                        regex: this.props.regex
                     });
-                this.setState({
-                    selectedPage: this.state.selectedPage + 1
-                })
+
+                }
             }
-        }
     }
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll.bind(this));
@@ -168,7 +164,7 @@ class DocumentList extends Component {
         }
     }
     renderRemainingFilesList() {
-        if (this.props.uploadingFile && this.props.up)
+        if (this.props.up)
             return (this.props.up.map((doc, i) => {
                 if (i != 0)
                     return (
@@ -310,7 +306,7 @@ class DocumentList extends Component {
                                 <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, route, isFile)}>
                                     <img src={doc.img} width="30"/>
                                     <span class="name-field">
-                                        <span onClick={this.showNameInput.bind(this)} class="nameField">{doc.title}</span>
+                                        <span class="nameField">{doc.title}</span>
                                         <input autoFocus={true} type="text" defaultValue={doc.title} placeholder="Name" class="input-no-border nameInput"/>
                                     </span>
 
@@ -333,9 +329,6 @@ class DocumentList extends Component {
                                         <span>Download
                                         </span>
                                     </ReactTooltip>
-                                    <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverFocus}>
-                                        <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
-                                    </OverlayTrigger>
 
                                     <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                         <span>More
@@ -358,6 +351,7 @@ function mapStateToProps(state) {
         percentComplete: state.documents.percentComplete,
         fetching: state.documents.fetching,
         total: state.documents.total,
+        regex: state.documents.regex,
         appInitSuccess: state.documents.appInitSuccess,
         uploading: state.documents.uploading,
         uploadingFile: state.uploadingFiles.file,
@@ -366,7 +360,8 @@ function mapStateToProps(state) {
         up: state.uploadingFiles.up,
         remainingFiles: state.uploadingFiles.remainingFiles,
         totalFiles: state.uploadingFiles.totalFiles,
-        uploadFinish: state.uploadingFiles.uploadFinish
+        uploadFinish: state.uploadingFiles.uploadFinish,
+        selectedPage: state.documents.selectedPage
     };
 }
 function matchDispatchToProps(dispatch) {

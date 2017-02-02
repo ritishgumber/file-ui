@@ -20,8 +20,7 @@ class MainBody extends Component {
 
     }
     close() {
-        if (!this.props.fetching)
-            this.props.fetchAllFiles({path: this.state.location})
+
         this.setState({showUploadModal: false, showCreateModal: false});
     }
     open(type) {
@@ -42,7 +41,7 @@ class MainBody extends Component {
 
     handleChange(e) {
         if (!this.props.fetching)
-            this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value})
+            this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value, regex: this.props.regex})
     }
     onDrop(acceptedFiles, rejectedFiles) {
         const {location} = this.state;

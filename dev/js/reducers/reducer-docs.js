@@ -11,7 +11,9 @@ export default function(state = {
                 fileAddSuccess: false,
                 docs: [],
                 appName: action.payload.appName,
-                allApps: action.payload.allApps
+                allApps: action.payload.allApps,
+                selectedPage: 1,
+                regex: '(.*)'
             }
 
             break;
@@ -33,16 +35,18 @@ export default function(state = {
                     ...state,
                     docs: [...state.docs.concat(action.payload.data)],
                     fetching: false,
-                    total: state.total,
                     appInitSuccess: false,
-                    fileAddSuccess: false
+                    fileAddSuccess: false,
+                    selectedPage: action.payload.selectedPage,
+                    regex: action.payload.regex
                 };
             return {
                 ...state,
                 docs: action.payload.data,
                 fetching: false,
-                total: state.total,
-                appInitSuccess: false
+                appInitSuccess: false,
+                selectedPage: 1,
+                regex: action.payload.regex
             };
         case 'TOTAL_FILES':
             return {
