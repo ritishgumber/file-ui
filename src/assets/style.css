@@ -414,3 +414,8 @@ body {
 .nameInput {
     display: none;
 }
+
+.close-icon {
+    font-size: 25px;
+    padding-right: 5px;
+}

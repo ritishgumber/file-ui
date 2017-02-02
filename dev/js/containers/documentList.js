@@ -139,6 +139,10 @@ class DocumentList extends Component {
             i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+    closeUploadingStatusRow() {
+        console.log('closing');
+        $('.uploadingStatusRow').fadeOut();
+    }
     renderUploadingStatus() {
         if (this.props.uploading || this.props.uploadFinish)
             if (this.props.uploadFinish) {
@@ -146,6 +150,9 @@ class DocumentList extends Component {
                     <tr className="">
                         <td className="uploadingStatusRow" colSpan="3">
                             <i class="ion ion-android-cloud-done upload-complete-icon"></i>{this.props.totalFiles + ' Files Uploaded Successfully'}
+                            <span class="pull-right">
+                                <i onClick={this.closeUploadingStatusRow.bind(this)} class="ion ion-ios-close-empty close-icon"></i>
+                            </span>
                         </td>
                     </tr>
                 )
@@ -261,10 +268,10 @@ class DocumentList extends Component {
     render() {
         const {location} = this.state;
 
-        if (this.props.docs.length == 0 && !this.props.fetching) {
+        if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading) {
             return (
                 <div>
-                    <DropZone location={this.state.location}/>
+                    No Files FOund, Drag and drop files here.
                 </div>
             );
         }
