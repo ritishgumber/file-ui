@@ -50,20 +50,20 @@ class App extends React.Component {
             <div class="container">
                 <Navbar class="navbar-style navbar-border " collapseOnSelect fixedTop={true}>
                     <Navbar.Header>
-                        <Navbar.Brand>
+                        <Navbar.Brand >
                             <a class="navbar-brand logo" href={DASHBOARD_URL}><img id="logo" src="/assets/cblogo.png" width="40px"/></a>
                         </Navbar.Brand>
                         <Navbar.Toggle/>
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-                            <NavDropdown eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}
+                            <NavDropdown class='appid-menuitem' eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}
                                 <MenuItem divider/>
                                 <MenuItem key={4} href={DASHBOARD_URL}>Dashboard</MenuItem>
                             </NavDropdown>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem href={DASHBOARD_URL} onClick={this.navigate.bind(this, DASHBOARD_URL)}>Dashboard
+                            <NavItem href={DASHBOARD_URL} class='dashboard-menuitem' onClick={this.navigate.bind(this, DASHBOARD_URL)}>Dashboard
                             </NavItem>
 
                             <NavDropdown eventKey={3} title={< i class = "ion ion-person profile-icon" > </i>} id="basic-nav-dropdown" class="profile">

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Glyphicon, Modal, Button, ProgressBar} from 'react-bootstrap';
+import {Tabs, Tab, Modal, Button, ProgressBar} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import DocumentList from '../containers/documentList';
@@ -20,7 +20,6 @@ class MainBody extends Component {
 
     }
     close() {
-
         this.setState({showUploadModal: false, showCreateModal: false});
     }
     open(type) {
@@ -46,28 +45,8 @@ class MainBody extends Component {
     onDrop(acceptedFiles, rejectedFiles) {
         const {location} = this.state;
         this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
-    }
-
-    renderUploadingFilesList() {
-        return (
-            <div>
-                <img src="./assets/file.png" width="30px"/>
-                <a href='aa'>aa</a>
-                <ProgressBar class="ProgressBar" now={10} label={'10%'}/>
-            </div>
-        )
-    }
-
-    renderUploadedFilesList() {
-        return (
-            <div>
-                <div class="uploaded-file-row">
-                    <Glyphicon glyph="ok-circle"/>
-                    <a target="_blank" href={'a'}>{'file.name'}</a>
-                </div>
-
-            </div>
-        )
+        if (this.state.showUploadModal)
+            this.close()
     }
 
     render() {
@@ -124,12 +103,21 @@ class MainBody extends Component {
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
-                                    <DropZone location={this.state.location} close={this.close.bind(this)}/>
+                                    <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example">
+                                        <Tab eventKey={1} title="Tab 1">
+                                            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody">
+
+                                                <img class="center-aligned" src="/assets/emptybox.png"/>
+                                                <h5 class="center-aligned">Drag and drop files onto this window to upload</h5>
+                                            </Dropzone>
+                                        </Tab>
+                                        <Tab eventKey={2} title="Tab 2">
+                                            <input className="" id="folderName" placeholder="Enter Folder Name"/>
+                                        </Tab>
+                                    </Tabs>
 
                                 </Modal.Body>
-                                <Modal.Footer >
-                                    <Button onClick={this.close.bind(this)}>Close</Button>
-                                </Modal.Footer>
+
                             </Modal>
                             <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
                                 <Modal.Header class="modal-header-style">
@@ -139,11 +127,8 @@ class MainBody extends Component {
                                         <div class="modal-title-inner-text">Create a new folder.</div>
                                     </Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body >
-                                    <input className="" id="folderName" placeholder="Enter Folder name"/>
-                                </Modal.Body>
+                                <Modal.Body ></Modal.Body>
                                 <Modal.Footer>
-                                    <Button onClick={this.close.bind(this)}>Close</Button>
                                     <Button className="btn-primary create-btn" onClick={this.addFolder.bind(this)}>Create</Button>
 
                                 </Modal.Footer>

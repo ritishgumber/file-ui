@@ -1,5 +1,6 @@
 export default function(state = {
-    docs: []
+    docs: [],
+    init: true
 }, action) {
     console.log(action);
 
@@ -13,7 +14,8 @@ export default function(state = {
                 appName: action.payload.appName,
                 allApps: action.payload.allApps,
                 selectedPage: 1,
-                regex: '(.*)'
+                regex: '(.*)',
+                init: false
             }
 
             break;
