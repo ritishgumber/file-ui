@@ -81,14 +81,16 @@ export const fetchAllFiles = (data) => {
     let response = [];
     //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
+    console.log('skip', skip);
 
     if (path.endsWith('/'))
         path = path.slice(0, path.length - 1)
     var query = new CB.CloudQuery("_File");
     if (searchText)
         query.regex('name', '(.*)' + searchText + '(.*)', true);
-    if (regex)
-        query.regex('contentType', regex, true);
+    if (!regex)
+        regex = '(.*)';
+    query.regex('contentType', regex, true);
 
     return ((dispatch) => {
         dispatch({type: "FETCHING_ALL_FILES"});
@@ -105,6 +107,8 @@ export const fetchAllFiles = (data) => {
                 //error
             }
         });
+        if (!skip)
+            skip = 1;
         query.setSkip((skip - 1) * 20)
         query.setLimit(20);
         query.orderByDesc('createdAt');
@@ -124,14 +128,16 @@ export const fetchAllFiles = (data) => {
                         type: file.contentType == 'folder/folder'
                             ? 'Folder'
                             : 'File',
-                        img: imagePath(file.contentType)
+                        img: imagePath(file.contentType, file.name)
                     })
                 });
                 dispatch({
                     type: "FETCH_ALL_FILES",
                     payload: {
                         data: response,
-                        fetchMoreFiles: fetchMoreFiles
+                        fetchMoreFiles: fetchMoreFiles,
+                        selectedPage: skip,
+                        regex: regex
                     }
                 })
 
@@ -149,7 +155,6 @@ export const addFile = (payload) => {
         let length = file.length;
         let filesUploaded = [];
         let filesUploading = file.slice();
-        console.log('init', filesUploading);
         if (path.endsWith('/'))
             path = path.slice(0, path.length - 1)
         if (type != 'folder/folder')
@@ -161,9 +166,7 @@ export const addFile = (payload) => {
                     length--;
                     filesUploaded.push(cloudFile.document);
                     filesUploading.splice(0, 1);
-
-                    if (type != 'folder/folder')
-                        dispatch({type: "FILES_UPLOADED", payload: filesUploaded})
+                    dispatch({type: "FILES_UPLOADED", payload: filesUploaded})
                     if (length == 0)
                         dispatch({type: "ADD_FILE_SUCCESS"})
                     done();
@@ -175,19 +178,18 @@ export const addFile = (payload) => {
                         dispatch({type: "ADD_FILE_SUCCESS"})
                 },
                 uploadProgress: function(percentComplete) {
-                    if (type != 'folder/folder')
-                        dispatch({
-                            type: 'UPLOAD_PROGRESS',
-                            payload: {
-                                uploadProgress: parseInt(percentComplete * 100),
-                                file: fileObj,
-                                up: filesUploading,
-                                remainingFiles: length,
-                                totalFiles: file.length
-                            }
-                        });
-                    }
-                });
+                    dispatch({
+                        type: 'UPLOAD_PROGRESS',
+                        payload: {
+                            uploadProgress: parseInt(percentComplete * 100),
+                            file: fileObj,
+                            up: filesUploading,
+                            remainingFiles: length,
+                            totalFiles: file.length
+                        }
+                    });
+                }
+            });
 
         }, function(err) {
             if (err) {
@@ -207,13 +209,15 @@ export const sortDocuments = (data) => {
 desc : return path of image depending on file type;
 */
 
-function imagePath(type) {
+function imagePath(type, name) {
     let img = "/assets/file-types/file.png";
     const fileType = type.split('/')[1];
     let fileTypes = 'after-effects.pngai.pngaudition.pngavi.pngbridge.pngcss.pngcsv.pngdbf.pngdoc.pngdreamweaver.pngdwg.pngexe.pngfile.pngfireworks.pngfla.pngflash.pnghtml.pngillustrator.pngindesign.pngiso.pngjavascript.pngjpg.pngjson-file.pngmp3.pngmp4.pngpdf.pngphotoshop.pngpng.pngppt.pngprelude.pngpremiere.pngpsd.pngrtf.pngsearch.pngsvg.pngtxt.pngxls.pngxml.pngzip-1.pngzip.pngfolder.pngjpeg.pngdocx.png';
     fileTypes = fileTypes.split('.png');
     if (fileTypes.indexOf(fileType) != -1) {
         img = '/assets/file-types/' + fileType + '.png';
+    } else if (fileTypes.indexOf(name.split('.')[1]) != -1) {
+        img = '/assets/file-types/' + name.split('.')[1] + '.png';
     }
     return img;
 }
