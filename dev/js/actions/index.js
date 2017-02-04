@@ -70,8 +70,11 @@ export const editFile = (data) => {
     return ((dispatch) => {
 
         var query = new CB.CloudQuery("_File");
-        query.findById(data, {
-            success: function(obj) {},
+        query.findById(data.id, {
+            success: function(obj) {
+                obj.set('name', data.name);
+                obj.save();
+            },
             error: function(err) {}
         })
     });

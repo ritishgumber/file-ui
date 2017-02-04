@@ -94,31 +94,6 @@ class MainBody extends Component {
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
 
-                            <Modal show={this.state.showUploadModal} onHide={this.close.bind(this)}>
-                                <Modal.Header class="modal-header-style">
-                                    <Modal.Title class="modal-title-style">
-                                        Upload File
-                                        <img src="/assets/upload-icon.png" class="modal-icon-style pull-right"></img>
-                                        <div class="modal-title-inner-text">Upload as many files you want.</div>
-                                    </Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body >
-                                    <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example">
-                                        <Tab eventKey={1} title="Tab 1">
-                                            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody">
-
-                                                <img class="center-aligned" src="/assets/emptybox.png"/>
-                                                <h5 class="center-aligned">Drag and drop files onto this window to upload</h5>
-                                            </Dropzone>
-                                        </Tab>
-                                        <Tab eventKey={2} title="Tab 2">
-                                            <input className="" id="folderName" placeholder="Enter Folder Name"/>
-                                        </Tab>
-                                    </Tabs>
-
-                                </Modal.Body>
-
-                            </Modal>
                             <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title>
@@ -127,7 +102,9 @@ class MainBody extends Component {
                                         <div class="modal-title-inner-text">Create a new folder.</div>
                                     </Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body ></Modal.Body>
+                                <Modal.Body >
+                                    <input className="" id="folderName" placeholder="Enter Folder Name"/>
+                                </Modal.Body>
                                 <Modal.Footer>
                                     <Button className="btn-primary create-btn" onClick={this.addFolder.bind(this)}>Create</Button>
 

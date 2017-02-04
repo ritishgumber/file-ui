@@ -8401,7 +8401,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/* WEBPACK VAR INJECTION */(function(global) {var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var require;var require;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 	if (!CB._isNode) {
 	  //Socket.io Client library 
@@ -16968,6 +16968,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.document = {
 	            _id: null,
 	            _type: 'file',
+	            _tableName: '_File',
 	            ACL: new _CB2.default.ACL(),
 	            name: file && file.name && file.name !== "" ? file.name : 'default.file',
 	            size: file.size,
@@ -16984,6 +16985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.document = {
 	                _id: null,
 	                _type: 'file',
+	                _tableName: '_File',
 	                ACL: new _CB2.default.ACL(),
 	                name: '',
 	                size: '',
@@ -17003,6 +17005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.document = {
 	                    _id: null,
 	                    _type: 'file',
+	                    _tableName: '_File',
 	                    ACL: new _CB2.default.ACL(),
 	                    name: file,
 	                    size: '',
@@ -17016,7 +17019,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else {
 	                this.document = {
 	                    _id: file,
-	                    _type: 'file'
+	                    _type: 'file',
+	                    _tableName: '_File'
 	                };
 	            }
 	        }
@@ -17094,8 +17098,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var thisObj = this;
-
-	    if (!this.fileObj && !this.data && this.type != 'folder') throw "You cannot save a file which is null";
+	    if (!this.fileObj && !this.data && this.type != 'folder' && !this.url) throw "You cannot save a file which is null";
 
 	    if (!this.data) {
 	        var params = new FormData();
@@ -19766,8 +19769,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (columnName === 'id') columnName = '_' + columnName;
 
-	            console.log(data);
-	            console.log(columnName);
 	            if (data !== null) {
 	                if (data.constructor === _CB2.default.CloudObject) {
 	                    columnName = columnName + '._id';
