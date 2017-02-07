@@ -40,28 +40,28 @@ class SideBar extends Component {
                     <ul >
 
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)')}>
-                            <i class=" ion-document-text side-bar-icon"></i>
+                            <img src="/assets/allfiles.png" width="20px"/>
                             &nbsp;&nbsp;All Files
                         </li>
+                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '((.*)openxmlformat(.*)|(.*)msword(.*)|(.*)vnd.ms-(.*)|(.*)pdf(.*))')}>
+                            <img src="/assets/file.png" width="20px"/>
+                            &nbsp;&nbsp;Documents
+                        </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)image(.*)')}>
-                            <i class="ion ion-images side-bar-icon"></i>
+                            <img src="/assets/allphotos.png" width="20px"/>
                             &nbsp;&nbsp;Photos
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)folder(.*)')}>
-                            <i class="ion ion-folder side-bar-icon"></i>
+                            <img src="/assets/allfolders.png" width="20px"/>
                             &nbsp;&nbsp;Folders
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)audio(.*)')}>
-                            <i class="ion ion-music-note side-bar-icon"></i>
+                            <img src="/assets/music.png" width="20px"/>
                             &nbsp;&nbsp;Music
                         </li>
                         <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '(.*)video(.*)')}>
-                            <i class="ion ion-ios-videocam side-bar-icon"></i>
+                            <img src="/assets/video.png" width="20px"/>
                             &nbsp;&nbsp;Video
-                        </li>
-                        <li class="side-menu-items" onClick={this.renderSpecificFileType.bind(this, '((.*)openxmlformat(.*)|(.*)msword(.*)|(.*)vnd.ms-(.*)|(.*)pdf(.*))')}>
-                            <i class="ion ion-android-document side-bar-icon"></i>
-                            &nbsp;&nbsp;Documents
                         </li>
 
                     </ul>

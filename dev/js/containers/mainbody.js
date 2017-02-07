@@ -42,11 +42,9 @@ class MainBody extends Component {
         if (!this.props.fetching)
             this.props.fetchAllFiles({path: this.state.location, searchText: e.target.value, regex: this.props.regex})
     }
-    onDrop(acceptedFiles, rejectedFiles) {
-        const {location} = this.state;
-        this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
-        if (this.state.showUploadModal)
-            this.close()
+
+    openClick() {
+        console.log('yhh');
     }
 
     render() {
@@ -88,7 +86,7 @@ class MainBody extends Component {
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/>
+                                <DropZone class="upload-icon" location={this.state.location} dc={false}><img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
                                 <ReactTooltip place="bottom" effect="solid"/>
                                 <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
@@ -116,13 +114,13 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick>
+                        <DropZone location={this.state.location} dc={true}>
 
-                            <DocumentList location={location}/> {this.props.fetching
+                            <DocumentList location={location} open={this.openClick.bind(this)}/> {this.props.fetching
                                 ? <img src="/assets/fetching.gif" class="fetching-loader"/>
                                 : null}
                             <h3>&nbsp;</h3>
-                        </Dropzone>
+                        </DropZone>
                     </div>
                 </div>
             </div>

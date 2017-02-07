@@ -13,12 +13,12 @@ import {deleteFile, fetchAllFiles, sortDocuments, editFile} from '../actions/ind
 import {Link, browserHistory} from "react-router";
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
-import Notifications, {notify} from 'react-notify-toast';
 
 class DocumentList extends Component {
     constructor(props)
     {
         super(props);
+        console.log('propspsp', this.props);
         if (this.props.appInitSuccess) {
             if (!this.props.fetching)
                 this.props.fetchAllFiles({path: this.props.location, regex: this.props.regex});
@@ -223,13 +223,12 @@ class DocumentList extends Component {
 
         });
     }
-    showNameInput() {
-        notify.show('Toasty!');
+    showNameInput(index) {
         let thisObj = this;
         $(".nameInput").keypress(function(e) {
             if (e.key == 'Enter') {
                 $(this).css('display', 'none');
-                $(this).siblings('span').text($(this)[0].value);
+                $(this).siblings('span').text($(this)[index].value);
                 thisObj.editFile({
                     id: $(this)[0].id,
                     name: $(this)[0].value
@@ -269,6 +268,7 @@ class DocumentList extends Component {
         if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading && !this.props.init) {
             return (
                 <div >
+                    <button class="btn btn-default"></button>
                     <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">{this.printMessage()}</h5>
                 </div>
@@ -276,7 +276,6 @@ class DocumentList extends Component {
         }
         return (
             <div>
-                <Notifications/>
                 <table class="document-list responsive" id="document-list">
                     <tbody>
                         <tr class="listHeading">
@@ -308,7 +307,7 @@ class DocumentList extends Component {
                             );
                             return (
                                 <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
-                                    <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
+                                    <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
                                         <img src={doc.img} width="30"/>
                                         <span class="name-field">
                                             <span class="nameField">{doc.title}</span>

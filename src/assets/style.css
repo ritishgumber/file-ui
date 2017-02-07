@@ -109,6 +109,10 @@ body {
     border: 2px solid black;
 }
 
+span.inlineRight div.dropBody {
+    display: inline-block;
+}
+
 .activeDropBody {
     background-color: #cdebff;
 }
