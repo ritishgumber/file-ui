@@ -124,9 +124,7 @@ export const fetchAllFiles = (data) => {
                     response.push({
                         id: file._id,
                         url: file.url,
-                        title: file.name.length > 20
-                            ? file.name.substring(0, 14) + '.....' + file.name.substring(file.name.length - 5, file.name.length)
-                            : file.name,
+                        title: file.name,
                         modified: modified,
                         type: file.contentType == 'folder/folder'
                             ? 'Folder'

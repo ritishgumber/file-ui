@@ -227,8 +227,11 @@ class DocumentList extends Component {
         let thisObj = this;
         $(".nameInput").keypress(function(e) {
             if (e.key == 'Enter') {
+                //let inputValue = $(this)[index].value.split('.');
+                //let fileExtension = inputValue[inputValue.length - 1];
+                //inputValue.splice(-1, 1);
                 $(this).css('display', 'none');
-                $(this).siblings('span').text($(this)[index].value);
+                $(this).siblings('span').text($(this)[0].value);
                 thisObj.editFile({
                     id: $(this)[0].id,
                     name: $(this)[0].value
@@ -243,6 +246,7 @@ class DocumentList extends Component {
         $('.nameField').click(function() {
             $(this).css('display', 'none');
             $(this).siblings('input').css('display', 'inline-block');
+
             $(this).siblings('input').focus();
         });
     }
@@ -310,8 +314,11 @@ class DocumentList extends Component {
                                     <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
                                         <img src={doc.img} width="30"/>
                                         <span class="name-field">
-                                            <span class="nameField">{doc.title}</span>
-                                            <input autoFocus={true} type="text" id={doc.id} defaultValue={doc.title} placeholder="Name" class="input-no-border nameInput"/>
+                                            <span class="nameField">
+                                                {doc.title.length > 20
+                                                    ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
+                                                    : doc.title}</span>
+                                            <input autoFocus={true} type="text" id={doc.id} placeholder="Name" defaultValue={doc.title} class="input-no-border nameInput"/>
                                         </span>
 
                                     </td>
