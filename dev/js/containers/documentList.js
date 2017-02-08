@@ -18,6 +18,7 @@ class DocumentList extends Component {
     constructor(props)
     {
         super(props);
+        console.log('propspsp', this.props);
         if (this.props.appInitSuccess) {
             if (!this.props.fetching)
                 this.props.fetchAllFiles({path: this.props.location, regex: this.props.regex});
@@ -137,7 +138,7 @@ class DocumentList extends Component {
             return (
                 <tr className="">
                     <td className="uploadingStatusRow" colSpan="3">
-                        {this.props.remainingFiles - 1}&nbsp; of {this.props.totalFiles}&nbsp; remaining
+                        {this.props.remainingFiles}&nbsp; of {this.props.totalFiles}&nbsp; remaining
                     </td>
                 </tr>
             )
@@ -222,11 +223,19 @@ class DocumentList extends Component {
 
         });
     }
-    showNameInput() {
+    showNameInput(index) {
+        let thisObj = this;
         $(".nameInput").keypress(function(e) {
             if (e.key == 'Enter') {
+                //let inputValue = $(this)[index].value.split('.');
+                //let fileExtension = inputValue[inputValue.length - 1];
+                //inputValue.splice(-1, 1);
                 $(this).css('display', 'none');
                 $(this).siblings('span').text($(this)[0].value);
+                thisObj.editFile({
+                    id: $(this)[0].id,
+                    name: $(this)[0].value
+                })
                 $(this).siblings('span').css('display', 'inline-block');
             }
         });
@@ -261,10 +270,10 @@ class DocumentList extends Component {
 
         if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading && !this.props.init) {
             return (
-                <div>
+                <DropZone location={this.state.location} dc={false}>
                     <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">{this.printMessage()}</h5>
-                </div>
+                </DropZone>
             );
         }
         return (
@@ -300,11 +309,14 @@ class DocumentList extends Component {
                             );
                             return (
                                 <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
-                                    <td className="dataStyle nameDataField" onDoubleClick={this.navigate.bind(this, route, isFile)}>
+                                    <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
                                         <img src={doc.img} width="30"/>
                                         <span class="name-field">
-                                            <span class="nameField">{doc.title}</span>
-                                            <input autoFocus={true} type="text" defaultValue={doc.title} placeholder="Name" class="input-no-border nameInput"/>
+                                            <span class="nameField">
+                                                {doc.title.length > 20
+                                                    ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
+                                                    : doc.title}</span>
+                                            <input autoFocus={true} type="text" id={doc.id} placeholder="Name" class="input-no-border nameInput"/>
                                         </span>
 
                                     </td>

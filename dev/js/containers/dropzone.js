@@ -23,21 +23,9 @@ class DropZone extends Component {
 
     onDrop(acceptedFiles, rejectedFiles) {
         const {location} = this.state;
-
-        let length = acceptedFiles.length;
         this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
-        this.state.uploadingFiles = acceptedFiles;
-        this.setState(this.state);
-    }
-    renderUploadingFilesList() {
-        if (this.props.uploadingFile)
-            return (
-                <div>
-                    <img src="./assets/file.png" width="30px"/>
-                    <a href={this.props.uploadingFile.preview}>{this.props.uploadingFile.name}</a>
-                    <ProgressBar class="ProgressBar" now={this.props.uploadProgress} label={this.props.uploadProgress + '%'}/>
-                </div>
-            )
+        if (this.state.showUploadModal)
+            this.props.close()
     }
 
     componentWillReceiveProps(props) {
@@ -49,33 +37,11 @@ class DropZone extends Component {
         }
     }
 
-    renderUploadedFilesList() {
-        if (this.props.uploadedFiles)
-            return (this.props.uploadedFiles.map((file) => {
-                return (
-                    <div class="uploaded-file-row">
-                        <Glyphicon glyph="ok-circle"/>
-                        <a target="_blank" href={file.preview}>{file.name}</a>
-                    </div>
-                )
-            }))
-    }
-
     render() {
 
-        if (this.state.uploadingFiles.length == 0)
-            return (
-                <div>
-                    <Dropzone onDrop={this.onDrop.bind(this)} className="dropBody" activeClassName="dropBody2"></Dropzone>
-                </div>
-            )
-        else
-            return (
-                <div>
-                    {this.renderUploadingFilesList()}
-                    {this.renderUploadedFilesList()}
-                </div>
-            )
+        return (
+            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick={this.props.dc}>{this.props.children}</Dropzone>
+        )
     }
 
 }

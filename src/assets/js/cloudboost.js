@@ -16961,13 +16961,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 
 	_CB2.default.CloudFile = _CB2.default.CloudFile || function (file, data, type, path) {
-	    if (!path) path = '/home';
+	    if (!path) path = '/' + _CB2.default.appId;
 	    if (Object.prototype.toString.call(file) === '[object File]' || Object.prototype.toString.call(file) === '[object Blob]') {
 
 	        this.fileObj = file;
 	        this.document = {
 	            _id: null,
 	            _type: 'file',
+	            _tableName: '_File',
 	            ACL: new _CB2.default.ACL(),
 	            name: file && file.name && file.name !== "" ? file.name : 'default.file',
 	            size: file.size,
@@ -16984,6 +16985,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.document = {
 	                _id: null,
 	                _type: 'file',
+	                _tableName: '_File',
 	                ACL: new _CB2.default.ACL(),
 	                name: '',
 	                size: '',
@@ -17003,6 +17005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.document = {
 	                    _id: null,
 	                    _type: 'file',
+	                    _tableName: '_File',
 	                    ACL: new _CB2.default.ACL(),
 	                    name: file,
 	                    size: '',
@@ -17016,7 +17019,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else {
 	                this.document = {
 	                    _id: file,
-	                    _type: 'file'
+	                    _type: 'file',
+	                    _tableName: '_File'
 	                };
 	            }
 	        }
@@ -17094,8 +17098,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var thisObj = this;
-
-	    if (!this.fileObj && !this.data && this.type != 'folder') throw "You cannot save a file which is null";
+	    if (!this.fileObj && !this.data && this.type != 'folder' && !this.url) throw "You cannot save a file which is null";
 
 	    if (!this.data) {
 	        var params = new FormData();
@@ -19766,8 +19769,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            if (columnName === 'id') columnName = '_' + columnName;
 
-	            console.log(data);
-	            console.log(columnName);
 	            if (data !== null) {
 	                if (data.constructor === _CB2.default.CloudObject) {
 	                    columnName = columnName + '._id';
