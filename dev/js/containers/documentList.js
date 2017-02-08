@@ -246,7 +246,6 @@ class DocumentList extends Component {
         $('.nameField').click(function() {
             $(this).css('display', 'none');
             $(this).siblings('input').css('display', 'inline-block');
-
             $(this).siblings('input').focus();
         });
     }
@@ -271,11 +270,10 @@ class DocumentList extends Component {
 
         if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading && !this.props.init) {
             return (
-                <div >
-                    <button class="btn btn-default"></button>
+                <DropZone location={this.state.location} dc={false}>
                     <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">{this.printMessage()}</h5>
-                </div>
+                </DropZone>
             );
         }
         return (
@@ -318,7 +316,7 @@ class DocumentList extends Component {
                                                 {doc.title.length > 20
                                                     ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
                                                     : doc.title}</span>
-                                            <input autoFocus={true} type="text" id={doc.id} placeholder="Name" defaultValue={doc.title} class="input-no-border nameInput"/>
+                                            <input autoFocus={true} type="text" id={doc.id} placeholder="Name" class="input-no-border nameInput"/>
                                         </span>
 
                                     </td>
