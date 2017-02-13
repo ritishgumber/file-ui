@@ -270,7 +270,7 @@ class DocumentList extends Component {
 
         if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading && !this.props.init) {
             return (
-                <DropZone location={this.state.location} dc={false}>
+                <DropZone location={location} disableClick={false}>
                     <img class="center-aligned" src="/assets/emptybox.png"/>
                     <h5 class="center-aligned">{this.printMessage()}</h5>
                 </DropZone>

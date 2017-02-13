@@ -86,7 +86,7 @@ class MainBody extends Component {
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <DropZone class="upload-icon" location={this.state.location} dc={false}><img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
+                                <DropZone class="upload-icon" location={this.state.location} disableClick={false}><img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
                                 <ReactTooltip place="bottom" effect="solid"/>
                                 <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
@@ -114,7 +114,7 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <DropZone location={this.state.location} dc={true}>
+                        <DropZone location={this.state.location} disableClick={true}>
 
                             <DocumentList location={location} open={this.openClick.bind(this)}/> {this.props.fetching
                                 ? <img src="/assets/fetching.gif" class="fetching-loader"/>
