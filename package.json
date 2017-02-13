@@ -45,7 +45,8 @@
     "webpack": "^1.14.0"
   },
   "devDependencies": {
-    "babel-plugin-react-transform": "^2.0.2"
+    "babel-plugin-react-transform": "^2.0.2",
+    "webpack": "^1.14.0"
   },
   "description": "file-ui\r Files Portal for CloudBoost",
   "repository": {

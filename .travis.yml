@@ -3,8 +3,6 @@ services:
 - docker
 env:
   global:
-    # Ensure the downloaded SDK is first on the PATH
-    - PATH=${HOME}/google-cloud-sdk/bin:$PATH
     # Ensure the install happens without prompts
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 language: node_js
@@ -13,28 +11,35 @@ node_js:
 before_install:
 - npm install
 install:
+- webpack --progress
+after_success:
+# Build Docker Images
 - docker build -t cloudboost/file-ui:2.0.$TRAVIS_BUILD_NUMBER .
 - docker build -t cloudboost/file-ui:latest .
-after_success:
-#Deploy.
-#Docker Login
-- docker login --username $DOCKERUSERNAME --password $DOCKERPASSWORD --email $DOCKEREMAIL
-#Push docker images.
-- docker push cloudboost/file-ui:2.0.$TRAVIS_BUILD_NUMBER
-- docker push cloudboost/file-ui:latest
-# Make sure SDK is downloaded - cache once it's working
-- curl https://sdk.cloud.google.com | bash;
-# List the SDK contents to ensure it's downloaded
-- ls -l ${HOME}/google-cloud-sdk/bin
-# Ensure the correct gcloud is being used
-- which gcloud
-# Print the gcloud version and make sure it's something
-- gcloud --version
-- ls
-#Activate Google Cloud SDK with your project
-#- gcloud auth activate-service-account --key-file gc_cred.json
-#Install Kubectl
-- gcloud components install kubectl
-- gcloud container clusters get-credentials $GOOGLECLUSTERNAME --zone $GOOGLEZONE --project $GOOGLEPROJECT
-#Upload to Kubernetes for deployment.
-- kubectl rolling-update cloudboost-file-ui --image=cloudboost/file-ui:latest --image-pull-policy=Always
+before_deploy:
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
+  - export GIT_TAG=2.0.$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git push -q https://$GITLOGIN@github.com/CloudBoost/file-ui --tags
+deploy:
+  provider: releases
+  api_key: $GH_TOKEN
+  file: "README.md"
+  skip_cleanup: true
+  on:
+    tags: false
+    all_branches: true
+after_deploy:
+# Docker Deploy.
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker login --username $DOCKERUSERNAME --password $DOCKERPASSWORD --email $DOCKEREMAIL;
+  docker push cloudboost/file-ui:2.0.$TRAVIS_BUILD_NUMBER;
+  docker push cloudboost/file-ui:latest;
+  fi
+branches:
+  except:
+    - /^*-v[0-9]/
+#Notify Team on Slack
+notifications:
+  slack: cloudboost:gm7nWJDLDtBRyF75VKLKOoMW
