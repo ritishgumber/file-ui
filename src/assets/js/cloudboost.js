@@ -17101,10 +17101,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!this.fileObj && !this.data && this.type != 'folder' && !this.url) throw "You cannot save a file which is null";
 
 	    if (!this.data) {
-	        var params = new FormData();
-	        params.append("fileToUpload", this.fileObj);
-	        params.append("key", _CB2.default.appKey);
-	        params.append("fileObj", JSON.stringify(_CB2.default.toJSON(thisObj)));
+	        var params;
+	        try {
+	            if (!window) {
+	                params = {};
+
+	                params['fileToUpload'] = this.fileObj;
+	                params['key'] = _CB2.default.appKey;
+	                params['fileObj'] = JSON.stringify(_CB2.default.toJSON(thisObj));
+	            } else {
+	                params = new FormData();
+	                params.append("fileToUpload", this.fileObj);
+	                params.append("key", _CB2.default.appKey);
+	                params.append("fileObj", JSON.stringify(_CB2.default.toJSON(thisObj)));
+	            }
+	        } catch (e) {
+	            params = {};
+
+	            params['fileToUpload'] = this.fileObj;
+	            params['key'] = _CB2.default.appKey;
+	            params['fileObj'] = JSON.stringify(_CB2.default.toJSON(thisObj));
+	        }
 	        var url = _CB2.default.apiUrl + '/file/' + _CB2.default.appId;
 
 	        var uploadProgressCallback = null;

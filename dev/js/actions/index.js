@@ -1,53 +1,57 @@
 import axios from 'axios';
 import async from 'async';
 export const initApp = (appId) => {
+    console.log('appId', appId);
     return ((dispatch) => {
         axios.defaults.withCredentials = true
 
         axios.get(USER_SERVICE_URL + 'user').then((userData) => {
-            axios.get(USER_SERVICE_URL + 'app/' + appId).then((appdata) => {
-                if (appdata.data && appId) {
-                    axios.get(USER_SERVICE_URL + 'app').then((data) => {
 
+            axios.get(USER_SERVICE_URL + 'app').then((data) => {
+
+                let allApps = [];
+                var availableApps = data.data.filter((obj) => obj.deleted == false);
+                let length = availableApps.length;
+
+                availableApps.forEach((app) => {
+                    allApps.push({name: app.name, id: app.appId});
+                    length--;
+                    if (length == 0) {
+                        var app;
+                        if (!appId || appId == '' || appId == "")
+                            window.location.href = 'http://localhost:3012/' + availableApps[0].appId
+                        else {
+                            app = availableApps.filter(function(obj) {
+                                return obj.appId == appId;
+                            });
+                        }
+                        console.log('app', app);
                         if (__isHosted == "true" || __isHosted == true) {
-                            CB.CloudApp.init(appId, appdata.data.keys.master)
+                            CB.CloudApp.init(appId, app[0].keys.master)
                         } else
-                            CB.CloudApp.init(SERVER_URL, appId, appdata.data.keys.master)
+                            CB.CloudApp.init(SERVER_URL, appId, app[0].keys.master)
 
-                        let allApps = [];
-                        let length = data.data.length;
-                        data.data.forEach((app) => {
-                            allApps.push({name: app.name, id: app.appId});
-                            length--;
-                            if (length == 0)
-
-                                dispatch({
-                                    type: 'APP_INIT_SUCCESS',
-                                    payload: {
-                                        appId: appId,
-                                        appName: appdata.data.name,
-                                        allApps: allApps
-                                    }
-                                });
+                        dispatch({
+                            type: 'APP_INIT_SUCCESS',
+                            payload: {
+                                appId: app[0].appId,
+                                appName: app[0].name,
+                                allApps: allApps
                             }
-                        );
-                    }, (err) => {
-                        console.log(err);
-                    });
-
-                } else {
-                    window.location.href = DASHBOARD_URL
-                }
+                        });
+                    }
+                });
             }, (err) => {
-                console.log(err)
-                window.location.href = DASHBOARD_URL
-            })
+                console.log(err);
+            });
+
         }, (err) => {
             window.location.href = ACCOUNTS_URL
         })
 
     })
 }
+
 export const deleteFile = (data) => {
     return ((dispatch) => {
 

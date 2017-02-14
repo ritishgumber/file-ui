@@ -24,23 +24,13 @@ class DropZone extends Component {
     onDrop(acceptedFiles, rejectedFiles) {
         const {location} = this.state;
         this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
-        if (this.state.showUploadModal)
-            this.props.close()
-    }
 
-    componentWillReceiveProps(props) {
-        console.log('props', props);
-        if (props.fileAddSuccess && props.fileAddSuccess != this.props.fileAddSuccess) {
-            setTimeout(function() {
-                this.props.close()
-            }.bind(this), 1000);
-        }
     }
 
     render() {
 
         return (
-            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick={this.props.dc}>{this.props.children}</Dropzone>
+            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick={this.props.disableClick}>{this.props.children}</Dropzone>
         )
     }
 
