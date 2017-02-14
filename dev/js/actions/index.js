@@ -10,7 +10,7 @@ export const initApp = (appId) => {
             axios.get(USER_SERVICE_URL + 'app').then((data) => {
 
                 let allApps = [];
-                var availableApps = data.data.filter((obj) => obj.deleted == false);
+                var availableApps = data.data.filter((obj) => !obj.deleted);
                 let length = availableApps.length;
 
                 availableApps.forEach((app) => {
