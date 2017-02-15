@@ -20,12 +20,14 @@ app.get('/app/key.js', function(req, res) {
     content += "USER_SERVICE_URL='https://service.cloudboost.io/';\n";
     content += "SERVER_DOMAIN='cloudboost.io';\n";
     content += "SERVER_URL='https://api.cloudboost.io';\n";
+    content += "FILE_URL='https://files.cloudboost.io/';\n";
     content += "DASHBOARD_URL='https://dashboard.cloudboost.io';\n";
     content += "ACCOUNTS_URL='https://accounts.cloudboost.io';\n";
     content += "}else{\n";
     content += "USER_SERVICE_URL = window.location.protocol+'//'+window.location.hostname + ':3000/';\n";
     content += "SERVER_DOMAIN= window.location.hostname;\n";
     content += "SERVER_URL =  window.location.protocol+'//'+window.location.hostname + ':4730';\n";
+    content += "FILE_URL =  window.location.protocol+'//'+window.location.hostname + ':3012/';\n";
     content += "DASHBOARD_URL =  window.location.protocol+'//'+window.location.hostname + ':1440';\n";
     content += "ACCOUNTS_URL =  window.location.protocol+'//'+window.location.hostname + ':1447';\n";
     content += "}\n";

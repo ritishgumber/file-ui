@@ -10,7 +10,7 @@ export const initApp = (appId) => {
             axios.get(USER_SERVICE_URL + 'app').then((data) => {
 
                 let allApps = [];
-                var availableApps = data.data.filter((obj) => obj.deleted == false);
+                var availableApps = data.data.filter((obj) => !obj.deleted);
                 let length = availableApps.length;
 
                 availableApps.forEach((app) => {
@@ -19,7 +19,7 @@ export const initApp = (appId) => {
                     if (length == 0) {
                         var app;
                         if (!appId || appId == '' || appId == "")
-                            window.location.href = 'http://localhost:3012/' + availableApps[0].appId
+                            window.location.href = FILE_URL + availableApps[0].appId
                         else {
                             app = availableApps.filter(function(obj) {
                                 return obj.appId == appId;
