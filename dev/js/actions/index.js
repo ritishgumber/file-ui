@@ -19,7 +19,7 @@ export const initApp = (appId) => {
                     if (length == 0) {
                         var app;
                         if (!appId || appId == '' || appId == "")
-                            window.location.href = 'http://localhost:3012/' + availableApps[0].appId
+                            window.location.href = FILE_URL + availableApps[0].appId
                         else {
                             app = availableApps.filter(function(obj) {
                                 return obj.appId == appId;
