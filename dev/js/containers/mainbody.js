@@ -114,13 +114,10 @@ class MainBody extends Component {
                 </div>
                 <div class="row-fluid">
                     <div class="col-md-12">
-                        <DropZone location={this.state.location} disableClick={true}>
-
-                            <DocumentList location={location} open={this.openClick.bind(this)}/> {this.props.fetching
-                                ? <img src="/assets/fetching.gif" class="fetching-loader"/>
-                                : null}
-                            <h3>&nbsp;</h3>
-                        </DropZone>
+                        <DocumentList location={location} open={this.openClick.bind(this)}/> {this.props.fetching
+                            ? <img src="/assets/fetching.gif" class="fetching-loader"/>
+                            : null}
+                        <h3>&nbsp;</h3>
                     </div>
                 </div>
             </div>
