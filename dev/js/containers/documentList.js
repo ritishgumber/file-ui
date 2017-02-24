@@ -277,95 +277,98 @@ class DocumentList extends Component {
             );
         }
         return (
-            <div>
-                <table class="document-list responsive" id="document-list">
-                    <tbody>
-                        <tr class="listHeading">
-                            <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'title')}>Name
-                                <i class={this.state.titleSortIcon}></i>
-                            </th>
-                            <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
-                                <i class={this.state.modifiedSortIcon}></i>
-                            </th>
-                            <th class="dataStyle">Actions</th>
-                        </tr>
-                        {this.renderUploadingStatus()}
-                        {this.renderRemainingFilesList()}
-                        {this.renderUploadingFilesList()}
-                        {this.renderUploadedFilesList()}
+            <DropZone location={this.state.location} disableClick={true}>
+                <div>
+                    <table class="document-list responsive" id="document-list">
+                        <tbody>
+                            <tr class="listHeading">
+                                <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'title')}>Name
+                                    <i class={this.state.titleSortIcon}></i>
+                                </th>
+                                <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
+                                    <i class={this.state.modifiedSortIcon}></i>
+                                </th>
+                                <th class="dataStyle">Actions</th>
+                            </tr>
+                            {this.renderUploadingStatus()}
+                            {this.renderRemainingFilesList()}
+                            {this.renderUploadingFilesList()}
+                            {this.renderUploadedFilesList()}
 
-                        {this.props.docs.map((doc, i) => {
-                            const isFile = (doc.type == 'File'
-                                ? true
-                                : false);
-                            const route = (isFile
-                                ? doc.url
-                                : this.state.location + '/' + doc.title);
-                            const popoverFocus = (
-                                <Popover id="popover-trigger-focus" title="More..">
-                                    <div class="popover-list">Rename</div>
-                                    <div class="popover-list">ACL</div>
-                                </Popover>
-                            );
-                            return (
-                                <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
-                                    <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
-                                        <img src={doc.img} width="30"/>
-                                        <span class="name-field">
-                                            <span class="nameField">
-                                                {doc.title.length > 20
-                                                    ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
-                                                    : doc.title}</span>
-                                            <input autoFocus={true} type="text" id={doc.id} placeholder="Name" class="input-no-border nameInput"/>
-                                        </span>
-
-                                    </td>
-                                    <td class="dataStyle modifiedDataItem">
-                                        {doc.modified}
-                                    </td>
-                                    <td class="dataStyle ">
-                                        <span data-tip data-for="delete-icon" onClick={this.openModal.bind(this, doc)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
-                                        <ReactTooltip id='delete-icon' place="bottom" effect='solid'>
-                                            <span>{"Delete "}</span>
-                                        </ReactTooltip>
-
-                                        {doc.type == 'File'
-                                            ? <a href={doc.url} target="_blank">
-                                                    <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
-                                                </a>
-                                            : null}
-                                        <ReactTooltip id='download-icon' place="bottom" effect='solid'>
-                                            <span>Download
+                            {this.props.docs.map((doc, i) => {
+                                const isFile = (doc.type == 'File'
+                                    ? true
+                                    : false);
+                                const route = (isFile
+                                    ? doc.url
+                                    : this.state.location + '/' + doc.title);
+                                const popoverFocus = (
+                                    <Popover id="popover-trigger-focus" title="More..">
+                                        <div class="popover-list">Rename</div>
+                                        <div class="popover-list">ACL</div>
+                                    </Popover>
+                                );
+                                return (
+                                    <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
+                                        <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
+                                            <img src={doc.img} width="30"/>
+                                            <span class="name-field">
+                                                <span class="nameField">
+                                                    {doc.title.length > 20
+                                                        ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
+                                                        : doc.title}</span>
+                                                <input autoFocus={true} type="text" id={doc.id} placeholder="Name" class="input-no-border nameInput"/>
                                             </span>
-                                        </ReactTooltip>
 
-                                        <ReactTooltip id='more-icon' place="bottom" effect='solid'>
-                                            <span>More
-                                            </span>
-                                        </ReactTooltip>
-                                    </td>
-                                </tr>
-                            )
-                        })}</tbody>
-                </table>
-                <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                    <Modal.Header class="delete-modal-header-style">
-                        <Modal.Title>
-                            Delete
-                            <img src="/assets/trash.png" class="delete-modal-icon-style pull-right"></img>
-                            <div class="modal-title-inner-text">You are about to delete
-                                <strong>{this.state.deleteFile
-                                        ? ' "' + this.state.deleteFile.title + '"'
-                                        : null}</strong>
-                            </div>
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Footer>
-                        <h3></h3>
-                        <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile.id)}>Delete</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
+                                        </td>
+                                        <td class="dataStyle modifiedDataItem">
+                                            {doc.modified}
+                                        </td>
+                                        <td class="dataStyle ">
+                                            <span data-tip data-for="delete-icon" onClick={this.openModal.bind(this, doc)} class="ion ion-ios-trash-outline action-icons trash-icon"></span>
+                                            <ReactTooltip id='delete-icon' place="bottom" effect='solid'>
+                                                <span>{"Delete "}</span>
+                                            </ReactTooltip>
+
+                                            {doc.type == 'File'
+                                                ? <a href={doc.url} target="_blank">
+                                                        <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
+                                                    </a>
+                                                : null}
+                                            <ReactTooltip id='download-icon' place="bottom" effect='solid'>
+                                                <span>Download
+                                                </span>
+                                            </ReactTooltip>
+
+                                            <ReactTooltip id='more-icon' place="bottom" effect='solid'>
+                                                <span>More
+                                                </span>
+                                            </ReactTooltip>
+                                        </td>
+                                    </tr>
+                                )
+                            })}</tbody>
+                    </table>
+                    <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+                        <Modal.Header class="delete-modal-header-style">
+                            <Modal.Title>
+                                Delete
+                                <img src="/assets/trash.png" class="delete-modal-icon-style pull-right"></img>
+                                <div class="modal-title-inner-text">You are about to delete
+                                    <strong>{this.state.deleteFile
+                                            ? ' "' + this.state.deleteFile.title + '"'
+                                            : null}</strong>
+                                </div>
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Footer>
+                            <h3></h3>
+                            <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile.id)}>Delete</Button>
+                        </Modal.Footer>
+                    </Modal>
+                </div>
+            </DropZone>
+
         );
     }
 

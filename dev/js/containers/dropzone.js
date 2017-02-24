@@ -23,7 +23,12 @@ class DropZone extends Component {
 
     onDrop(acceptedFiles, rejectedFiles) {
         const {location} = this.state;
-        this.props.addFile({path: location, file: acceptedFiles, data: null, type: null});
+        this.props.addFile({
+            path: decodeURIComponent(window.location.pathname),
+            file: acceptedFiles,
+            data: null,
+            type: null
+        });
 
     }
 
