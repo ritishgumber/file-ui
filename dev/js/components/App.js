@@ -59,7 +59,9 @@ class App extends React.Component {
                         <Nav>
                             <NavDropdown class='appid-menuitem' eventKey={3} title={this.props.appName} id="basic-nav-dropdown">{allApps}
                                 <MenuItem divider/>
-                                <MenuItem key={4} href={DASHBOARD_URL}>Dashboard</MenuItem>
+                                <MenuItem key={4} href={DASHBOARD_URL}>
+                                    <i class="ion ion-android-apps dashboard-icon "></i>
+                                    &nbsp; Dashboard</MenuItem>
                             </NavDropdown>
                         </Nav>
                         <Nav pullRight>

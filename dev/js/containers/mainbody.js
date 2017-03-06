@@ -15,7 +15,10 @@ class MainBody extends Component {
     {
         super(props);
         this.state = {
-            location: decodeURIComponent(this.props.location.pathname)
+            location: decodeURIComponent(this.props.location.pathname),
+            error: {
+                folderNameLengthIsZero: false
+            }
         };
 
     }
@@ -34,8 +37,19 @@ class MainBody extends Component {
     }
     addFolder(e) {
         const value = (document.getElementById('folderName').value);
-        this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder/folder'});
-        this.close();
+        if (value.length != 0) {
+            this.state.error = {
+                folderNameLengthIsZero: false
+            };
+            this.setState(this.state);
+            this.props.addFile({path: this.state.location, file: [value], data: 'folder', type: 'folder/folder'});
+            this.close();
+        } else {
+            this.state.error = {
+                folderNameLengthIsZero: true
+            };
+            this.setState(this.state);
+        }
     }
 
     handleChange(e) {
@@ -86,9 +100,9 @@ class MainBody extends Component {
                                 </h4>
                             </span>
                             <span class="inlineRight">
-                                <DropZone class="upload-icon" location={this.state.location} disableClick={false}><img data-tip="Upload File" class="inline" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
+                                <DropZone class="upload-icon" location={this.state.location} disableClick={false}><img data-tip="Upload File" class="inline upload-icon" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
                                 <ReactTooltip place="bottom" effect="solid"/>
-                                <img data-tip="New Folder" class="inline" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
+                                <img data-tip="New Folder" class="inline create-folder-icon" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
                                 <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
                             </span>
 
@@ -101,7 +115,10 @@ class MainBody extends Component {
                                     </Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
-                                    <input className="" id="folderName" placeholder="Enter Folder Name"/>
+                                    {this.state.error.folderNameLengthIsZero
+                                        ? <span class="error-text">Folder Name is required</span>
+                                        : null}
+                                    <input className="" id="folderName" placeholder="Enter Folder Name" required={true} minlength="1"/>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button className="btn-primary create-btn" onClick={this.addFolder.bind(this)}>Create</Button>
