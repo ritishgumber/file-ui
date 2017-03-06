@@ -279,6 +279,7 @@ span.inlineRight div.dropBody {
     background: #4f9cf5;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    font-family: Signika;
 }
 
 .delete-modal-header-style {
@@ -286,6 +287,7 @@ span.inlineRight div.dropBody {
     background: #D60A00;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    font-family: Signika;
 }
 
 .create-btn {
@@ -354,11 +356,13 @@ span.inlineRight div.dropBody {
 .modal-title-style {
     font-size: 22px;
     font-weight: normal;
+    font-family: Signika;
 }
 
 .modal-title-inner-text {
     font-size: 14px;
     font-weight: normal;
+    font-family: Signika;
 }
 
 .side-item-selected {
@@ -400,6 +404,7 @@ span.inlineRight div.dropBody {
 .__react_component_tooltip.type-dark {
     background: #4e4e4e!important;
     color: white!important;
+    opacity: 1 !important;
 }
 
 .__react_component_tooltip.type-dark.place-bottom:after {
@@ -463,4 +468,26 @@ span.inlineRight div.dropBody {
 .side-bar-icon {
     font-size: 24px;
     color: #2e619c;
+}
+
+.error-text {
+    color: red;
+}
+
+.dashboard-icon {
+    font-size: medium
+}
+
+.upload-icon {
+    cursor: pointer;
+}
+
+.create-folder-icon {
+    cursor: pointer;
+}
+
+.delete-modal-body {
+    text-align: center;
+    padding: 30px;
+    font-size: large;
 }

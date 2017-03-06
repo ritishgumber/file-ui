@@ -227,11 +227,12 @@ class DocumentList extends Component {
         let thisObj = this;
         $(".nameInput").keypress(function(e) {
             if (e.key == 'Enter') {
-                //let inputValue = $(this)[index].value.split('.');
-                //let fileExtension = inputValue[inputValue.length - 1];
-                //inputValue.splice(-1, 1);
                 $(this).css('display', 'none');
-                $(this).siblings('span').text($(this)[0].value);
+                let text = $(this)[0].value;
+                if (text.length > 50) {
+                    text = text.substring(0, 40) + '.....' + text.substring(text.length - 5, text.length)
+                }
+                $(this).siblings('span').text(text);
                 thisObj.editFile({
                     id: $(this)[0].id,
                     name: $(this)[0].value
@@ -314,8 +315,8 @@ class DocumentList extends Component {
                                             <img src={doc.img} width="30"/>
                                             <span class="name-field">
                                                 <span class="nameField">
-                                                    {doc.title.length > 20
-                                                        ? doc.title.substring(0, 14) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
+                                                    {doc.title.length > 50
+                                                        ? doc.title.substring(0, 40) + '.....' + doc.title.substring(doc.title.length - 5, doc.title.length)
                                                         : doc.title}</span>
                                                 <input autoFocus={true} type="text" id={doc.id} placeholder="Name" class="input-no-border nameInput"/>
                                             </span>
@@ -354,13 +355,19 @@ class DocumentList extends Component {
                             <Modal.Title>
                                 Delete
                                 <img src="/assets/trash.png" class="delete-modal-icon-style pull-right"></img>
-                                <div class="modal-title-inner-text">You are about to delete
+                                <div class="modal-title-inner-text">You are about to delete {this.state.deleteFile.type}
                                     <strong>{this.state.deleteFile
                                             ? ' "' + this.state.deleteFile.title + '"'
                                             : null}</strong>
                                 </div>
                             </Modal.Title>
                         </Modal.Header>
+                        <Modal.Body class="delete-modal-body">
+                            Are you sure you want to delete {this.state.deleteFile.type}
+                            <strong>{this.state.deleteFile
+                                    ? ' "' + this.state.deleteFile.title + '"'
+                                    : null}</strong>?
+                        </Modal.Body>
                         <Modal.Footer>
                             <h3></h3>
                             <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile.id)}>Delete</Button>
