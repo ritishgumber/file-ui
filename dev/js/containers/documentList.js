@@ -254,15 +254,15 @@ class DocumentList extends Component {
         if (this.props.regex == '(.*)')
             return ('No files found, upload some.')
         else if (this.props.regex == '(.*)image(.*)')
-            return ('No images found, upload some.')
+            return ('We don\'t have any photos here. Want to upload one?')
         else if (this.props.regex == '(.*)folder(.*)')
-            return ('No folders found, create some.')
+            return ('There are no folders here. Want to create one?')
         else if (this.props.regex == '(.*)audio(.*)')
-            return ('No audio files found, upload some.')
+            return ('There is no music here. Want to upload some?')
         else if (this.props.regex == '(.*)video(.*)')
-            return ('No video files found, upload some.')
+            return ('No videos found. Want to upload some?')
         else if (this.props.regex == '((.*)openxmlformat(.*)|(.*)msword(.*)|(.*)vnd.ms-(.*)|(.*)pdf(.*))')
-            return ('No document files found, upload some.')
+            return ('No documents found. Want to upload one?')
 
     }
 
@@ -303,10 +303,11 @@ class DocumentList extends Component {
                                 const route = (isFile
                                     ? doc.url
                                     : this.state.location + '/' + doc.title);
-                                const popoverFocus = (
-                                    <Popover id="popover-trigger-focus" title="More..">
-                                        <div class="popover-list">Rename</div>
-                                        <div class="popover-list">ACL</div>
+                                const popoverClickRootClose = (
+                                    <Popover id="popover-trigger-click-root-close" title="More..">
+                                        <ul class="list-group popover-list">
+                                            <li class="list-group-item popover-list-item">ACL</li>
+                                        </ul>
                                     </Popover>
                                 );
                                 return (
@@ -340,7 +341,9 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-
+                                            <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+                                                <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                                            </OverlayTrigger>
                                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                                 <span>More
                                                 </span>
@@ -353,9 +356,9 @@ class DocumentList extends Component {
                     <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                         <Modal.Header class="delete-modal-header-style">
                             <Modal.Title>
-                                Delete
+                                Delete {this.state.deleteFile.type}
                                 <img src="/assets/trash.png" class="delete-modal-icon-style pull-right"></img>
-                                <div class="modal-title-inner-text">You are about to delete {this.state.deleteFile.type}
+                                <div class="modal-title-inner-text">You are about to delete
                                     <strong>{this.state.deleteFile
                                             ? ' "' + this.state.deleteFile.title + '"'
                                             : null}</strong>
@@ -363,13 +366,12 @@ class DocumentList extends Component {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Body class="delete-modal-body">
-                            Are you sure you want to delete {this.state.deleteFile.type}
+                            Are you sure you want to delete
                             <strong>{this.state.deleteFile
                                     ? ' "' + this.state.deleteFile.title + '"'
                                     : null}</strong>?
                         </Modal.Body>
                         <Modal.Footer>
-                            <h3></h3>
                             <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile.id)}>Delete</Button>
                         </Modal.Footer>
                     </Modal>

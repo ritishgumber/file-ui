@@ -30,13 +30,16 @@ export const initApp = (appId) => {
                             CB.CloudApp.init(appId, app[0].keys.master)
                         } else
                             CB.CloudApp.init(SERVER_URL, appId, app[0].keys.master)
-
+                        let userProfilePic = null;
+                        if (userData.data.file)
+                            userProfilePic = userData.data.file.document.url;
                         dispatch({
                             type: 'APP_INIT_SUCCESS',
                             payload: {
                                 appId: app[0].appId,
                                 appName: app[0].name,
-                                allApps: allApps
+                                allApps: allApps,
+                                userProfilePic: userProfilePic
                             }
                         });
                     }
@@ -46,7 +49,8 @@ export const initApp = (appId) => {
             });
 
         }, (err) => {
-            window.location.href = ACCOUNTS_URL
+            window.location.href = 'http://localhost:1447' +
+                '?redirectUrl=' + FILE_URL
         })
 
     })

@@ -15,7 +15,8 @@ export default function(state = {
                 allApps: action.payload.allApps,
                 selectedPage: 1,
                 regex: '(.*)',
-                init: false
+                init: false,
+                userProfilePic: action.payload.userProfilePic
             }
 
             break;
