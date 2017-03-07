@@ -60,6 +60,19 @@ class MainBody extends Component {
     openClick() {
         console.log('yhh');
     }
+    animateSearchBox(isFocus) {
+        if (isFocus) {
+            $('.upload-icon').css({'display': 'none'});
+            $('.create-folder-icon').css({'display': 'none'});
+            $('.inlineRight').css({'width': '50%'});
+
+        } else {
+            $('.upload-icon').css({'display': 'inline-block'});
+            $('.create-folder-icon').css({'display': 'inline-block'});
+            $('.inlineRight').css({'width': 'initial'});
+
+        }
+    }
 
     render() {
 
@@ -103,13 +116,15 @@ class MainBody extends Component {
                                 <DropZone class="upload-icon" location={this.state.location} disableClick={false}><img data-tip="Upload File" class="inline upload-icon" onClick={this.open.bind(this, 'upload')} src="/assets/fileadd.png" width="25px"/></DropZone>
                                 <ReactTooltip place="bottom" effect="solid"/>
                                 <img data-tip="New Folder" class="inline create-folder-icon" onClick={this.open.bind(this, 'create')} src="/assets/folderadd.png" width="25px"/>
-                                <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search"/>
+                                <input type="text" class="inline search-bar" onChange={this.handleChange.bind(this)} placeholder="Search" onFocus={this.animateSearchBox.bind(this, true)} onBlur={this.animateSearchBox.bind(this, false)}/>
                             </span>
 
                             <Modal show={this.state.showCreateModal} onHide={this.close.bind(this)}>
                                 <Modal.Header class="modal-header-style">
                                     <Modal.Title>
-                                        New Folder
+                                        <span class="new-folder-modal-title">
+                                            New Folder
+                                        </span>
                                         <img src="/assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
                                         <div class="modal-title-inner-text">Create a new folder.</div>
                                     </Modal.Title>
