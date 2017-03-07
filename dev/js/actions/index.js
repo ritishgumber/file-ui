@@ -49,8 +49,7 @@ export const initApp = (appId) => {
             });
 
         }, (err) => {
-            window.location.href = 'http://localhost:1447' +
-                '?redirectUrl=' + FILE_URL
+            window.location.href = ACCOUNTS_URL + '?redirectUrl=' + FILE_URL
         })
 
     })
