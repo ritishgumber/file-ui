@@ -12,6 +12,8 @@ export const initApp = (appId) => {
                 let allApps = [];
                 var availableApps = data.data.filter((obj) => !obj.deleted);
                 let length = availableApps.length;
+                if (availableApps.length == 0)
+                    window.location.href = DASHBOARD_URL;
 
                 availableApps.forEach((app) => {
                     allApps.push({name: app.name, id: app.appId});

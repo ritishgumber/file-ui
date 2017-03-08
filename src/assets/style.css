@@ -209,11 +209,11 @@ span.inlineRight div.dropBody {
     border-width: 0.5px;
     border-radius: 4px;
     background: #fcfcfd;
-    background-image: url('/assets/search.png');
+    background-image: url('/assets/search_icon.png');
     background-position: right;
     background-repeat: no-repeat;
     background-size: contain;
-    border: 1px solid #4f9cf5;
+    border: 1px solid #d0d4d9;
 }
 
 .search-bar:focus {

@@ -117,7 +117,7 @@ class App extends React.Component {
 
                 <Navbar class="navbar-style navbar-border " collapseOnSelect fixedBottom={true}>
                     <Navbar.Brand>
-                        <a class="footer-item" href="https://cloudboost.io">&copy; CloudBoost</a>
+                        <a class="footer-item" href="https://cloudboost.io">&copy; 2017 CloudBoost</a>
                     </Navbar.Brand>
                     <Navbar.Toggle/>
 
