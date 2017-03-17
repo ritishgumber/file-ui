@@ -57,6 +57,42 @@ export const initApp = (appId) => {
     })
 }
 
+export const openFile = (data) => {
+    return ((dispatch) => {
+        var query = new CB.CloudQuery("_File");
+        query.equalTo('id', data.id);
+        query.findOne({
+            success: function(obj) {
+                if ((obj.ACL.document.read.allow.user).indexOf('all') !== -1) {
+                    //for public files
+                    var newWindow = window.open(obj.url);
+                } else {
+                    //for private files
+                    axios({
+                        method: 'post',
+                        data: {
+                            key: CB.appKey
+                        },
+                        url: obj.url,
+                        withCredentials: false,
+                        responseType: 'blob'
+                    }).then(function(res) {
+                        var blob = res.data;
+                        var fileURL = URL.createObjectURL(blob);
+                        var newWindow = window.open(fileURL);
+                        URL.revokeObjectURL(fileURL)
+
+                    }, function(err) {
+                        console.log(err);
+                    });
+                }
+
+            },
+            error: function(err) {}
+        })
+    });
+}
+
 export const deleteFile = (data) => {
     return ((dispatch) => {
 

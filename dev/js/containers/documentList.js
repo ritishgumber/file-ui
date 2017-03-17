@@ -9,8 +9,8 @@ import {
 } from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {deleteFile, fetchAllFiles, sortDocuments, editFile} from '../actions/index';
 import {Link, browserHistory} from "react-router";
+import {deleteFile, fetchAllFiles, sortDocuments, editFile, openFile} from '../actions/index';
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
 
@@ -107,7 +107,8 @@ class DocumentList extends Component {
     }
     navigate(route, isFile) {
         if (isFile) {
-            window.open(route, '_blank');
+            // for file , route contains fileObjects
+            this.props.openFile(route);
         } else {
             browserHistory.push(route);
         }
@@ -301,7 +302,7 @@ class DocumentList extends Component {
                                     ? true
                                     : false);
                                 const route = (isFile
-                                    ? doc.url
+                                    ? doc
                                     : this.state.location + '/' + doc.title);
                                 const popoverClickRootClose = (
                                     <Popover id="popover-trigger-click-root-close" title="More..">
@@ -408,7 +409,8 @@ function matchDispatchToProps(dispatch) {
         deleteFile: deleteFile,
         fetchAllFiles: fetchAllFiles,
         sortDocuments: sortDocuments,
-        editFile: editFile
+        editFile: editFile,
+        openFile: openFile
 
     }, dispatch);
 }
