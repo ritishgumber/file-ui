@@ -10,7 +10,14 @@ import {
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link, browserHistory} from "react-router";
-import {deleteFile, fetchAllFiles, sortDocuments, editFile, openFile} from '../actions/index';
+import {
+    deleteFile,
+    fetchAllFiles,
+    sortDocuments,
+    editFile,
+    openFile,
+    downloadFile
+} from '../actions/index';
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
 
@@ -266,7 +273,9 @@ class DocumentList extends Component {
             return ('No documents found. Want to upload one?')
 
     }
-
+    downloadFile(obj) {
+        this.props.downloadFile(obj);
+    }
     render() {
         const {location} = this.state;
 
@@ -334,9 +343,7 @@ class DocumentList extends Component {
                                             </ReactTooltip>
 
                                             {doc.type == 'File'
-                                                ? <a href={doc.url} target="_blank">
-                                                        <span data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
-                                                    </a>
+                                                ? <span onClick={this.downloadFile.bind(this, doc)} data-tip data-for="download-icon" class="ion ion-ios-download-outline action-icons download-icon"></span>
                                                 : null}
                                             <ReactTooltip id='download-icon' place="bottom" effect='solid'>
                                                 <span>Download
@@ -410,7 +417,8 @@ function matchDispatchToProps(dispatch) {
         fetchAllFiles: fetchAllFiles,
         sortDocuments: sortDocuments,
         editFile: editFile,
-        openFile: openFile
+        openFile: openFile,
+        downloadFile: downloadFile
 
     }, dispatch);
 }

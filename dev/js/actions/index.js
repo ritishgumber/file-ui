@@ -59,37 +59,31 @@ export const initApp = (appId) => {
 
 export const openFile = (data) => {
     return ((dispatch) => {
-        var query = new CB.CloudQuery("_File");
-        query.equalTo('id', data.id);
-        query.findOne({
-            success: function(obj) {
-                if ((obj.ACL.document.read.allow.user).indexOf('all') !== -1) {
-                    //for public files
-                    var newWindow = window.open(obj.url);
-                } else {
-                    //for private files
-                    axios({
-                        method: 'post',
-                        data: {
-                            key: CB.appKey
-                        },
-                        url: obj.url,
-                        withCredentials: false,
-                        responseType: 'blob'
-                    }).then(function(res) {
-                        var blob = res.data;
-                        var fileURL = URL.createObjectURL(blob);
-                        var newWindow = window.open(fileURL);
-                        URL.revokeObjectURL(fileURL)
+        var obj = data.fileObj;
+        if ((obj.ACL.document.read.allow.user).indexOf('all') !== -1) {
+            //for public files
+            var newWindow = window.open(obj.url);
+        } else {
+            //for private files
+            axios({
+                method: 'post',
+                data: {
+                    key: CB.appKey
+                },
+                url: obj.url,
+                withCredentials: false,
+                responseType: 'blob'
+            }).then(function(res) {
+                var blob = res.data;
+                var fileURL = URL.createObjectURL(blob);
+                var newWindow = window.open(fileURL);
+                URL.revokeObjectURL(fileURL)
 
-                    }, function(err) {
-                        console.log(err);
-                    });
-                }
+            }, function(err) {
+                console.log(err);
+            });
+        }
 
-            },
-            error: function(err) {}
-        })
     });
 }
 
@@ -124,6 +118,38 @@ export const editFile = (data) => {
         })
     });
 }
+
+export const downloadFile = (data) => {
+    return ((dispatch) => {
+        var obj = data.fileObj;
+
+        axios({
+            method: 'post',
+            data: {
+                key: CB.appKey
+            },
+            url: obj.url,
+            withCredentials: false,
+            responseType: 'blob'
+        }).then(function(res) {
+            var blob = res.data;
+            var fileURL = URL.createObjectURL(blob);
+
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = fileURL;
+            a.download = obj.name;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+        }, function(err) {
+            console.log(err);
+        });
+
+    });
+}
+
 export const fetchAllFiles = (data) => {
 
     let response = [];
@@ -174,7 +200,8 @@ export const fetchAllFiles = (data) => {
                         type: file.contentType == 'folder/folder'
                             ? 'Folder'
                             : 'File',
-                        img: imagePath(file.contentType, file.name)
+                        img: imagePath(file.contentType, file.name),
+                        fileObj: file
                     })
                 });
                 dispatch({
