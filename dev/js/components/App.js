@@ -91,12 +91,10 @@ class App extends React.Component {
 
                             <NavDropdown eventKey={3} title={profilePic} id="basic-nav-dropdown" class="profile">
 
-                                <MenuItem key={1} onClick={this.navigate.bind(this, DASHBOARD_URL + '/#/profile')}>
+                                <MenuItem key={1} href={DASHBOARD_URL + '/#/profile'}>
                                     Profile
                                 </MenuItem>
-                                <MenuItem key={2} onClick={this.navigate.bind(this, '#/')}>
-                                    Logout
-                                </MenuItem>
+
                             </NavDropdown>
 
                         </Nav>
@@ -117,7 +115,7 @@ class App extends React.Component {
 
                 <Navbar class="navbar-style navbar-border " collapseOnSelect fixedBottom={true}>
                     <Navbar.Brand>
-                        <a class="footer-item" href="https://cloudboost.io">&copy; 2017 CloudBoost</a>
+                        <a class="footer-item" href="https://cloudboost.io">&copy; {(new Date()).getFullYear()}&nbsp; CloudBoost</a>
                     </Navbar.Brand>
                     <Navbar.Toggle/>
 
@@ -155,4 +153,4 @@ function matchDispatchToProps(dispatch) {
         initApp: initApp
     }, dispatch);
 }
-export default connect(mapStateToProps, matchDispatchToProps)(App);;
+export default connect(mapStateToProps, matchDispatchToProps)(App);

@@ -19,8 +19,7 @@ export const initApp = (appId) => {
                     allApps.push({name: app.name, id: app.appId});
                     length--;
                     if (length == 0) {
-                        var app;
-                        if (!appId || appId == '' || appId == "")
+                        if (!appId || appId == '' || appId == "") 
                             window.location.href = FILE_URL + availableApps[0].appId
                         else {
                             app = availableApps.filter(function(obj) {
@@ -60,7 +59,10 @@ export const initApp = (appId) => {
 export const openFile = (data) => {
     return ((dispatch) => {
         var obj = data.fileObj;
-        if ((obj.ACL.document.read.allow.user).indexOf('all') !== -1) {
+        var allowArr = obj.ACL.document;
+        if (!allowArr)
+            allowArr = obj.ACL;
+        if ((allowArr.read.allow.user).indexOf('all') !== -1) {
             //for public files
             var newWindow = window.open(obj.url);
         } else {
@@ -201,7 +203,7 @@ export const fetchAllFiles = (data) => {
                             ? 'Folder'
                             : 'File',
                         img: imagePath(file.contentType, file.name),
-                        fileObj: file
+                        fileObj: cloudFile
                     })
                 });
                 dispatch({

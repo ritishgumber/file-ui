@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Glyphicon} from 'react-bootstrap';
 import {fetchAllFiles} from '../actions/index'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';

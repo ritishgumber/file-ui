@@ -333,6 +333,7 @@ span.inlineRight div.dropBody {
     font-size: 30px;
     width: 60px;
     padding: 15px;
+    content: url("trash.png");
 }
 
 #folderName {

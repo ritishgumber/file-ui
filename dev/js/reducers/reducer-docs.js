@@ -18,8 +18,6 @@ export default function(state = {
                 init: false,
                 userProfilePic: action.payload.userProfilePic
             }
-
-            break;
         case 'DELETE_FILE':
             return {
                 ...state,
