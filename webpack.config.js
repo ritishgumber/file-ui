@@ -3,9 +3,19 @@ var webpack = require('webpack');
 module.exports = {
     entry: ['./dev/js/index.js'],
     module: {
+        preLoaders: [
+            {
+                test: /\.js?$/,
+                loader: 'eslint',
+                exclude: /node_modules/
+            }
+        ],
         loaders: [
             {
                 test: /\.scss/,
+                loader: 'style-loader!css-loader!sass-loader'
+            }, {
+                test: /\.css/,
                 loader: 'style-loader!css-loader!sass-loader'
             }, {
                 test: /\.jsx?$/,
@@ -27,5 +37,11 @@ module.exports = {
     plugins: [],
     node: {
         fs: "empty"
+    },
+    resolve: {
+        alias: {
+            react: path.resolve('./node_modules/react'),
+            'material-ui': path.resolve('./node_modules/material-ui')
+        }
     }
 };

@@ -20,6 +20,7 @@ import {
 } from '../actions/index';
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
+import ACL from '../../acl/ACL.js';
 
 class DocumentList extends Component {
     constructor(props)
@@ -44,7 +45,19 @@ class DocumentList extends Component {
         };
 
     }
+    closeACLModal = () => {
+        // this is used close the ACL modal
+        this.setState({showACLModal: false})
+    }
 
+    saveACL = (updatedObject) => {
+
+        console.log(updatedObject);
+        updatedObject.save();
+    }
+    openACLModal() {
+        this.setState({showACLModal: true})
+    }
     componentWillReceiveProps(newProp)
     {
 
@@ -316,7 +329,7 @@ class DocumentList extends Component {
                                 const popoverClickRootClose = (
                                     <Popover id="popover-trigger-click-root-close" title="More..">
                                         <ul class="list-group popover-list">
-                                            <li class="list-group-item popover-list-item">ACL</li>
+                                            <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this)}>ACL</li>
                                         </ul>
                                     </Popover>
                                 );
@@ -349,13 +362,15 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-                                            <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+                                            <OverlayTrigger ref="popover" trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
                                                 <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
                                             </OverlayTrigger>
                                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                                 <span>More
                                                 </span>
                                             </ReactTooltip>
+                                            <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={doc.fileObj} onACLSave={this.saveACL}/>
+
                                         </td>
                                     </tr>
                                 )
@@ -365,7 +380,7 @@ class DocumentList extends Component {
                         <Modal.Header class="delete-modal-header-style">
                             <Modal.Title>
                                 Delete {this.state.deleteFile.type}
-                                <img src="/assets/trash.png" class="delete-modal-icon-style pull-right"></img>
+                                <img class="delete-modal-icon-style pull-right"></img>
                                 <div class="modal-title-inner-text">You are about to delete
                                     <strong>{this.state.deleteFile
                                             ? ' "' + this.state.deleteFile.title + '"'
