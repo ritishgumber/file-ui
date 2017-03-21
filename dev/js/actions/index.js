@@ -19,7 +19,7 @@ export const initApp = (appId) => {
                     allApps.push({name: app.name, id: app.appId});
                     length--;
                     if (length == 0) {
-                        if (!appId || appId == '' || appId == "") 
+                        if (!appId || appId == '' || appId == "")
                             window.location.href = FILE_URL + availableApps[0].appId
                         else {
                             app = availableApps.filter(function(obj) {
@@ -143,7 +143,7 @@ export const downloadFile = (data) => {
             a.href = fileURL;
             a.download = obj.name;
             a.click();
-            window.URL.revokeObjectURL(url);
+            window.URL.revokeObjectURL(fileURL);
 
         }, function(err) {
             console.log(err);
