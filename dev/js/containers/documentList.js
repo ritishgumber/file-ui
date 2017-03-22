@@ -225,7 +225,7 @@ class DocumentList extends Component {
                                 <span>Download
                                 </span>
                             </ReactTooltip>
-                            <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                            {/* <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span> */}
                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                 <span>More
                                 </span>
@@ -362,9 +362,9 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-                                            <OverlayTrigger ref="popover" trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+                                            {/* <OverlayTrigger ref="popover" trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
                                                 <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
-                                            </OverlayTrigger>
+                                            </OverlayTrigger> */}
                                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                                 <span>More
                                                 </span>
