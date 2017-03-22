@@ -136,6 +136,16 @@ class DocumentList extends Component {
     editFile(id) {
         this.props.editFile(id);
     }
+    toggleClass() {
+        $(".more-icon").hover(function() {
+            $(this).removeClass("ion-ios-more-outline");
+            $(this).addClass("ion-ios-more");
+        }, function() {
+            $(this).removeClass("ion-ios-more");
+            $(this).addClass("ion-ios-more-outline");
+        });
+
+    }
 
     openModal(file) {
         this.setState({showModal: true, deleteFile: file});
@@ -215,9 +225,9 @@ class DocumentList extends Component {
                                 <span>Download
                                 </span>
                             </ReactTooltip>
-                            <span data-tip data-for="acl-icon" class="ion ion-ios-unlocked-outline action-icons acl-icon"></span>
-                            <ReactTooltip id='acl-icon' place="bottom" effect='solid'>
-                                <span>ACL
+                            {/* <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span> */}
+                            <ReactTooltip id='more-icon' place="bottom" effect='solid'>
+                                <span>More
                                 </span>
                             </ReactTooltip>
                         </td>
@@ -316,7 +326,13 @@ class DocumentList extends Component {
                                 const route = (isFile
                                     ? doc
                                     : this.state.location + '/' + doc.title);
-
+                                const popoverClickRootClose = (
+                                    <Popover id="popover-trigger-click-root-close" title="More..">
+                                        <ul class="list-group popover-list">
+                                            <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this)}>ACL</li>
+                                        </ul>
+                                    </Popover>
+                                );
                                 return (
                                     <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
                                         <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
@@ -346,9 +362,11 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-                                            <span data-tip onClick={this.openACLModal.bind(this)} data-for="acl-icon" class="ion ion-ios-unlocked-outline action-icons acl-icon"></span>
-                                            <ReactTooltip id='acl-icon' place="bottom" effect='solid'>
-                                                <span>ACL
+                                            {/* <OverlayTrigger ref="popover" trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+                                                <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
+                                            </OverlayTrigger> */}
+                                            <ReactTooltip id='more-icon' place="bottom" effect='solid'>
+                                                <span>More
                                                 </span>
                                             </ReactTooltip>
                                             <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={doc.fileObj} onACLSave={this.saveACL}/>

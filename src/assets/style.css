@@ -406,10 +406,6 @@ span.inlineRight div.dropBody {
     color: #285c98;
 }
 
-.acl-icon:hover {
-    color: #737373;
-}
-
 .edit-icon {
     font-size: 20px!important;
 }
@@ -543,7 +539,4 @@ span.inlineRight div.dropBody {
     text-align: center;
     margin-top: -5px;
     cursor: default;
-}
-
-
 }
