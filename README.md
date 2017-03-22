@@ -12,7 +12,7 @@ CloudBoost is the Complete NoSQL Database Service for your app. **Think of Cloud
  - More - ACL's, User Authentication, Server-less apps and more.
 
 #CloudBoost Files
-This is a CloudBoost Files UI for user management and can be used with  [CloudBoost Engine. ]( https://cloudboost.io/)
+This is a CloudBoost Files UI for managing files related to cloudApp and can be used with  [CloudBoost Engine. ]( https://cloudboost.io/)
 
 
 #Contributing
