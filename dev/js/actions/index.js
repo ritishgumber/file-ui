@@ -64,7 +64,7 @@ export const openFile = (data) => {
             allowArr = obj.ACL;
         if ((allowArr.read.allow.user).indexOf('all') !== -1) {
             //for public files
-            var newWindow = window.open(obj.url);
+            window.open(obj.url, '_blank');
         } else {
             //for private files
             axios({
@@ -78,7 +78,7 @@ export const openFile = (data) => {
             }).then(function(res) {
                 var blob = res.data;
                 var fileURL = URL.createObjectURL(blob);
-                var newWindow = window.open(fileURL);
+                window.open(fileURL, '_blank');
                 URL.revokeObjectURL(fileURL)
 
             }, function(err) {
