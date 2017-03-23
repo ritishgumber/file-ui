@@ -127,7 +127,7 @@ class MainBody extends Component {
                                         <span class="new-folder-modal-title">
                                             New Folder
                                         </span>
-                                        <img src="/assets/add-folder-icon.png" class="modal-icon-style pull-right"></img>
+                                        <img class="create-folder-modal-icon-style pull-right"></img>
                                         <div class="modal-title-inner-text">Create a new folder.</div>
                                     </Modal.Title>
                                 </Modal.Header>

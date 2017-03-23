@@ -393,7 +393,7 @@ class DocumentList extends Component {
                     </table>
 
                     {this.state.showACLModal
-                        ? <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={this.state.objectWithACL} onACLSave={this.saveACL}/>
+                        ? <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={this.state.objectWithACL} onACLSave={this.saveACL} dialogClassName ={'acl-modal'}/>
                         : ''}
 
                     <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
