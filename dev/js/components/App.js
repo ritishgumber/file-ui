@@ -78,7 +78,7 @@ class App extends React.Component {
 
                                 {allApps}
                                 <MenuItem divider/>
-                                <MenuItem key={4} href={DASHBOARD_URL}>
+                                <MenuItem key={4} href={DASHBOARD_URL} onClick={this.navigate.bind(this, DASHBOARD_URL)}>
                                     <i class="ion ion-android-apps dashboard-icon "></i>
                                     &nbsp; Dashboard</MenuItem>
                             </NavDropdown>

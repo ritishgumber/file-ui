@@ -41,13 +41,14 @@ class DocumentList extends Component {
             showModal: false,
             deleteFile: {
                 id: 2
-            }
+            },
+            objectWithACL: null
         };
 
     }
     closeACLModal = () => {
         // this is used close the ACL modal
-        this.setState({showACLModal: false})
+        this.setState({showACLModal: false, objectWithACL: null})
     }
 
     saveACL = (updatedObject) => {
@@ -55,8 +56,8 @@ class DocumentList extends Component {
         console.log(updatedObject);
         updatedObject.save();
     }
-    openACLModal() {
-        this.setState({showACLModal: true})
+    openACLModal(objectWithACL) {
+        this.setState({showACLModal: true, objectWithACL: objectWithACL})
     }
     componentWillReceiveProps(newProp)
     {
@@ -286,8 +287,23 @@ class DocumentList extends Component {
             return ('No documents found. Want to upload one?')
 
     }
+    test(doc) {
+        console.log(doc);
+        this.state.objectWithACL = doc.fileObj;
+        this.setState(this.state);
+    }
     downloadFile(obj) {
         this.props.downloadFile(obj);
+    }
+    popover(doc) {
+        return (
+            <Popover id="popover-trigger-click-root-close" title="More..">
+                <ul class="list-group popover-list">
+                    <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this, doc)}>ACL</li>
+                </ul>
+            </Popover>
+        )
+
     }
     render() {
         const {location} = this.state;
@@ -362,20 +378,24 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-                                            {/* <OverlayTrigger ref="popover" trigger="click" rootClose placement="bottom" overlay={popoverClickRootClose}>
+                                            <OverlayTrigger ref="popover" trigger="click" onClick={this.test.bind(this, doc)} rootClose placement="bottom" overlay={this.popover(doc.fileObj)}>
                                                 <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
-                                            </OverlayTrigger> */}
+                                            </OverlayTrigger>
                                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                                 <span>More
                                                 </span>
                                             </ReactTooltip>
-                                            <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={doc.fileObj} onACLSave={this.saveACL}/>
 
                                         </td>
                                     </tr>
                                 )
                             })}</tbody>
                     </table>
+
+                    {this.state.showACLModal
+                        ? <ACL closeACLModal={this.closeACLModal} isOpenACLModal={this.state.showACLModal} objectWithACL={this.state.objectWithACL} onACLSave={this.saveACL}/>
+                        : ''}
+
                     <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                         <Modal.Header class="delete-modal-header-style">
                             <Modal.Title>
