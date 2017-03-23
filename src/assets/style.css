@@ -299,6 +299,26 @@ span.inlineRight div.dropBody {
     font-family: Signika;
 }
 
+.acl-modal .modal-content .modal-header {
+    color: white;
+    background: #4f9cf5;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-family: Signika;
+}
+
+.acl-modal .modal-content .modal-footer .btn-primary {
+    background: #4f9cf5;
+}
+
+.acl-modal .modal-content .modal-body {
+    font-family: Signika;
+}
+
+.selectautoacl {
+    font-family: Signika!important;
+}
+
 .create-btn {
     background: #4f9cf5;
 }
@@ -319,12 +339,13 @@ span.inlineRight div.dropBody {
     font-size: 25px;
 }
 
-.modal-icon-style {
+.create-folder-modal-icon-style {
     border-radius: 50%;
     background: #2c5f9a;
     font-size: 30px;
     width: 60px;
     padding: 15px;
+    content: url("add-folder-icon.png");
 }
 
 .delete-modal-icon-style {
@@ -334,6 +355,15 @@ span.inlineRight div.dropBody {
     width: 60px;
     padding: 15px;
     content: url("trash.png");
+}
+
+.acl-modal-icon-style {
+    border-radius: 50%;
+    background: #2c5f9a;
+    font-size: 30px;
+    width: 60px;
+    padding: 15px;
+    content: url("acl.png");
 }
 
 #folderName {
@@ -539,4 +569,8 @@ span.inlineRight div.dropBody {
     text-align: center;
     margin-top: -5px;
     cursor: default;
+}
+
+efault;
+
 }

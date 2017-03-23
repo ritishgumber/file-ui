@@ -128,8 +128,14 @@ class ACL extends React.Component {
             <Modal show={this.props.isOpenACLModal} onHide={this.close} dialogClassName={this.props.dialogClassName
                 ? this.props.dialogClassName
                 : "custom-modal"}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit ACL</Modal.Title>
+                <Modal.Header >
+                    <Modal.Title>Edit ACL
+                        <img class="acl-modal-icon-style pull-right"></img>
+                        <div class="modal-title-inner-text">You are about to change ACL for
+                            <strong>{' "' + this.props.objectWithACL.document.name + '"'}</strong>
+
+                        </div>
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <MuiThemeProvider>
@@ -137,7 +143,6 @@ class ACL extends React.Component {
                     </MuiThemeProvider>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.close}>Cancel</Button>
                     <Button bsStyle="primary" onClick={this.saveAcl.bind(this)}>Save</Button>
                 </Modal.Footer>
             </Modal>
