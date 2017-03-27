@@ -11,11 +11,11 @@ CloudBoost is the Complete NoSQL Database Service for your app. **Think of Cloud
  - Queues
  - More - ACL's, User Authentication, Server-less apps and more.
 
-#CloudBoost Files
+# CloudBoost Files
 This is a CloudBoost Files UI for managing files related to cloudApp and can be used with  [CloudBoost Engine. ]( https://cloudboost.io/)
 
 
-#Contributing
+# Contributing
 
 Pull requests are very welcome!
 
@@ -38,7 +38,7 @@ If you're using CloudBoost Open Source and like what we've built, help us speed 
 <a href="https://opencollective.com/cloudboost/backer/10/website" target="_blank"><img src="https://opencollective.com/cloudboost/backer/10/avatar.svg"></a>
 
 
-#LICENSE
+# LICENSE
 
 Copyright 2016 HackerBay, Inc.
 
