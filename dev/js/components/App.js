@@ -29,7 +29,7 @@ class App extends React.Component {
             browserHistory.push(route);
             this.props.initApp('' + window.location.pathname.split('/')[1]);
         } else {
-            location.assign(route);
+            window.open(route, '_blank');
         }
     }
 
@@ -78,13 +78,13 @@ class App extends React.Component {
 
                                 {allApps}
                                 <MenuItem divider/>
-                                <MenuItem key={4} href={DASHBOARD_URL} onClick={this.navigate.bind(this, DASHBOARD_URL)}>
+                                <MenuItem key={4} href={DASHBOARD_URL} onClick={this.navigate.bind(this, DASHBOARD_URL, false)}>
                                     <i class="ion ion-android-apps dashboard-icon "></i>
                                     &nbsp; Dashboard</MenuItem>
                             </NavDropdown>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem href={DASHBOARD_URL} class='dashboard-menuitem' onClick={this.navigate.bind(this, DASHBOARD_URL)}>
+                            <NavItem href={DASHBOARD_URL} class='dashboard-menuitem' onClick={this.navigate.bind(this, DASHBOARD_URL, false)}>
                                 <i class="ion ion-android-apps dashboard-icon"></i>
                                 &nbsp; Dashboard
                             </NavItem>
@@ -121,13 +121,12 @@ class App extends React.Component {
 
                     <Navbar.Collapse>
                         <Nav >
-                            <NavItem eventKey={2} class="footer-item" href='https://cloudboost.io/terms' onClick={this.navigate.bind(this, 'https://cloudboost.io/terms')}>Terms</NavItem>
-                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy')} href='https://cloudboost.io/privacy'>Privacy</NavItem>
-                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/')} href='https://slack.cloudboost.io/'>Help</NavItem>
+                            <NavItem eventKey={2} class="footer-item" href='https://cloudboost.io/terms' onClick={this.navigate.bind(this, 'https://cloudboost.io/terms', false)}>Terms</NavItem>
+                            <NavItem eventKey={3} class="footer-item" onClick={this.navigate.bind(this, 'https://cloudboost.io/privacy', false)} href='https://cloudboost.io/privacy'>Privacy</NavItem>
+                            <NavItem eventKey={4} class="footer-item" onClick={this.navigate.bind(this, 'https://slack.cloudboost.io/', false)} href='https://slack.cloudboost.io/'>Help</NavItem>
                         </Nav>
                         <Nav pullRight>
-                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#')} href='https://tutorials.cloudboost.io/en/datastorage/files#'>Documentation</NavItem>
-
+                            <NavItem eventKey={6} class="footer-item" onClick={this.navigate.bind(this, 'https://tutorials.cloudboost.io/en/datastorage/files#', false)} href='https://tutorials.cloudboost.io/en/datastorage/files#'>Documentation</NavItem>
                         </Nav>
 
                     </Navbar.Collapse>

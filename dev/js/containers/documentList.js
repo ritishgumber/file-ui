@@ -210,6 +210,7 @@ class DocumentList extends Component {
                             <img src='/assets/file-types/file.png' width="30"/>
                             <span class="name-field">{doc.name}</span>
                         </td>
+                        <td class="dataStyle">{doc.id}</td>
                         <td class="dataStyle modifiedDataItem">
                             {modified}
                         </td>
@@ -297,7 +298,7 @@ class DocumentList extends Component {
     }
     popover(doc) {
         return (
-            <Popover id="popover-trigger-click-root-close" title="More..">
+            <Popover id="popover-trigger-click-root-close" title="More">
                 <ul class="list-group popover-list">
                     <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this, doc)}>ACL</li>
                 </ul>
@@ -310,10 +311,12 @@ class DocumentList extends Component {
 
         if (this.props.docs.length == 0 && !this.props.fetching && !this.props.uploading && !this.props.init) {
             return (
-                <DropZone location={location} disableClick={false}>
-                    <img class="center-aligned" src="/assets/emptybox.png"/>
+                <div class="center-aligned">
+                    <DropZone className="inline-dropBody" location={location} disableClick={false}>
+                        <img class="empty-file-image" src="/assets/emptybox.png"/>
+                    </DropZone>
                     <h5 class="center-aligned">{this.printMessage()}</h5>
-                </DropZone>
+                </div>
             );
         }
         return (
@@ -325,6 +328,7 @@ class DocumentList extends Component {
                                 <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'title')}>Name
                                     <i class={this.state.titleSortIcon}></i>
                                 </th>
+                                <th class="dataStyle">ID</th>
                                 <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
                                     <i class={this.state.modifiedSortIcon}></i>
                                 </th>
@@ -343,7 +347,7 @@ class DocumentList extends Component {
                                     ? doc
                                     : this.state.location + '/' + doc.title);
                                 const popoverClickRootClose = (
-                                    <Popover id="popover-trigger-click-root-close" title="More..">
+                                    <Popover id="popover-trigger-click-root-close" title="More">
                                         <ul class="list-group popover-list">
                                             <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this)}>ACL</li>
                                         </ul>
@@ -362,6 +366,7 @@ class DocumentList extends Component {
                                             </span>
 
                                         </td>
+                                        <td class="dataStyle">{doc.id}</td>
                                         <td class="dataStyle modifiedDataItem">
                                             {doc.modified}
                                         </td>

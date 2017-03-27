@@ -129,7 +129,7 @@ class ACL extends React.Component {
                 ? this.props.dialogClassName
                 : "custom-modal"}>
                 <Modal.Header >
-                    <Modal.Title>Edit ACL
+                    <Modal.Title>ACL
                         <img class="acl-modal-icon-style pull-right"></img>
                         <div class="modal-title-inner-text">You are about to change ACL for
                             <strong>{' "' + this.props.objectWithACL.document.name + '"'}</strong>

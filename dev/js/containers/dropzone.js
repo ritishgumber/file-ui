@@ -35,7 +35,9 @@ class DropZone extends Component {
     render() {
 
         return (
-            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className="dropBody" disableClick={this.props.disableClick}>{this.props.children}</Dropzone>
+            <Dropzone onDrop={this.onDrop.bind(this)} activeClassName="activeDropBody" className={this.props.className
+                ? this.props.className + ' dropBody'
+                : 'dropBody'} disableClick={this.props.disableClick}>{this.props.children}</Dropzone>
         )
     }
 
