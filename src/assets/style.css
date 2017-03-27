@@ -117,6 +117,10 @@ span.inlineRight div.dropBody {
     display: inline-block;
 }
 
+.inline-dropBody {
+    display: inline-block;
+}
+
 .activeDropBody {
     background-color: #cdebff;
 }
@@ -546,6 +550,11 @@ span.inlineRight div.dropBody {
     border: none;
 }
 
+.list-group-item:last-child {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
 .profilePic {
     width: 30px;
     height: 30px;
@@ -571,6 +580,9 @@ span.inlineRight div.dropBody {
     cursor: default;
 }
 
-efault;
+.empty-file-image {
+    cursor: pointer;
+}
+
 
 }
