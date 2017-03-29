@@ -39,17 +39,15 @@ class App extends React.Component {
 
         if (this.props.allApps) {
             allApps = this.props.allApps.map((app, i) => {
-                if (app.id != thisObj.props.appId)
-                    return (
-                        <MenuItem class={app.id == thisObj.props.appId
-                            ? 'selected-app'
-                            : ''} key={i} onClick={this.navigate.bind(this, '/' + app.id, true)}>
-                            <i class="ion ion-android-cloud-outline dashboard-icon "></i>
-                            &nbsp;{app.name}
-                        </MenuItem>
-                    );
-                }
-            )
+                return (
+                    <MenuItem class={app.id == thisObj.props.appId
+                        ? 'selected-app'
+                        : ''} key={i} onClick={this.navigate.bind(this, '/' + app.id, true)}>
+                        <i class="ion ion-android-cloud-outline dashboard-icon "></i>
+                        &nbsp;{app.name}
+                    </MenuItem>
+                );
+            })
         }
         let profilePic = <i class="ion ion-person profile-icon"></i>
         if (this.props.userProfilePic) {

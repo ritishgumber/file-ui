@@ -8,7 +8,7 @@ table {
 }
 
 th {
-    padding: 5px;
+    font-weight: 400;
 }
 
 body {
@@ -81,6 +81,7 @@ body {
 }
 
 .nameDataField {
+    padding-right: 5px;
     cursor: pointer;
 }
 
@@ -91,6 +92,11 @@ body {
 
 .modifiedDataItem {
     color: grey;
+}
+
+.idDataItem {
+    background: #e8e8e8;
+    padding-right: 5px;
 }
 
 .ProgressBar {
@@ -222,6 +228,8 @@ span.inlineRight div.dropBody {
 
 .search-bar:focus {
     width: 100%;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
     outline: none;
 }
 
@@ -390,13 +398,11 @@ span.inlineRight div.dropBody {
     font-size: 12px;
 }
 
-.below-navbar {
-    border-bottom: 1px solid #d2cdcd
-}
+.below-navbar {}
 
 .listHeading {
     padding: 10px;
-    background: #e4e4e4;
+    border-bottom: 1px solid #549afc;
     color: grey;
 }
 
@@ -584,5 +590,16 @@ span.inlineRight div.dropBody {
     cursor: pointer;
 }
 
+.empty-file-text {
+    cursor: default;
+}
+
+t;
+
+}
+
+}
+
+}
 
 }
