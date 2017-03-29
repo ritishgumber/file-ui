@@ -16,6 +16,9 @@ class ACL extends React.Component {
     componentWillMount() {
         this.generaliseACL(this.props.objectWithACL)
     }
+    componentDidMount() {
+        $('.modal-body').click();
+    }
     generaliseACL(props) {
         let users = {}
         let roles = {}

@@ -16,7 +16,8 @@ export default function(state = {
                 selectedPage: 1,
                 regex: '(.*)',
                 init: false,
-                userProfilePic: action.payload.userProfilePic
+                userProfilePic: action.payload.userProfilePic,
+                downloadingFile: false
             }
         case 'DELETE_FILE':
             return {
@@ -67,6 +68,16 @@ export default function(state = {
                 ...state,
                 uploading: true,
                 fileAddSuccess: false
+            }
+        case 'DOWNLOADING_FILE':
+            return {
+                ...state,
+                downloadingFile: true
+            }
+        case 'DOWNLOADING_COMPLETE':
+            return {
+                ...state,
+                downloadingFile: false
             }
         case 'SORT_DOCUMENTS':
             return {
