@@ -159,7 +159,7 @@ class DocumentList extends Component {
         else {
             return (
                 <tr className="">
-                    <td className="uploadingStatusRow" colSpan="3">
+                    <td className="uploadingStatusRow" colSpan="4">
                         {this.props.remainingFiles}&nbsp; of {this.props.totalFiles}&nbsp; remaining
                     </td>
                 </tr>
@@ -175,7 +175,7 @@ class DocumentList extends Component {
                             <td className="dataStyle nameDataField">
                                 <img src='/assets/file-types/file.png' width="30"/> {doc.name}
                             </td>
-                            <td colSpan="2" class="dataStyle progressBarField">
+                            <td colSpan="3" class="dataStyle progressBarField">
                                 <ProgressBar class="ProgressBar" now={0}/>
                             </td>
 
@@ -191,7 +191,7 @@ class DocumentList extends Component {
                     <td className="dataStyle nameDataField">
                         <img src='/assets/file-types/file.png' width="30"/> {this.props.uploadingFile.name}
                     </td>
-                    <td colSpan="2" class="dataStyle progressBarField">
+                    <td colSpan="3" class="dataStyle progressBarField">
                         <ProgressBar class="ProgressBar" now={this.props.uploadProgress}/>
                     </td>
 
@@ -315,7 +315,7 @@ class DocumentList extends Component {
                     <DropZone className="inline-dropBody" location={location} disableClick={false}>
                         <img class="empty-file-image" src="/assets/emptybox.png"/>
                     </DropZone>
-                    <h5 class="center-aligned">{this.printMessage()}</h5>
+                    <h5 class="center-aligned empty-file-text">{this.printMessage()}</h5>
                 </div>
             );
         }
@@ -366,7 +366,7 @@ class DocumentList extends Component {
                                             </span>
 
                                         </td>
-                                        <td class="dataStyle">{doc.id}</td>
+                                        <td class="dataStyle idDataItem">{doc.id}</td>
                                         <td class="dataStyle modifiedDataItem">
                                             {doc.modified}
                                         </td>
