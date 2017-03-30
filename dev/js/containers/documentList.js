@@ -42,7 +42,10 @@ class DocumentList extends Component {
             deleteFile: {
                 id: 2
             },
-            objectWithACL: null
+            objectWithACL: null,
+            downloadFile: {
+                id: 2
+            }
         };
 
     }
@@ -57,7 +60,7 @@ class DocumentList extends Component {
         updatedObject.save();
     }
     openACLModal(objectWithACL) {
-        this.setState({showACLModal: true, objectWithACL: objectWithACL})
+        this.setState({showACLModal: true, objectWithACL: objectWithACL});
     }
     componentWillReceiveProps(newProp)
     {
@@ -294,6 +297,8 @@ class DocumentList extends Component {
         this.setState(this.state);
     }
     downloadFile(obj) {
+        this.state.downloadFile = obj;
+        this.setState(this.state);
         this.props.downloadFile(obj);
     }
     popover(doc) {
@@ -386,6 +391,9 @@ class DocumentList extends Component {
                                             <OverlayTrigger ref="popover" trigger="click" onClick={this.test.bind(this, doc)} rootClose placement="bottom" overlay={this.popover(doc.fileObj)}>
                                                 <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
                                             </OverlayTrigger>
+                                            {this.state.downloadFile.id === doc.id && this.props.downloadingFile
+                                                ? <img src="/assets/loading.gif" width="20px" class="download-gif"></img>
+                                                : ''}
                                             <ReactTooltip id='more-icon' place="bottom" effect='solid'>
                                                 <span>More
                                                 </span>
@@ -432,6 +440,7 @@ class DocumentList extends Component {
 }
 
 function mapStateToProps(state) {
+    const {downloadingFile} = state.documents;
     return {
         init: state.documents.init,
         docs: state.documents.docs,
@@ -448,7 +457,8 @@ function mapStateToProps(state) {
         remainingFiles: state.uploadingFiles.remainingFiles,
         totalFiles: state.uploadingFiles.totalFiles,
         uploadFinish: state.uploadingFiles.uploadFinish,
-        selectedPage: state.documents.selectedPage
+        selectedPage: state.documents.selectedPage,
+        downloadingFile: downloadingFile
     };
 }
 function matchDispatchToProps(dispatch) {

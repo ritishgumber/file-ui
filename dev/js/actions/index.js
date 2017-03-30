@@ -123,6 +123,8 @@ export const editFile = (data) => {
 
 export const downloadFile = (data) => {
     return ((dispatch) => {
+        dispatch({type: "DOWNLOADING_FILE"});
+
         var obj = data.fileObj;
 
         axios({
@@ -136,7 +138,7 @@ export const downloadFile = (data) => {
         }).then(function(res) {
             var blob = res.data;
             var fileURL = URL.createObjectURL(blob);
-
+            dispatch({type: "DOWNLOADING_COMPLETE"});
             var a = document.createElement("a");
             document.body.appendChild(a);
             a.style = "display: none";
