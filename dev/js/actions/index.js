@@ -1,5 +1,6 @@
 import axios from 'axios';
 import async from 'async';
+import {saveAs} from 'file-saver';
 export const initApp = (appId) => {
     console.log('appId', appId);
     return ((dispatch) => {
@@ -59,9 +60,7 @@ export const initApp = (appId) => {
 export const openFile = (data) => {
     return ((dispatch) => {
         var obj = data.fileObj;
-        var allowArr = obj.ACL.document;
-        if (!allowArr)
-            allowArr = obj.ACL;
+        var allowArr = obj.ACL.document || obj.ACL;
         if ((allowArr.read.allow.user).indexOf('all') !== -1) {
             //for public files
             window.open(obj.url, '_blank');
@@ -77,9 +76,12 @@ export const openFile = (data) => {
                 responseType: 'blob'
             }).then(function(res) {
                 var blob = res.data;
-                var fileURL = URL.createObjectURL(blob);
-                window.open(fileURL, '_blank');
-                URL.revokeObjectURL(fileURL)
+                var reader = new FileReader();
+                var out = new Blob([blob], {type: obj.document.contentType});
+                reader.onload = function(e) {
+                    window.open(reader.result, '_blank');
+                }
+                reader.readAsDataURL(out);
 
             }, function(err) {
                 console.log(err);
@@ -137,16 +139,8 @@ export const downloadFile = (data) => {
             responseType: 'blob'
         }).then(function(res) {
             var blob = res.data;
-            var fileURL = URL.createObjectURL(blob);
             dispatch({type: "DOWNLOADING_COMPLETE"});
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            a.href = fileURL;
-            a.download = obj.name;
-            a.click();
-            window.URL.revokeObjectURL(fileURL);
-
+            saveAs(blob, obj.name);
         }, function(err) {
             console.log(err);
         });
