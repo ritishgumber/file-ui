@@ -86,7 +86,7 @@ class App extends React.Component {
                                 <i class="ion ion-android-apps dashboard-icon"></i>
                                 &nbsp; Dashboard
                             </NavItem>
-
+                            <NavItem class="aaaaa"></NavItem>
                             <NavDropdown eventKey={3} title={profilePic} id="basic-nav-dropdown" class="profile">
 
                                 <MenuItem key={1} href={DASHBOARD_URL + '/#/profile'}>

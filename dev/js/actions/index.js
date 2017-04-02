@@ -93,20 +93,33 @@ export const openFile = (data) => {
 
 export const deleteFile = (data) => {
     return ((dispatch) => {
+        let obj = data.fileObj;
+        if (data.type == 'File')
+            obj.delete({
+                success: function(obj) {
+                    dispatch({type: "DELETE_FILE", payload: data.id});
 
-        var query = new CB.CloudQuery("_File");
-        query.findById(data, {
-            success: function(obj) {
-                obj.delete({
-                    success: function(obj) {
-                        dispatch({type: "DELETE_FILE", payload: data});
+                },
+                error: function(err) {}
+            });
+        else {
+            //delete Folder and all its content;
+            let query = new CB.CloudQuery("_File");
+            query.startsWith('path', obj.get('path') + "/" + obj.get('name'));
+            query.delete({
+                success: function(list) {
+                    obj.delete({
+                        success: function(obj) {
+                            dispatch({type: "DELETE_FILE", payload: data.id});
 
-                    },
-                    error: function(err) {}
-                })
-            },
-            error: function(err) {}
-        })
+                        },
+                        error: function(err) {}
+                    });
+                },
+                error: function(error) {}
+            })
+        }
+
     });
 }
 export const editFile = (data) => {
@@ -151,7 +164,6 @@ export const downloadFile = (data) => {
 export const fetchAllFiles = (data) => {
 
     let response = [];
-    //fetchMoreFiles : for pagination , if true : concatinate the next batch of files to the current array;
     let {path, searchText, regex, skip, fetchMoreFiles} = data;
     console.log('skip', skip);
 
