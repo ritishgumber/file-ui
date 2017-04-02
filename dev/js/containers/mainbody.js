@@ -9,7 +9,6 @@ import Dropzone from 'react-dropzone';
 import {browserHistory, Link} from "react-router";
 import ReactTooltip from 'react-tooltip';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 
 class MainBody extends Component {
 

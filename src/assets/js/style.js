@@ -7,5 +7,5 @@ $(document).ready(function() {
     });
     $(".popover-list-item").click(function() {
         $("#popover-trigger-click-root-close").hide();
-    })
+    });
 });

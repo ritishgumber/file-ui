@@ -94,6 +94,18 @@ body {
     color: grey;
 }
 
+.boldHeading {
+    font-weight: bold;
+}
+
+.nameHeading {
+    cursor: pointer;
+}
+
+.modifiedHeading {
+    cursor: pointer;
+}
+
 .idDataItem {
     background: #ececec;
     padding-right: 5px;
@@ -228,8 +240,9 @@ span.inlineRight div.dropBody {
 
 .search-bar:focus {
     width: 100%;
-    transition: all 0.4s;
-    -webkit-transition: all 0.4s;
+    /*transition: all 0.4s;
+    -webkit-transition: right all 0.4s;*/
+    -webkit-transition: width 0s ease-out 0s;
     outline: none;
 }
 

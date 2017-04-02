@@ -94,7 +94,18 @@ class DocumentList extends Component {
     componentDidMount() {
         window.addEventListener('scroll', this.handleScroll.bind(this));
     }
-
+    componentDidUpdate() {
+        $('.nameHeading').click(() => {
+            console.log('exec3');
+            $('.nameHeading').addClass("boldHeading");
+            $('.modifiedHeading').removeClass("boldHeading");
+        })
+        $('.modifiedHeading').click(() => {
+            console.log('exec3');
+            $('.nameHeading').removeClass("boldHeading");
+            $('.modifiedHeading').addClass("boldHeading");
+        })
+    }
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
@@ -122,8 +133,8 @@ class DocumentList extends Component {
         this.setState(this.state);
     }
 
-    deleteFile(id) {
-        this.props.deleteFile(id);
+    deleteFile(file) {
+        this.props.deleteFile(file);
         this.close();
     }
     close() {
@@ -330,11 +341,11 @@ class DocumentList extends Component {
                     <table class="document-list responsive" id="document-list">
                         <tbody>
                             <tr class="listHeading">
-                                <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'title')}>Name
+                                <th class="dataStyle nameHeading" onClick={this.sortDocuments.bind(this, 'title')}>Name
                                     <i class={this.state.titleSortIcon}></i>
                                 </th>
                                 <th class="dataStyle">ID</th>
-                                <th class="dataStyle" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
+                                <th class="dataStyle modifiedHeading" onClick={this.sortDocuments.bind(this, 'modified')}>Modified
                                     <i class={this.state.modifiedSortIcon}></i>
                                 </th>
                                 <th class="dataStyle">Actions</th>
@@ -428,7 +439,7 @@ class DocumentList extends Component {
                                     : null}</strong>?
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile.id)}>Delete</Button>
+                            <Button className="btn-primary delete-btn" onClick={this.deleteFile.bind(this, this.state.deleteFile)}>Delete</Button>
                         </Modal.Footer>
                     </Modal>
                 </div>
