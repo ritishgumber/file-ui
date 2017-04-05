@@ -107,8 +107,8 @@ body {
 }
 
 .idDataItem {
-    background: #ececec;
     padding-right: 5px;
+    color: #cfcfcf;
 }
 
 .ProgressBar {
