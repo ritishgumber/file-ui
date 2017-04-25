@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Glyphicon,
-    Modal,
-    Button,
-    ProgressBar,
-    Popover,
-    OverlayTrigger
-} from 'react-bootstrap';
+import {Glyphicon, Modal, Button, ProgressBar} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {Link, browserHistory} from "react-router";
@@ -21,6 +14,9 @@ import {
 import DropZone from '../containers/dropzone'
 import ReactTooltip from 'react-tooltip';
 import ACL from '../../acl/ACL.js';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 class DocumentList extends Component {
     constructor(props)
@@ -59,8 +55,9 @@ class DocumentList extends Component {
         console.log(updatedObject);
         updatedObject.save();
     }
-    openACLModal(objectWithACL) {
-        this.setState({showACLModal: true, objectWithACL: objectWithACL});
+    openACLModal() {
+        this.setState({showACLModal: true});
+        this.handleRequestClose();
     }
     componentWillReceiveProps(newProp)
     {
@@ -96,12 +93,10 @@ class DocumentList extends Component {
     }
     componentDidUpdate() {
         $('.nameHeading').click(() => {
-            console.log('exec3');
             $('.nameHeading').addClass("boldHeading");
             $('.modifiedHeading').removeClass("boldHeading");
         })
         $('.modifiedHeading').click(() => {
-            console.log('exec3');
             $('.nameHeading').removeClass("boldHeading");
             $('.modifiedHeading').addClass("boldHeading");
         })
@@ -302,26 +297,23 @@ class DocumentList extends Component {
             return ('No documents found. Want to upload one?')
 
     }
-    test(doc) {
-        console.log(doc);
-        this.state.objectWithACL = doc.fileObj;
-        this.setState(this.state);
-    }
+
     downloadFile(obj) {
         this.state.downloadFile = obj;
         this.setState(this.state);
         this.props.downloadFile(obj);
     }
-    popover(doc) {
-        return (
-            <Popover id="popover-trigger-click-root-close" title="More">
-                <ul class="list-group popover-list">
-                    <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this, doc)}>ACL</li>
-                </ul>
-            </Popover>
-        )
 
-    }
+    handleTouchTap = (doc, event) => {
+        // This prevents ghost click.
+        event.preventDefault();
+
+        this.setState({open: true, anchorEl: event.currentTarget, objectWithACL: doc.fileObj});
+    };
+
+    handleRequestClose = () => {
+        this.setState({open: false});
+    };
     render() {
         const {location} = this.state;
 
@@ -362,13 +354,7 @@ class DocumentList extends Component {
                                 const route = (isFile
                                     ? doc
                                     : this.state.location + '/' + doc.title);
-                                const popoverClickRootClose = (
-                                    <Popover id="popover-trigger-click-root-close" title="More">
-                                        <ul class="list-group popover-list">
-                                            <li class="list-group-item popover-list-item" onClick={this.openACLModal.bind(this)}>ACL</li>
-                                        </ul>
-                                    </Popover>
-                                );
+
                                 return (
                                     <tr key={i} ref="listRow" class="listStyle" onClick={this.selectRow.bind(this)}>
                                         <td className="dataStyle nameDataField" onClick={this.showNameInput.bind(this, i)} onDoubleClick={this.navigate.bind(this, route, isFile)}>
@@ -399,9 +385,7 @@ class DocumentList extends Component {
                                                 <span>Download
                                                 </span>
                                             </ReactTooltip>
-                                            <OverlayTrigger ref="popover" trigger="click" onClick={this.test.bind(this, doc)} rootClose placement="bottom" overlay={this.popover(doc.fileObj)}>
-                                                <span data-tip onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
-                                            </OverlayTrigger>
+                                            <span data-tip onTouchTap={this.handleTouchTap.bind(this, doc)} onMouseOver={this.toggleClass.bind(this)} onMouseOut={this.toggleClass.bind(this)} data-for="more-icon" class="ion ion-ios-more-outline action-icons more-icon"></span>
                                             {this.state.downloadFile.id === doc.id && this.props.downloadingFile
                                                 ? <img src="/assets/loading.gif" width="20px" class="download-gif"></img>
                                                 : ''}
@@ -443,6 +427,32 @@ class DocumentList extends Component {
                         </Modal.Footer>
                     </Modal>
                 </div>
+                <Popover open={this.state.open} anchorEl={this.state.anchorEl} anchorOrigin={{
+                    horizontal: 'left',
+                    vertical: 'bottom'
+                }} targetOrigin={{
+                    horizontal: 'left',
+                    vertical: 'top'
+                }} onRequestClose={this.handleRequestClose}>
+                    <Menu>
+                        <MenuItem primaryText="Menu" disabled onTouchTap={this.openACLModal.bind(this)} style={{
+                            background: '#dcdada',
+                            marginTop: -8,
+                            cursor: 'default',
+                            color: 'black',
+                            paddingTop: 5,
+                            lineHeight: 'inherit',
+                            minHeight: 35,
+                            fontSize: 14,
+                            textAlign: 'center'
+                        }}/>
+                        <MenuItem primaryText="ACL" onTouchTap={this.openACLModal.bind(this)} className="more-menuitem" innerDivStyle={{
+                            padding: 4,
+                            marginBottom: -8
+                        }}/>
+
+                    </Menu>
+                </Popover>
             </DropZone>
 
         );

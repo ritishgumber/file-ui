@@ -250,6 +250,17 @@ span.inlineRight div.dropBody {
     /*margin-top: 17%;*/
 }
 
+.more-menuitem {
+    min-height: 35px!important;
+    line-height: inherit!important;
+    font-size: 14px!important;
+    text-align: center;
+}
+
+.more-menuitem:hover {
+    background: #f0f0f0!important;
+}
+
 .fixed-table-heading {
     clear: left
 }
@@ -346,6 +357,7 @@ span.inlineRight div.dropBody {
 
 .create-btn {
     background: #4f9cf5;
+    border-color: #549afc;
 }
 
 .delete-btn {
@@ -358,6 +370,7 @@ span.inlineRight div.dropBody {
 
 .create-btn:hover {
     background: #4f9cf5;
+    border-color: #549afc;
 }
 
 .profile-icon {
