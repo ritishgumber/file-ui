@@ -8,6 +8,7 @@ import {browserHistory, Link} from 'react-router';
 import {Navbar, Nav, NavItem, NavDropdown, Dropdown} from 'react-bootstrap';
 import {DropDownMenu, MenuItem, Divider} from 'material-ui';
 import _ from 'underscore'
+import DownArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 const styles = {
     customWidth: {
@@ -48,15 +49,18 @@ class App extends React.Component {
 
         if (this.props.allApps) {
             allApps = this.props.allApps.map((app, i) => {
+                let label = (
+                    <div>
+                        <img height="20px" class="app-selector-img" src={SERVER_URL + '/appfile/' + app.id + '/icon'} onError={this.setImgFallbackUrl.bind(this)}></img>
+                        {app.name}</div>
+                );
                 return (
                     <MenuItem className={app.id == thisObj.props.appId
                         ? 'selected-app app-list-item'
                         : 'app-list-item'} innerDivStyle={{
                         "display": "inline-flex",
                         "alignItems": "center"
-                    }} value={i} primaryText={app.name} key={i} onClick={this.navigate.bind(this, '/' + app.id, true)} label={< i class = "ion ion-ios-cloud" > {
-                        app.name
-                    } < /i>}>
+                    }} value={i} primaryText={app.name} key={i} onClick={this.navigate.bind(this, '/' + app.id, true)} label={label}>
                         <img height="20px" class="app-selector-img" src={SERVER_URL + '/appfile/' + app.id + '/icon'} onError={this.setImgFallbackUrl.bind(this)}></img>
                     </MenuItem>
                 );
@@ -88,10 +92,12 @@ class App extends React.Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav>
-
                             <DropDownMenu value={value} onChange={this.handleChange} underlineStyle={{
                                 display: "none"
-                            }}>
+                            }} listStyle={{
+                                'padding-top': '0px',
+                                'padding-botton': '0px'
+                            }} iconButton={< DownArrow style = {{color:'red'}}/>}>
                                 {allApps}
 
                                 <MenuItem innerDivStyle={{
