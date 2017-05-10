@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Modal, Button} from 'react-bootstrap';
+import {Dialog} from 'material-ui';
 import ACLRows from './aclRows.js'
 
 // mui dependencies
@@ -126,29 +126,19 @@ class ACL extends React.Component {
         this.props.closeACLModal()
     }
     render() {
-
+        let dialogTitle = <div className="modaltitle">
+            <span className="diadlogTitleText">Access Control List</span>
+            <span className="diadlogTitleTextSub">Manage who can access this document.</span>
+            <i className='fa fa-lock iconmodal'></i>
+        </div>
         return (
-            <Modal show={this.props.isOpenACLModal} onHide={this.close} dialogClassName={this.props.dialogClassName
-                ? this.props.dialogClassName
-                : "custom-modal"}>
-                <Modal.Header >
-                    <Modal.Title>ACL
-                        <img class="acl-modal-icon-style pull-right"></img>
-                        <div class="modal-title-inner-text">You are about to change ACL for
-                            <strong>{' "' + this.props.objectWithACL.document.name + '"'}</strong>
 
-                        </div>
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <MuiThemeProvider>
-                        <ACLRows aclList={this.state.aclList} removeAcl={this.removeAcl.bind(this)} addAcl={this.addAcl.bind(this)} updateAclData={this.updateAclData.bind(this)}/>
-                    </MuiThemeProvider>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button bsStyle="primary" onClick={this.saveAcl.bind(this)}>Save</Button>
-                </Modal.Footer>
-            </Modal>
+            <Dialog bodyClassName={"bodyClassNameACL"} contentClassName={"acloverlay"} title={dialogTitle} modal={false} open={this.props.isOpenACLModal} onRequestClose={this.close}>
+                <ACLRows aclList={this.state.aclList} removeAcl={this.removeAcl.bind(this)} addAcl={this.addAcl.bind(this)} updateAclData={this.updateAclData.bind(this)}/>
+                <div className="cancelselctrela">
+                    <button className="btn btn-primary fr" onClick={this.saveAcl.bind(this)}>Save</button>
+                </div>
+            </Dialog>
         );
     }
 }

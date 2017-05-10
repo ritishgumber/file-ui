@@ -76,6 +76,7 @@ body {
 }
 
 .dataStyle {
+    border: none;
     padding: 10px;
     cursor: default;
 }

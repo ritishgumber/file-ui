@@ -2,6 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Checkbox from 'material-ui/Checkbox'
 import AutoComplete from 'material-ui/AutoComplete'
+import {
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn
+} from 'material-ui/Table'
 
 //css
 require('./styles.css')
@@ -106,37 +114,63 @@ class ACLRows extends React.Component {
                 } else
                     return true
             }).map((x, i) => {
-                return <div key={i} className="aclrow">
-                    {x.type == 'user'
-                        ? <i className="fa fa-user logoaclrow" aria-hidden="true"></i>
-                        : <i className="fa fa-unlock-alt logoaclrow" aria-hidden="true"></i>}
-                    <i className="fa fa-times cancelaclrow" aria-hidden="true" onClick={this.removeAcl.bind(this, x.id)}></i>
-                    <p className="textaclrow">{this.getName(x.id, x.type)}
-                        ( {x.id}
-                        )</p>
-                    <p className="readwitetext">Read</p>
-                    <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, x.id, 'read')} checked={x.data.read}/>
-                    <p className="readwitetext">Write</p>
-                    <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, x.id, 'write')} checked={x.data.write}/>
-                </div>
+                return <TableRow key={i}>
+                    <TableRowColumn className="acltdthwidth">
+                        {x.type == 'user'
+                            ? <i className="fa fa-user logoaclrow" aria-hidden="true"></i>
+                            : <i className="fa fa-unlock-alt logoaclrow" aria-hidden="true"></i>
+}
+                        <p className="textaclrow">{this.getName(x.id, x.type)}
+                            ( {x.id}
+                            )</p>
+                    </TableRowColumn>
+                    <TableRowColumn>
+                        <p className="readwitetext">Read</p>
+                        <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, x.id, 'read')} checked={x.data.read}/>
+                    </TableRowColumn>
+                    <TableRowColumn>
+                        <p className="readwitetext">Write</p>
+                        <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, x.id, 'write')} checked={x.data.write}/>
+                    </TableRowColumn>
+                    <TableRowColumn className="acltddeletethwidth">
+                        <i className="fa fa-trash-o cancelaclrow" aria-hidden="true" onClick={this.removeAcl.bind(this, x.id)}></i>
+                    </TableRowColumn>
+                </TableRow>
             })
         }
 
         return (
             <div className="relationselectordiv">
-                <div className="aclrowpublic">
-                    <i className="fa fa-user logoaclrow" aria-hidden="true"></i>
-                    <i className="fa fa-times cancelaclrow" aria-hidden="true" style={{
-                        visibility: 'hidden'
-                    }}></i>
-                    <p className="textaclrow">Public(All)</p>
-                    <p className="readwitetext">Read</p>
-                    <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, 'all', 'read')} checked={publicAcl.data.read || false}/>
-                    <p className="readwitetext">Write</p>
-                    <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, 'all', 'write')} checked={publicAcl.data.write || false}/>
-                </div>
-                {aclList}
-                <AutoComplete floatingLabelText="Add User or Role" filter={AutoComplete.fuzzyFilter} dataSource={this.getSearchItems()} maxSearchResults={5} className="selectautoacl" onNewRequest={this.selectUser.bind(this)}/>
+                <Table selectable={false} multiSelectable={false} className="acltable">
+                    <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
+                        <TableRow displayBorder={false}>
+                            <TableRowColumn className="acltdthwidth">
+                                <i className="fa fa-user logoaclrow" aria-hidden="true"></i>
+                                <p className="textaclrow">Public(All)</p>
+                            </TableRowColumn>
+                            <TableRowColumn>
+                                <p className="readwitetext">Read</p>
+                                <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, 'all', 'read')} checked={publicAcl.data.read || false}/>
+                            </TableRowColumn>
+                            <TableRowColumn>
+                                <p className="readwitetext">Write</p>
+                                <Checkbox className='aclrowcheckbox' onCheck={this.checkHandler.bind(this, 'all', 'write')} checked={publicAcl.data.write || false}/>
+                            </TableRowColumn>
+                            <TableRowColumn className="acltddeletethwidth"></TableRowColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {aclList}
+                        <TableRow>
+                            <TableRowColumn className="acltdthwidth">
+                                <AutoComplete floatingLabelText="Add User or Role" filter={AutoComplete.fuzzyFilter} dataSource={this.getSearchItems()} maxSearchResults={5} className="selectautoacl" onNewRequest={this.selectUser.bind(this)}/>
+                            </TableRowColumn>
+                            <TableRowColumn></TableRowColumn>
+                            <TableRowColumn></TableRowColumn>
+                            <TableRowColumn className="acltddeletethwidth"></TableRowColumn>
+                        </TableRow>
+                    </TableBody>
+                </Table>
             </div>
         );
     }

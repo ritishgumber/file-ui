@@ -55,7 +55,7 @@ class App extends React.Component {
                         {app.name}</div>
                 );
                 return (
-                    <MenuItem className={app.id == thisObj.props.appId
+                    <MenuItem className={app.id === thisObj.props.appId
                         ? 'selected-app app-list-item'
                         : 'app-list-item'} innerDivStyle={{
                         "display": "inline-flex",
@@ -96,8 +96,8 @@ class App extends React.Component {
                                 display: "none"
                             }} listStyle={{
                                 'padding-top': '0px',
-                                'padding-botton': '0px'
-                            }} iconButton={< DownArrow style = {{color:'red'}}/>}>
+                                'padding-bottom': '0px'
+                            }} iconButton={< DownArrow />}>
                                 {allApps}
 
                                 <MenuItem innerDivStyle={{
