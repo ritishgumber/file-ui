@@ -1,4 +1,4 @@
-export default function(state = {
+export default function (state = {
     docs: [],
     init: true
 }, action) {
@@ -19,10 +19,28 @@ export default function(state = {
                 userProfilePic: action.payload.userProfilePic,
                 downloadingFile: false
             }
+        case 'FETCH_APPS':{
+            var availableApps = action
+                .payload
+                .filter((obj) => !obj.deleted);
+            let length = availableApps.length;
+            if (availableApps.length == 0) 
+                window.location.href = DASHBOARD_URL;
+            availableApps.forEach((app) => {
+                allApps.push({name: app.name, id: app.appId});
+            });
+            return {
+                ...state,
+                allApps: availableApps
+            }}
         case 'DELETE_FILE':
             return {
                 ...state,
-                docs: [...state.docs.filter((doc) => doc.id != action.payload)],
+                docs: [
+                    ...state
+                        .docs
+                        .filter((doc) => doc.id != action.payload)
+                ],
                 appInitSuccess: false
             };
         case 'FETCHING_ALL_FILES':
@@ -32,10 +50,14 @@ export default function(state = {
                 appInitSuccess: false
             }
         case 'FETCH_ALL_FILES':
-            if (action.payload.fetchMoreFiles)
+            if (action.payload.fetchMoreFiles) 
                 return {
                     ...state,
-                    docs: [...state.docs.concat(action.payload.data)],
+                    docs: [
+                        ...state
+                            .docs
+                            .concat(action.payload.data)
+                    ],
                     fetching: false,
                     appInitSuccess: false,
                     fileAddSuccess: false,
@@ -82,24 +104,28 @@ export default function(state = {
         case 'SORT_DOCUMENTS':
             return {
                 ...state,
-                docs: [...state.docs.sort((a, b) => {
-                        var x = a[action.payload.key].toLowerCase();
-                        var y = b[action.payload.key].toLowerCase();
-                        if (action.payload.isAscending)
-                            return ((x < y)
-                                ? -1
-                                : ((x > y)
-                                    ? 1
-                                    : 0));
-                        else
-                            return ((x < y)
-                                ? 1
-                                : ((x > y)
+                docs: [
+                    ...state
+                        .docs
+                        .sort((a, b) => {
+                            var x = a[action.payload.key].toLowerCase();
+                            var y = b[action.payload.key].toLowerCase();
+                            if (action.payload.isAscending) 
+                                return ((x < y)
                                     ? -1
-                                    : 0));
+                                    : ((x > y)
+                                        ? 1
+                                        : 0));
+                            else 
+                                return ((x < y)
+                                    ? 1
+                                    : ((x > y)
+                                        ? -1
+                                        : 0));
 
-                        }
-                    )]
+                            }
+                        )
+                ]
             }
 
     }

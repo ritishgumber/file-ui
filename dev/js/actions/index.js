@@ -1,12 +1,15 @@
 import axios from 'axios';
 import async from 'async';
 import {saveAs} from 'file-saver';
+import {xhrDashBoardClient,xhrAccountsClient} from '../xhrClient';
+
 export const initApp = (appId) => {
     console.log('appId', appId);
     return ((dispatch) => {
         axios.defaults.withCredentials = true
 
         axios.get(USER_SERVICE_URL + 'user').then((userData) => {
+            dispatch({type:'FETCH_USER',payload:userData.data})
 
             axios.get(USER_SERVICE_URL + 'app').then((data) => {
 
@@ -44,6 +47,8 @@ export const initApp = (appId) => {
                                 userProfilePic: userProfilePic
                             }
                         });
+                        dispatch(getBeacon());
+                        dispatch(getNotifications());
                     }
                 });
             }, (err) => {
@@ -55,6 +60,21 @@ export const initApp = (appId) => {
         })
 
     })
+}
+
+export function fetchUser() {
+
+    return function (dispatch) {
+        xhrDashBoardClient.get('/user').then(response => {
+            dispatch({type: 'FETCH_USER', payload: response.data})
+            dispatch(getNotifications())
+            dispatch({type: 'STOP_LOADING'})
+        }).catch(error => {
+            console.log('fetch user error');
+            console.log(error);
+        });
+
+    };
 }
 
 export const openFile = (data) => {
@@ -135,6 +155,97 @@ export const editFile = (data) => {
         })
     });
 }
+
+export function getBeacon() {
+    return function (dispatch) {
+        xhrDashBoardClient.get('/beacon/get').then(response => {
+            dispatch({type: 'USER_BEACONS', payload: response.data})
+
+        }).catch(error => {
+            console.log('fetch beacons error');
+            console.log(error);
+        });
+
+    };
+}
+
+export function updateBeacon(beacons, field) {
+    return function (dispatch) {
+        if (!beacons[field])
+            beacons[field] = true;
+        xhrDashBoardClient.post('/beacon/update', beacons).then(response => {
+            dispatch({type: 'USER_BEACONS', payload: response.data})
+
+        }).catch(error => {
+            console.log('update beacons error');
+            console.log(error);
+        });
+
+    };
+}
+
+export function fetchApps() {
+
+    return function (dispatch) {
+        dispatch({type: 'START_LOADING'})
+
+        xhrDashBoardClient.get('app').then(response => {
+            dispatch({type: 'FETCH_APPS', payload: response.data});
+            dispatch(getBeacon())
+            dispatch(getNotifications())
+        }).catch(error => {
+            console.log('inside fetch Apps error catch error: ');
+            console.log(error);
+        });
+
+    };
+}
+
+export function getNotifications() {
+    return function (dispatch) {
+        xhrDashBoardClient.get('/notification/0/10').then(response => {
+            dispatch({type: 'FETCH_NOTIFICATIONS', payload: response.data})
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+}
+
+export function updateNotificationsSeen() {
+    return function (dispatch) {
+        xhrDashBoardClient.get('/notification/seen').then(response => {
+            dispatch(getNotifications())
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+}
+
+export function deleteNotificationById(id) {
+    return function (dispatch) {
+        xhrDashBoardClient.delete('/notification/' + id).then(response => {
+            dispatch(getNotifications())
+        }).catch(error => {
+            console.log(error);
+        })
+
+    }
+}
+
+export const logOut = () => {
+
+    return function (dispatch) {
+        xhrAccountsClient.post('/user/logout').then(response => {
+            dispatch({type: 'LOGOUT'});
+        }).catch(error => {
+            console.log('inside Logout catch error: ');
+            console.log(error);
+        });
+    };
+};
+
 
 export const downloadFile = (data) => {
     return ((dispatch) => {

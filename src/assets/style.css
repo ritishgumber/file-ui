@@ -273,7 +273,82 @@ span.inlineRight div.dropBody {
     color: #737373;
     font-weight: 600;
 }
+#nav-dash {
+  z-index: 1001;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  height: 60px;
+  border-color: #DADDE2;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+}
+#nav-dash .container {
+  width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+#nav-dash .container .toolbar {
+  background-color: #FFF;
+  font-size: 14px;
+  height: 100%;
+}
+#nav-dash .container .toolbar .icon {
+  height: 40px;
+  width: 40px;
+  position: relative;
+  border-radius: 10%;
+}
+#nav-dash .container .toolbar .userhead {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  margin-top: -4px;
+}
+#nav-dash .container .toolbar span:hover {
+  cursor: pointer;
+  color: #666;
+}
+.headingpop {
 
+  height: 40px;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 500;
+  margin-bottom: 0;
+  padding-left: 12px;
+  font-size: 11pt;
+  font-weight: 400;
+  color: #333;
+  text-transform: capitalize;
+
+}
+
+  .profilepop {
+  min-width: 220px !important;
+  min-height: 100px !important;
+  border-radius: 5px !important;
+  overflow: visible !important;
+  font-family: Roboto !important;
+}
+
+.coloptbtn {
+  width: 100%;
+  border: 0 solid #EEE;
+  height: 35px;
+  background-color: #FFFFFF;
+  color: #5e5e5e;
+  margin-top: 0;
+  text-align: left;
+  padding-left: 12px;
+  font-size: 14px;
+}
+
+.coloptbtn:hover {
+  background-color: #EEE;
+  color: black;
+}
 .side-menu-items {
     text-align: justify;
     cursor: pointer;

@@ -1,0 +1,210 @@
+.notification-wrap {
+    overflow-y: auto;
+    max-height: 400px;
+    display: grid;
+}
+
+.notificationdiv {
+    width: 100%;
+    min-height: 60px;
+    padding: 4px 12px;
+    border-bottom: 1px solid #eff1f5;
+}
+
+.unSeenNotification {
+    background: rgba(74, 163, 223, 0.16);
+}
+
+.notimgcontainer {
+    float: left;
+    width: 10%;
+    min-height: 60px;
+}
+
+.notdatacontainer {
+    float: right;
+    display: inline-block;
+    width: 90%;
+    min-height: 60px;
+}
+
+.notinvicon {
+    float: left;
+    width: 100%;
+    font-size: 40px;
+    margin-top: 4px;
+    color: #4aa3df;
+}
+
+.notificationdiv:hover {
+    background: #eff1f5;
+}
+
+.nottextinv {
+    color: #595959;
+    word-break: break-word;
+    font-size: 10pt;
+    width: 90%;
+    float: left;
+    padding-left: 10px;
+}
+
+.noteinvbtncontainer {
+    width: 100%;
+    padding-left: 10px;
+}
+
+.cancelbtnnotinv {
+    float: right;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    width: 66px!important;
+    background-color: white;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    outline: none !important;
+    font-size: 14px;
+    margin-top: 24px;
+    height: 23px;
+    vertical-align: initial;
+    margin-right: 10px
+}
+
+.acceptbtnnotinv {
+    float: right;
+    margin-bottom: 10px;
+    background-color: #2196f3;
+    border: 0px;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    outline: none !important;
+    color: white;
+    font-size: 14px;
+    margin-top: 24px;
+    width: 66px;
+}
+
+.clearnotbtn {
+    color: #888;
+    float: right;
+    width: 50px!important;
+    background-color: #eee;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    outline: none !important;
+    font-size: 10pt;
+    margin-top: -2px;
+    height: 23px;
+    opacity: .5;
+}
+
+.notificationoffset {
+    margin-top: 50px !important;
+}
+
+.notebadge {
+    visibility: visible;
+    display: inline !important;
+    padding: 14px 24px 12px 7px !important;
+    float: right !important;
+    margin-left: -13px !important;
+    cursor: pointer;
+    margin-top: 1px;
+}
+
+.notebadge svg {
+    color: rgb(97, 97, 97) !important;
+}
+
+.popovernotifications {
+    min-height: 200px;
+    width: 400px;
+    max-height: 500px !important;
+    padding-bottom: 15px;
+    overflow: visible !important;
+    border-radius: 7px!important
+}
+
+.popovernotifications>div {
+    overflow: visible;
+}
+
+.profilepoparrow {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid white;
+    border-radius: 3px;
+    width: 24px;
+}
+
+.headingpop {
+    height: 40px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    font-weight: 500;
+    margin-bottom: 0px;
+    padding-left: 12px;
+    font-size: 11pt;
+    color: #2196f3;
+}
+
+.notificationemptybell {
+    font-size: 65px;
+    color: #eaeaea;
+}
+
+.notpendingtasks {
+    width: 100%;
+    color: #585656;
+    font-size: 17px;
+    font-weight: 500;
+    padding-top: 8px;
+    padding-left: 17px;
+}
+
+.notificationemptymessage {
+    visibility: visible;
+    font-size: 15px;
+    margin-top: -10px;
+    color: #d1d1d1;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.okbtnnotinv {
+    visibility: visible;
+    background-color: #4892F9;
+    border: none;
+    color: white;
+    padding: 4px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-left: 36px;
+}
+
+.nottimestamp {
+    margin-top: 24px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    font-size: 10px;
+    color: #b4b4b4;
+    float: left;
+}
+
+.red-dot {
+    background: red;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    position: absolute;
+    left: 31px;
+    top: 9px;
+}

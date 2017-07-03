@@ -13,7 +13,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.scss/,
-                loader: 'style-loader!css-loader!sass-loader'
+                loaders: ["style-loader", "css-loader", "sass-loader"]
             }, {
                 test: /\.css/,
                 loader: 'style-loader!css-loader!sass-loader'

@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 import {browserHistory, Link} from 'react-router';
 import {Navbar, Nav, NavItem, NavDropdown, Dropdown} from 'react-bootstrap';
 import {DropDownMenu, MenuItem, Divider} from 'material-ui';
-import _ from 'underscore'
+import _ from 'underscore';
+import Header from './header';
 import DownArrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 const styles = {
@@ -82,48 +83,8 @@ class App extends React.Component {
         }
         return (
 
-            <div class="container">
-                <Navbar class="navbar-style navbar-border " collapseOnSelect fixedTop={true}>
-                    <Navbar.Header>
-                        <Navbar.Brand >
-                            <a class="navbar-brand logo" href={DASHBOARD_URL}><img id="logo" src="/assets/cblogo.png" width="40px"/></a>
-                        </Navbar.Brand>
-                        <Navbar.Toggle/>
-                    </Navbar.Header>
-                    <Navbar.Collapse>
-                        <Nav>
-                            <DropDownMenu value={value} onChange={this.handleChange} underlineStyle={{
-                                display: "none"
-                            }} listStyle={{
-                                'padding-top': '0px',
-                                'padding-bottom': '0px'
-                            }} iconButton={< DownArrow />}>
-                                {allApps}
-
-                                <MenuItem innerDivStyle={{
-                                    "display": "inline-flex",
-                                    "alignItems": "center"
-                                }} primaryText={'Dashboard'} key={9999} onClick={this.navigate.bind(this, DASHBOARD_URL, false)}>
-                                    <img height="20px" class="app-selector-img" src={'/assets/dashboard-icon.png'}></img>
-                                </MenuItem>
-                            </DropDownMenu>
-                        </Nav>
-                        <Nav pullRight>
-                            <NavItem href={DASHBOARD_URL} class='dashboard-menuitem' onClick={this.navigate.bind(this, DASHBOARD_URL, false)}>
-                                <i class="ion ion-android-apps dashboard-icon"></i>
-                                &nbsp; Dashboard
-                            </NavItem>
-                            <NavDropdown eventKey={3} title={profilePic} id="basic-nav-dropdown" class="profile">
-
-                                <MenuItem key={1} href={DASHBOARD_URL + '/#/profile'}>
-                                    Profile
-                                </MenuItem>
-
-                            </NavDropdown>
-
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+            <div>
+                <Header/>
                 <div class="container">
                     <h3>&nbsp;</h3>
                     <div className="row">
